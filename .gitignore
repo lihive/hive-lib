@@ -1,0 +1,8 @@
+# IDE
+.idea
+
+# Node
+node_modules
+
+# Unit testing code coverage
+coverage
