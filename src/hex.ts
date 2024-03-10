@@ -1,5 +1,5 @@
 import { CartesianCoordinate, HexCoordinate } from './types';
-import { coordinatesNotAdjacentError, invalidDirectionError } from './error';
+import { CoordinatesNotAdjacentError, InvalidDirectionError } from './error';
 
 const SQRT3 = Math.sqrt(3);
 
@@ -172,7 +172,7 @@ export function relativeHexCoordinate(
     case 6:
       return { q, r: r - 1 };
     default:
-      throw invalidDirectionError(direction);
+      throw new InvalidDirectionError(direction);
   }
 }
 
@@ -202,7 +202,7 @@ export function relativeHexDirection(
     if (dr === -1) return 1;
     if (dr === 0) return 2;
   }
-  throw coordinatesNotAdjacentError(source, target);
+  throw new CoordinatesNotAdjacentError(source, target);
 }
 
 /**

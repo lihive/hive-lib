@@ -6,15 +6,13 @@
   "author": "Tristan Dyer",
   "private": true,
   "scripts": {
-    "test": "vitest run"
+    "test": "vitest run",
+    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.202",
+    "esbuild": "^0.20.1",
     "prettier": "3.2.5",
     "typescript": "^5.3.3",
     "vitest": "^1.1.1"
-  },
-  "dependencies": {
-    "lodash": "^4.17.21"
   }
 }

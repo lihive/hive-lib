@@ -9,30 +9,17 @@
  * - Q: Queen
  * - S: Spider
  */
-export type BugLetter = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S';
-
-/**
- * A string that represents a bug, differentiating bugs of the same type using numbers.
- */
-export type BugKey =
-  | `A${1 | 2 | 3}`
-  | `B${1 | 2}`
-  | `G${1 | 2 | 3}`
-  | 'L'
-  | 'M'
-  | 'P'
-  | 'Q'
-  | `S${1 | 2}`;
+export type Bug = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S';
 
 /**
  * A character representing a hive player color.
  */
-export type ColorKey = 'b' | 'w';
+export type Color = 'b' | 'w';
 
 /**
  * A string that represents a specific colored bug tile.
  */
-export type TileId = `${ColorKey}${BugKey}`;
+export type TileId = `${Color}${Bug}`;
 
 /**
  * A coordinate in 2D space in a cartesian coordinate system.
@@ -53,7 +40,7 @@ export interface HexCoordinate {
 /**
  * A stack of tile ids associated with a hex coordinate.
  */
-export interface TileStack {
+export interface HexStack {
   coordinate: HexCoordinate;
   stack: TileId[];
 }
@@ -70,73 +57,56 @@ export type GameBoard = {
 /**
  * An object describing which play variants are being used.
  */
-export type GameOptions = {
+export interface GameConfig {
   // flag indicating use of tournament opening rules
   tournament?: true;
-  // flag indicating pillbug use
-  pillbug?: true;
-  // flag indicating ladybug use
-  ladybug?: true;
-  // flag indicating mosquito use
-  mosquito?: true;
+  // the number of each tile type (defaulting to 0 if omitted)
+  tileset: Partial<{
+    [key in Bug]: number;
+  }>;
+}
+
+/**
+ * An object that contains a game's settings, history, and state.
+ */
+export type Game = {
+  config: GameConfig;
+  board: GameBoard;
+  moves: Move[];
 };
 
 /**
- * An object describing a player's move, which can either be a pass or move or
- * place a tile.
+ * An object describing a player's move, which can be a tile placement, tile
+ * movement, or pass.
  */
-export type Move = MovePlay | MovePass;
+export type Move = TilePlacement | TileMovement | Pass;
 
 /**
  * An object describing a passing move.
  */
-export type MovePass = {
-  // the raw tile notation string
-  notation: string;
-
-  // an 'x' indicating this is a pass
-  tileId: 'x';
-
-  // an 'x' indicating this is a pass
-  refId: 'x';
-
-  // a -1 indicating this is a pass
-  dir: -1;
+export type Pass = {
+  // flag indicating a passing move
+  pass: true;
 };
 
 /**
  * An object describing a move.
  */
-export type MovePlay = {
-  // the raw tile notation string
-  notation: string;
-
-  // the id of the tile being moved
-  tileId: TileId;
-
-  // the id of the reference tile (if first move of game, same as tileId)
-  refId: TileId;
-
-  // the direction relative to the reference tile that the moved tile is placed (0 if first move of game)
-  dir: number;
+export type TileMovement = {
+  // the location of the tile being moved
+  from: HexCoordinate;
+  // the movement destination
+  to: HexCoordinate;
 };
 
 /**
- * An object describing a game turn. Much like chess, a turn consists a move
- * performed by each player.
+ * An object describing a tile placement.
  */
-export type Turn = {
-  // the raw game turn notation string
-  notation: string;
-
-  // the game turn index, starting at 1 for the first turn of the game
-  index: number;
-
-  // the black tile move for this turn
-  black: Move | undefined;
-
-  // the white tile move for this turn
-  white: Move | undefined;
+export type TilePlacement = {
+  // the tile being placed
+  tileId: TileId;
+  // the placement location
+  to: HexCoordinate;
 };
 
 /**
@@ -161,11 +131,6 @@ export type NeighborFn = (
 ) => any;
 
 /**
- * A function invoked with a hex coordinate and optionally a tile stack.
- */
-export type SpaceFn = (coordinate: HexCoordinate, ids?: TileId[]) => any;
-
-/**
  * A function invoked with a hex coordinate and a tile stack.
  */
-export type StackFn = (coordinate: HexCoordinate, ids: TileId[]) => any;
+export type SpaceFn = (coordinate: HexCoordinate, stack: TileId[]) => any;
