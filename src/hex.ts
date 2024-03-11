@@ -1,7 +1,6 @@
-import { CartesianCoordinate, HexCoordinate } from './types';
+import { CartesianCoordinate, HexCoordinate, HexOrientation } from './types';
 import { CoordinatesNotAdjacentError, InvalidDirectionError } from './error';
-
-const SQRT3 = Math.sqrt(3);
+import { SQRT3 } from '@hive-lib/constants';
 
 /**
  * Convert a cartesian coordinate to a hex coordinate.
@@ -87,16 +86,21 @@ export function hexHeight(hexSize: number): number {
  *
  * @param coordinate The hex coordinate.
  * @param size The hexagon size.
+ * @param orientation A hex orientation.
  * @return A cartesian coordinate representing the center of the hexagon.
  */
 export function hexToCartesian(
   coordinate: HexCoordinate,
-  size: number
+  size: number,
+  orientation: HexOrientation
 ): CartesianCoordinate {
   const { q, r } = coordinate;
+  const M = orientation;
   return {
-    x: size * (SQRT3 * q + (SQRT3 / 2) * r),
-    y: size * ((3 / 2) * r)
+    x: size * M.f0 * q + M.f1 * r,
+    y: size * M.f2 * q + M.f3 * r
+    // x: size * (SQRT3 * q + (SQRT3 / 2) * r),
+    // y: size * ((3 / 2) * r)
   };
 }
 
@@ -106,14 +110,16 @@ export function hexToCartesian(
  *
  * @param coordinate A hex coordinate.
  * @param size The hexagon size.
+ * @param orientation A hex orientation.
  * @return An svg transform string.
  */
 export function hexToTransform(
   coordinate: HexCoordinate,
-  size: number
+  size: number,
+  orientation: HexOrientation
 ): string {
-  const { x, y } = hexToCartesian(coordinate, size);
-  return `translate(${x} ${y})`;
+  const { x, y } = hexToCartesian(coordinate, size, orientation);
+  return `translate(${x} ${y}) rotate(${orientation.startAngle})`;
 }
 
 /**

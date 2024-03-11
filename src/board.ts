@@ -5,6 +5,7 @@ import {
   GameBoard,
   GameConfig,
   HexCoordinate,
+  HexStack,
   Move,
   NeighborFn,
   SpaceFn,
@@ -454,6 +455,25 @@ export function getStack(
 }
 
 /**
+ * Get an array of all stacks associated with their locations on a board,
+ * optionally sorting so that tiles are ordered from back to front, lowest to
+ * highest.
+ *
+ * @param board A game board.
+ * @param sortForRender Flag indicating tiles should be sorted for rendering.
+ * @return An array of stacks associated with their coordinates.
+ */
+export function getStacks(
+  board: GameBoard,
+  sortForRender?: boolean
+): HexStack[] {
+  const stacks: HexStack[] = [];
+  eachStack(board, (coordinate, tiles) => stacks.push({ coordinate, tiles }));
+  if (sortForRender) renderSort(stacks);
+  return stacks;
+}
+
+/**
  * Get the height of the stack located at the given hex coordinate.
  *
  * @param board The game board
@@ -639,6 +659,22 @@ export function popTile(board: GameBoard, coordinate: HexCoordinate): TileId {
   if (stack.length === 0) delete board[q][r];
   if (Object.keys(board[q]).length === 0) delete board[q];
   return tileId;
+}
+
+/**
+ * Sort stacks of tiles so that they are ordered from back to front, shortest
+ * to tallest.
+ *
+ * @param stacks An array of stacks.
+ * @return A sorted copy of the array of stacks.
+ */
+export function renderSort(stacks: HexStack[]): HexStack[] {
+  return stacks.slice().sort((a, b) => {
+    const dr = b.coordinate.r - a.coordinate.r;
+    if (dr < 0) return 1;
+    if (dr === 0) return a.tiles.length - b.tiles.length;
+    return -1;
+  });
 }
 
 /**

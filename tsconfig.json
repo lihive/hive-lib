@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
@@ -14,6 +17,14 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "paths": {
+      "@hive-lib/*": [
+        "./src/*"
+      ]
+    }
   }
 }

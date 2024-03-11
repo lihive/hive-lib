@@ -38,11 +38,27 @@ export interface HexCoordinate {
 }
 
 /**
+ * An object that stores a transformation and its inverse, as well as a starting
+ * angle for drawing a hex.
+ */
+export interface HexOrientation {
+  f0: number;
+  f1: number;
+  f2: number;
+  f3: number;
+  b0: number;
+  b1: number;
+  b2: number;
+  b3: number;
+  startAngle: number;
+}
+
+/**
  * A stack of tile ids associated with a hex coordinate.
  */
 export interface HexStack {
   coordinate: HexCoordinate;
-  stack: TileId[];
+  tiles: TileId[];
 }
 
 /**
