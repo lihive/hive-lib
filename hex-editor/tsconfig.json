@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "paths": {
+      "@hive-lib": ["../index.ts"]
+    }
+  }
+}

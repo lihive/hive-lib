@@ -1,0 +1,41 @@
+.tableSettings {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #777;
+    font-family: var(--monospace);
+    font-size: 13px;
+}
+
+.settingsGrid {
+    padding: 12px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 8px;
+    row-gap: 8px;
+    align-items: center;
+}
+
+.settingsPath {
+    padding: 12px;
+}
+
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+    gap: 8px;
+}
+
+h3 {
+    margin: 0 0 8px 0;
+}
+
+button {
+    font-family: var(--monospace);
+    font-size: 13px;
+}
+
+input[type=range] {
+    flex: 1
+}
+

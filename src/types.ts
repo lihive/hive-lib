@@ -9,7 +9,7 @@
  * - Q: Queen
  * - S: Spider
  */
-export type Bug = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S';
+export type BugId = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S';
 
 /**
  * A character representing a hive player color.
@@ -19,7 +19,7 @@ export type Color = 'b' | 'w';
 /**
  * A string that represents a specific colored bug tile.
  */
-export type TileId = `${Color}${Bug}`;
+export type TileId = `${Color}${BugId}`;
 
 /**
  * A coordinate in 2D space in a cartesian coordinate system.
@@ -42,6 +42,7 @@ export interface HexCoordinate {
  * angle for drawing a hex.
  */
 export interface HexOrientation {
+  id: 'flat-top' | 'pointy-top';
   f0: number;
   f1: number;
   f2: number;
@@ -78,7 +79,7 @@ export interface GameConfig {
   tournament?: true;
   // the number of each tile type (defaulting to 0 if omitted)
   tileset: Partial<{
-    [key in Bug]: number;
+    [key in BugId]: number;
   }>;
 }
 

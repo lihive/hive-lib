@@ -1,6 +1,6 @@
 import { CartesianCoordinate, HexCoordinate, HexOrientation } from './types';
 import { CoordinatesNotAdjacentError, InvalidDirectionError } from './error';
-import { SQRT3 } from '@hive-lib/constants';
+import { SQRT3 } from './constants';
 
 /**
  * Convert a cartesian coordinate to a hex coordinate.
@@ -97,10 +97,8 @@ export function hexToCartesian(
   const { q, r } = coordinate;
   const M = orientation;
   return {
-    x: size * M.f0 * q + M.f1 * r,
-    y: size * M.f2 * q + M.f3 * r
-    // x: size * (SQRT3 * q + (SQRT3 / 2) * r),
-    // y: size * ((3 / 2) * r)
+    x: size * (M.f0 * q + M.f1 * r),
+    y: size * (M.f2 * q + M.f3 * r)
   };
 }
 

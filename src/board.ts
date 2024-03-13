@@ -1,5 +1,5 @@
 import {
-  Bug,
+  BugId,
   Color,
   DirectionFn,
   GameBoard,
@@ -390,7 +390,7 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard {
 export function getNumTiles(
   board: GameBoard,
   color?: Color,
-  bug?: Bug
+  bug?: BugId
 ): number {
   let count = 0;
   eachStack(board, (_, stack) => {

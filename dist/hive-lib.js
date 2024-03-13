@@ -56,8 +56,44 @@
     }
   };
 
-  // src/hex.ts
+  // src/constants.ts
   var SQRT3 = Math.sqrt(3);
+  var M_PI = Math.PI;
+  var BASE_GAME = {
+    tileset: {
+      A: 3,
+      B: 2,
+      G: 3,
+      S: 2,
+      Q: 1
+    }
+  };
+  var POINTY_TOP = {
+    id: "pointy-top",
+    f0: SQRT3,
+    f1: SQRT3 / 2,
+    f2: 0,
+    f3: 3 / 2,
+    b0: SQRT3 / 3,
+    b1: -1 / 3,
+    b2: 0,
+    b3: 2 / 3,
+    startAngle: 30
+  };
+  var FLAT_TOP = {
+    id: "flat-top",
+    f0: 3 / 2,
+    f1: 0,
+    f2: SQRT3 / 2,
+    f3: SQRT3,
+    b0: 2 / 3,
+    b1: 0,
+    b2: -1 / 3,
+    b3: SQRT3 / 3,
+    startAngle: 0
+  };
+
+  // src/hex.ts
   function cartesianToHex(coordinate, size) {
     const x = (SQRT3 / 3 * coordinate.x - 1 / 3 * coordinate.y) / size;
     const y = 2 / 3 * coordinate.y / size;
@@ -91,16 +127,17 @@
   function hexHeight(hexSize) {
     return 2 * hexSize;
   }
-  function hexToCartesian(coordinate, size) {
+  function hexToCartesian(coordinate, size, orientation) {
     const { q, r } = coordinate;
+    const M = orientation;
     return {
-      x: size * (SQRT3 * q + SQRT3 / 2 * r),
-      y: size * (3 / 2 * r)
+      x: size * (M.f0 * q + M.f1 * r),
+      y: size * (M.f2 * q + M.f3 * r)
     };
   }
-  function hexToTransform(coordinate, size) {
-    const { x, y } = hexToCartesian(coordinate, size);
-    return `translate(${x} ${y})`;
+  function hexToTransform(coordinate, size, orientation) {
+    const { x, y } = hexToCartesian(coordinate, size, orientation);
+    return `translate(${x} ${y}) rotate(${orientation.startAngle})`;
   }
   function hexWidth(hexSize) {
     return SQRT3 * hexSize;
@@ -349,6 +386,13 @@
     const rs = board[q];
     return rs ? rs[r] ?? [] : [];
   }
+  function getStacks(board, sortForRender) {
+    const stacks = [];
+    eachStack(board, (coordinate, tiles) => stacks.push({ coordinate, tiles }));
+    if (sortForRender)
+      renderSort(stacks);
+    return stacks;
+  }
   function getStackHeight(board, coordinate) {
     return getStack(board, coordinate).length;
   }
@@ -420,6 +464,16 @@
       delete board[q];
     return tileId;
   }
+  function renderSort(stacks) {
+    return stacks.slice().sort((a, b) => {
+      const dr = b.coordinate.r - a.coordinate.r;
+      if (dr < 0)
+        return 1;
+      if (dr === 0)
+        return a.tiles.length - b.tiles.length;
+      return -1;
+    });
+  }
   function someNeighboringSpace(board, coordinate, iteratee) {
     return !eachNeighboringSpace(
       board,
@@ -448,16 +502,36 @@
     return path;
   }
 
-  // src/constants.ts
-  var BASE_GAME = {
-    tileset: {
-      A: 3,
-      B: 2,
-      G: 3,
-      S: 2,
-      Q: 1
+  // src/hand.ts
+  function stacksInHand(board, color, config) {
+    const hand = tilesInHand(board, color, config);
+    const groups = hand.reduce(
+      (groups2, tileId) => {
+        groups2[tileId] = groups2[tileId] ?? [];
+        groups2[tileId].push(tileId);
+        return groups2;
+      },
+      {}
+    );
+    return Object.values(groups);
+  }
+  function tilesInHand(board, color, config) {
+    const handTiles = [];
+    const countByTileId = {};
+    getTilesOnBoard(board).forEach((tileId) => {
+      countByTileId[tileId] = (countByTileId[tileId] || 0) + 1;
+    });
+    let bug;
+    for (bug in config.tileset) {
+      const tileId = tile(color, bug);
+      const numInGame = config.tileset[bug] || 0;
+      const numOnBoard = countByTileId[tileId] || 0;
+      const numInHand = Math.max(0, numInGame - numOnBoard);
+      const tilesInHand2 = Array.from({ length: numInHand }, () => tileId);
+      handTiles.push(...tilesInHand2);
     }
-  };
+    return handTiles;
+  }
 
   // src/ladybug.ts
   function isLadybug(tileId, color) {
@@ -546,5 +620,85 @@
   // src/pillbug.ts
   function isPillbug(tileId, color) {
     return getTileBug(tileId) === "P" && (color ? getTileColor(tileId) === color : true);
+  }
+
+  // src/svg.ts
+  function hexPath(size, rounding, precision) {
+    const corners = [];
+    for (let i = 0; i < 6; ++i) {
+      const angle = 2 * M_PI * i / 6;
+      corners.push({
+        x: size * Math.cos(angle),
+        y: size * Math.sin(angle)
+      });
+    }
+    if (rounding === 0) {
+      return [
+        moveTo(corners[5], precision),
+        ...corners.map((corner) => lineTo(corner, precision))
+      ].join(" ");
+    }
+    const edgePoints = generateEdgePoints(corners, rounding / 2);
+    const pathPoints = groupEdgePointsForPathRendering(edgePoints);
+    const commands = convertPathPointGroupsToCommands(pathPoints, precision);
+    return commands.join(" ");
+  }
+  function moveTo(point, precision) {
+    return `M${point.x.toFixed(precision)} ${point.y.toFixed(precision)}`;
+  }
+  function lineTo(point, precision) {
+    return `L${point.x.toFixed(precision)} ${point.y.toFixed(precision)}`;
+  }
+  function curveTo(control, point, precision) {
+    return `Q ${control.x.toFixed(precision)} ${control.y.toFixed(precision)}, ${point.x.toFixed(precision)} ${point.y.toFixed(precision)}`;
+  }
+  function toPaddedPair(pair, pad) {
+    const p0 = pair[0];
+    const p1 = pair[1];
+    const dx = p1.x - p0.x;
+    const dy = p1.y - p0.y;
+    const mag = Math.hypot(dx, dy);
+    return [
+      {
+        x: p0.x + pad * dx / mag,
+        y: p0.y + pad * dy / mag
+      },
+      {
+        x: p1.x - pad * dx / mag,
+        y: p1.y - pad * dy / mag
+      }
+    ];
+  }
+  function generateEdgePoints(corners, padding) {
+    const edgePoints = corners.map((corner, index) => {
+      const nextCorner = index === corners.length - 1 ? corners[0] : corners[index + 1];
+      return [corner, ...toPaddedPair([corner, nextCorner], padding)];
+    });
+    const first = edgePoints[0];
+    const last = edgePoints[edgePoints.length - 1];
+    return [last, ...edgePoints, first];
+  }
+  function groupEdgePointsForPathRendering(edgePoints) {
+    let cPrev = null;
+    const groups = [];
+    edgePoints.forEach(([a, b, c]) => {
+      if (cPrev) {
+        groups.push([cPrev, a, b]);
+      }
+      cPrev = c;
+    });
+    return groups;
+  }
+  function convertPathPointGroupsToCommands(groups, precision) {
+    let commands = [];
+    groups.forEach(([a, b, c], index) => {
+      if (index === 0) {
+        commands.push(moveTo(a, precision));
+      } else {
+        commands.push(lineTo(a, precision));
+      }
+      commands.push(curveTo(b, c, precision));
+    });
+    return commands;
   }
 })();

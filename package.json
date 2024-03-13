@@ -7,8 +7,9 @@
   "private": true,
   "scripts": {
     "test": "vitest run",
-    "dev": "vite serve dev",
-    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js"
+    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js",
+    "[Tool] Board Functions": "vite serve board-fns",
+    "[Tool] Hex Editor": "vite serve hex-editor"
   },
   "devDependencies": {
     "esbuild": "^0.20.1",

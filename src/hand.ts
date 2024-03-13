@@ -1,4 +1,4 @@
-import { Bug, Color, GameBoard, GameConfig, TileId } from './types';
+import { BugId, Color, GameBoard, GameConfig, TileId } from './types';
 import { getTilesOnBoard } from './board';
 import { tile } from './tile';
 
@@ -45,7 +45,7 @@ export function tilesInHand(
   getTilesOnBoard(board).forEach((tileId) => {
     countByTileId[tileId] = (countByTileId[tileId] || 0) + 1;
   });
-  let bug: Bug;
+  let bug: BugId;
   for (bug in config.tileset) {
     const tileId: TileId = tile(color, bug);
     const numInGame = config.tileset[bug] || 0;

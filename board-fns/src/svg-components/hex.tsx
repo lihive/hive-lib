@@ -1,7 +1,7 @@
 import { JSX, splitProps } from 'solid-js';
-import { hexHeight, hexWidth } from '@hive-lib/hex';
+import { hexHeight, hexWidth } from '@hive-lib';
 
-type HexProps = JSX.HTMLAttributes<SVGUseElement> & {
+type HexProps = JSX.UseSVGAttributes<SVGUseElement> & {
   size: number;
 };
 

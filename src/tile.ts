@@ -1,6 +1,6 @@
-import { Bug, Color, TileId } from './types';
+import { BugId, Color, TileId } from './types';
 
-export function tile(color: Color, tileId: Bug): TileId {
+export function tile(color: Color, tileId: BugId): TileId {
   return `${color}${tileId}`;
 }
 
@@ -10,8 +10,8 @@ export function tile(color: Color, tileId: Bug): TileId {
  * @param tileId The tile id.
  * @return The bug key portion of the tile id.
  */
-export function getTileBug(tileId: TileId): Bug {
-  return tileId[1] as Bug;
+export function getTileBug(tileId: TileId): BugId {
+  return tileId[1] as BugId;
 }
 
 /**
