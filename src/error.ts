@@ -6,6 +6,14 @@ export class CoordinatesNotAdjacentError extends Error {
   }
 }
 
+export class ExpectedTileAtCoordinateError extends Error {
+  constructor(coordinate: HexCoordinate) {
+    super(
+      `Expected there to be a tile located at (${coordinate.q}, ${coordinate.r})`
+    );
+  }
+}
+
 export class InvalidDirectionError extends Error {
   constructor(direction: number) {
     super(`${direction} is not a valid direction.`);

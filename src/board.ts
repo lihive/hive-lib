@@ -21,6 +21,7 @@ import {
   toHexDirection
 } from './hex';
 import { getTileBug, getTileColor } from './tile';
+import { produce } from 'immer';
 
 /**
  * Determine if all queens of the given color are on the board.
@@ -368,10 +369,10 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard {
       return;
     }
     if (isMovePlacement(move)) {
-      placeTile(board, move.tileId, move.to);
+      _placeTile(board, move.tileId, move.to);
     }
     if (isMoveMovement(move)) {
-      moveTile(board, move.from, move.to);
+      _moveTile(board, move.from, move.to);
     }
   });
   return board;
@@ -498,7 +499,7 @@ export function getTileAt(
   board: GameBoard,
   coordinate: HexCoordinate
 ): TileId | undefined {
-  return getStack(board, coordinate).pop();
+  return getStack(board, coordinate).at(-1);
 }
 
 /**
@@ -620,7 +621,25 @@ export function moveTile(
   from: HexCoordinate,
   to: HexCoordinate
 ) {
-  placeTile(board, popTile(board, from), to);
+  return produce(board, (draft) => {
+    _moveTile(draft, from, to);
+  });
+}
+
+/**
+ * Mutate a game board object by moving the tile at the tope of `from` to the
+ * top of `to`.
+ *
+ * @internal
+ * @param board A game board.
+ * @param from The hex coordinate of the tile to move.
+ * @param to The hex coordinate where the tile will be placed.
+ */
+function _moveTile(board: GameBoard, from: HexCoordinate, to: HexCoordinate) {
+  const tile = getTileAt(board, from);
+  if (!tile) throw new NoTileAtCoordinateError(from);
+  _popTile(board, from);
+  _placeTile(board, tile, to);
 }
 
 /**
@@ -629,8 +648,28 @@ export function moveTile(
  * @param board A game board.
  * @param tileId The tile to place at `coordinate`.
  * @param coordinate The location where `tileId` will be placed.
+ * @return A new game board with the tile added.
  */
 export function placeTile(
+  board: GameBoard,
+  tileId: TileId,
+  coordinate: HexCoordinate
+): GameBoard {
+  return produce(board, (draft) => {
+    _placeTile(draft, tileId, coordinate);
+  });
+}
+
+/**
+ * Mutate a game board object by placing a tile on top of the stack located at
+ * the given hex coordinate.
+ *
+ * @internal
+ * @param board A game board.
+ * @param tileId The tile to place at `coordinate`.
+ * @param coordinate The location where `tileId` will be placed.
+ */
+function _placeTile(
   board: GameBoard,
   tileId: TileId,
   coordinate: HexCoordinate
@@ -647,18 +686,34 @@ export function placeTile(
  *
  * @param board A game board.
  * @param coordinate The coordinate from which a tile will be popped.
- * @return The tile on top of the stack at the given coordinate.
+ * @return A new game board with the tile removed.
  * @throws {@link NoTileAtCoordinateError}
  * Thrown if there are no tiles at `coordinate`.
  */
-export function popTile(board: GameBoard, coordinate: HexCoordinate): TileId {
+export function popTile(
+  board: GameBoard,
+  coordinate: HexCoordinate
+): GameBoard {
+  return produce(board, (draft) => _popTile(draft, coordinate));
+}
+
+/**
+ * Mutate a game board object by removing the tile at the top of the stack at
+ * the given coordinate.
+ *
+ * @internal
+ * @param board A game board.
+ * @param coordinate The coordinate from which the tile will be popped.
+ * @throws {@link NoTileAtCoordinateError}
+ * Thrown if there are no tiles at `coordinate`.
+ */
+function _popTile(board: GameBoard, coordinate: HexCoordinate) {
   const { q, r } = coordinate;
   const stack = board[q]?.[r] || [];
   const tileId = stack.pop();
   if (!tileId) throw new NoTileAtCoordinateError(coordinate);
   if (stack.length === 0) delete board[q][r];
   if (Object.keys(board[q]).length === 0) delete board[q];
-  return tileId;
 }
 
 /**
