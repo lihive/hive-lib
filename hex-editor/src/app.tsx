@@ -3,7 +3,7 @@ import { TableProvider, useTable } from './table-provider';
 import { Table } from './table';
 import { TableSettings } from './table-settings';
 import { Grid } from './grid';
-import { RoundedHex } from './RoundedHex';
+import { RoundedHex } from './rounded-hex';
 import { HexCoordinate, hexToTransform } from '@hive-lib';
 
 export const App = () => {

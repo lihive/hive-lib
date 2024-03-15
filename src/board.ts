@@ -369,10 +369,10 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard {
       return;
     }
     if (isMovePlacement(move)) {
-      _placeTile(board, move.tileId, move.to);
+      placeTileMut(board, move.tileId, move.to);
     }
     if (isMoveMovement(move)) {
-      _moveTile(board, move.from, move.to);
+      moveTileMut(board, move.from, move.to);
     }
   });
   return board;
@@ -615,6 +615,7 @@ export function isSpaceOccupied(
  * @param board A game board.
  * @param from The hex coordinate of the tile to move.
  * @param to The hex coordinate where the tile will be placed.
+ * @return A new game board with the removed.
  */
 export function moveTile(
   board: GameBoard,
@@ -622,7 +623,7 @@ export function moveTile(
   to: HexCoordinate
 ) {
   return produce(board, (draft) => {
-    _moveTile(draft, from, to);
+    moveTileMut(draft, from, to);
   });
 }
 
@@ -635,11 +636,15 @@ export function moveTile(
  * @param from The hex coordinate of the tile to move.
  * @param to The hex coordinate where the tile will be placed.
  */
-function _moveTile(board: GameBoard, from: HexCoordinate, to: HexCoordinate) {
+export function moveTileMut(
+  board: GameBoard,
+  from: HexCoordinate,
+  to: HexCoordinate
+) {
   const tile = getTileAt(board, from);
   if (!tile) throw new NoTileAtCoordinateError(from);
-  _popTile(board, from);
-  _placeTile(board, tile, to);
+  popTileMut(board, from);
+  placeTileMut(board, tile, to);
 }
 
 /**
@@ -656,7 +661,7 @@ export function placeTile(
   coordinate: HexCoordinate
 ): GameBoard {
   return produce(board, (draft) => {
-    _placeTile(draft, tileId, coordinate);
+    placeTileMut(draft, tileId, coordinate);
   });
 }
 
@@ -669,7 +674,7 @@ export function placeTile(
  * @param tileId The tile to place at `coordinate`.
  * @param coordinate The location where `tileId` will be placed.
  */
-function _placeTile(
+export function placeTileMut(
   board: GameBoard,
   tileId: TileId,
   coordinate: HexCoordinate
@@ -694,7 +699,7 @@ export function popTile(
   board: GameBoard,
   coordinate: HexCoordinate
 ): GameBoard {
-  return produce(board, (draft) => _popTile(draft, coordinate));
+  return produce(board, (draft) => popTileMut(draft, coordinate));
 }
 
 /**
@@ -707,7 +712,7 @@ export function popTile(
  * @throws {@link NoTileAtCoordinateError}
  * Thrown if there are no tiles at `coordinate`.
  */
-function _popTile(board: GameBoard, coordinate: HexCoordinate) {
+export function popTileMut(board: GameBoard, coordinate: HexCoordinate) {
   const { q, r } = coordinate;
   const stack = board[q]?.[r] || [];
   const tileId = stack.pop();

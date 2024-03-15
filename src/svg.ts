@@ -16,16 +16,18 @@ export function hexPath(
   }
 
   if (rounding === 0) {
-    return [
-      moveTo(corners[5], precision),
-      ...corners.map((corner) => lineTo(corner, precision))
-    ].join(' ');
+    return (
+      [
+        moveTo(corners[5], precision),
+        ...corners.map((corner) => lineTo(corner, precision))
+      ].join(' ') + 'z'
+    );
   }
 
   const edgePoints = generateEdgePoints(corners, rounding / 2);
   const pathPoints = groupEdgePointsForPathRendering(edgePoints);
   const commands = convertPathPointGroupsToCommands(pathPoints, precision);
-  return commands.join(' ');
+  return commands.join(' ') + 'z';
 }
 
 function moveTo(point: CartesianCoordinate, precision: number): string {
@@ -96,13 +98,16 @@ function convertPathPointGroupsToCommands(
   precision: number
 ): string[] {
   let commands: string[] = [];
+  const lastIndex = groups.length - 1;
   groups.forEach(([a, b, c], index) => {
     if (index === 0) {
       commands.push(moveTo(a, precision));
     } else {
       commands.push(lineTo(a, precision));
     }
-    commands.push(curveTo(b, c, precision));
+    if (index !== lastIndex) {
+      commands.push(curveTo(b, c, precision));
+    }
   });
   return commands;
 }

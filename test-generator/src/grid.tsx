@@ -1,3 +1,4 @@
+import styles from './table.module.css';
 import { HexCoordinate, hexToTransform } from '@hive-lib';
 import { For } from 'solid-js';
 import { useTable } from './table-provider';
@@ -6,13 +7,16 @@ import { RoundedHex } from './rounded-hex';
 const grid: HexCoordinate[] = hexgrid(10);
 
 export const Grid = () => {
-  const [table] = useTable();
+  const [table, setTable] = useTable();
   return (
     <g>
       <For each={grid}>
         {(coord) => {
           return (
             <g
+              class={styles.clickable}
+              onMouseEnter={() => setTable('hoverCoordinate', coord)}
+              onClick={() => setTable('selectedCoordinate', coord)}
               transform={hexToTransform(
                 coord,
                 table.hexSize,
@@ -24,7 +28,7 @@ export const Grid = () => {
                 hexOrientation={table.hexOrientation}
                 hexPrecision={table.hexPrecision}
                 stroke='#eee'
-                fill='none'
+                fill='#fff'
               />
             </g>
           );

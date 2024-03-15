@@ -8,10 +8,11 @@
   "scripts": {
     "test": "vitest run",
     "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js",
-    "[Tool] Board Functions": "vite serve board-fns",
-    "[Tool] Hex Editor": "vite serve hex-editor"
+    "[Tool] Hex Editor": "vite serve hex-editor",
+    "[Tool] Test Generator": "vite serve test-generator"
   },
   "devDependencies": {
+    "@solid-primitives/keyboard": "^1.2.8",
     "esbuild": "^0.20.1",
     "prettier": "3.2.5",
     "solid-js": "^1.8.15",

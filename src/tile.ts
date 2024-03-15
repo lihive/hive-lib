@@ -1,7 +1,7 @@
 import { BugId, Color, TileId } from './types';
 
-export function tile(color: Color, tileId: BugId): TileId {
-  return `${color}${tileId}`;
+export function tile(color: Color, bugId: BugId): TileId {
+  return `${color}${bugId}`;
 }
 
 /**

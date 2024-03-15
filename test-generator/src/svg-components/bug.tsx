@@ -1,5 +1,5 @@
 import { BugId, Color, hexHeight, hexWidth } from '@hive-lib';
-import { useTable } from '../table';
+import { useTable } from '../table-provider';
 
 interface BugProps {
   bug: BugId;
@@ -7,7 +7,7 @@ interface BugProps {
 }
 
 export const Bug = (props: BugProps) => {
-  const table = useTable();
+  const [table] = useTable();
   const width = () => hexWidth(table.hexSize);
   const height = () => hexHeight(table.hexSize);
   const x = () => -width() / 2;
