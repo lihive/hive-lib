@@ -163,6 +163,212 @@
     return 1 + (number - 1) % 6;
   }
 
+  // src/tile.ts
+  function tile(color, bugId) {
+    return `${color}${bugId}`;
+  }
+  function getTileBug(tileId) {
+    return tileId[1];
+  }
+  function getTileColor(tileId) {
+    return tileId[0];
+  }
+  function isOwnTile(tileId, player) {
+    return getTileColor(tileId) === player;
+  }
+
+  // src/beetle.ts
+  function validBeetleMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    eachClimbDirection(board, coordinate, (neighbor) => {
+      valid.push(neighbor);
+    });
+    eachSlideDirection(board, coordinate, (neighbor) => {
+      valid.push(neighbor);
+    });
+    eachDropDirection(board, coordinate, (neighbor) => {
+      valid.push(neighbor);
+    });
+    return valid;
+  }
+
+  // src/grasshopper.ts
+  function validGrasshopperMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    eachDirection((direction) => {
+      const neighbor = relativeHexCoordinate(coordinate, direction);
+      let current2 = neighbor;
+      while (isSpaceOccupied(board, current2)) {
+        current2 = relativeHexCoordinate(current2, direction);
+      }
+      if (!hexesEqual(current2, neighbor)) {
+        valid.push(current2);
+      }
+    });
+    return valid;
+  }
+
+  // src/ladybug.ts
+  function validLadybugMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    const visited = /* @__PURE__ */ new Set();
+    const walk = (board2, path) => {
+      const current2 = path[path.length - 1];
+      if (path.length === 1) {
+        eachClimbDirection(board2, current2, (neighbor) => {
+          walk(moveTileProduce(board2, current2, neighbor), [...path, neighbor]);
+        });
+      }
+      if (path.length === 2) {
+        eachSlideDirection(board2, current2, (neighbor) => {
+          if (!includesHex(path, neighbor)) {
+            walk(moveTileProduce(board2, current2, neighbor), [...path, neighbor]);
+          }
+        });
+        eachClimbDirection(board2, current2, (neighbor) => {
+          if (!includesHex(path, neighbor)) {
+            walk(moveTileProduce(board2, current2, neighbor), [...path, neighbor]);
+          }
+        });
+        eachDropDirection(board2, current2, (neighbor, neighborStack) => {
+          if (neighborStack.length > 0 && !includesHex(path, neighbor)) {
+            walk(moveTileProduce(board2, current2, neighbor), [...path, neighbor]);
+          }
+        });
+      }
+      if (path.length === 3) {
+        eachDropDirection(board2, current2, (neighbor, neighborStack) => {
+          if (neighborStack.length === 0 && !includesHex(path, neighbor) && !visited.has(hexCoordinateKey(neighbor))) {
+            valid.push(neighbor);
+            visited.add(hexCoordinateKey(neighbor));
+          }
+        });
+      }
+    };
+    walk(board, [coordinate]);
+    return valid;
+  }
+
+  // src/queen.ts
+  function validQueenMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    eachSlideDirection(board, coordinate, (neighbor) => {
+      valid.push(neighbor);
+    });
+    return valid;
+  }
+
+  // src/spider.ts
+  function validSpiderMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    const visited = /* @__PURE__ */ new Set();
+    const walk = (board2, path) => {
+      const current2 = path[path.length - 1];
+      eachSlideDirection(board2, current2, (neighbor) => {
+        if (!includesHex(path, neighbor)) {
+          if (path.length === 3) {
+            const key = hexCoordinateKey(neighbor);
+            if (!visited.has(key)) {
+              visited.add(key);
+              valid.push(neighbor);
+            }
+          } else {
+            walk(moveTileProduce(board2, current2, neighbor), [...path, neighbor]);
+          }
+        }
+      });
+    };
+    walk(board, [coordinate]);
+    return valid;
+  }
+
+  // src/pillbug.ts
+  function validPillbugMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const valid = [];
+    eachSlideDirection(board, coordinate, (neighbor) => {
+      valid.push(neighbor);
+    });
+    return valid;
+  }
+  function validPillbugPushes(board, target, pillbug) {
+    if (moveBreaksHive(board, target))
+      return [];
+    const valid = [];
+    const pickupDirection = relativeHexDirection(target, pillbug);
+    if (getStackHeight(board, target) > 1 || isGated(board, target, pickupDirection))
+      return [];
+    board = moveTileProduce(board, target, pillbug);
+    eachDropDirection(board, pillbug, (neighbor) => {
+      if (!hexesEqual(target, neighbor)) {
+        valid.push(neighbor);
+      }
+    });
+    return valid;
+  }
+
+  // src/mosquito.ts
+  function validMosquitoMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
+    const isBeetle = getStackHeight(board, coordinate) > 1;
+    if (isBeetle)
+      return validBeetleMoves(board, coordinate);
+    const bugTypes = /* @__PURE__ */ new Set();
+    eachNeighboringStack(board, coordinate, (_, stack) => {
+      const topTile = getTileBug(stack[stack.length - 1]);
+      bugTypes.add(topTile);
+    });
+    const valid = [];
+    const visited = /* @__PURE__ */ new Set();
+    const addValidMoves = (coordinates) => {
+      coordinates.forEach((coordinate2) => {
+        const key = hexCoordinateKey(coordinate2);
+        if (!visited.has(key)) {
+          visited.add(key);
+          valid.push(coordinate2);
+        }
+      });
+    };
+    bugTypes.forEach((bug) => {
+      switch (bug) {
+        case "A":
+          addValidMoves(validAntMoves(board, coordinate));
+          break;
+        case "B":
+          addValidMoves(validBeetleMoves(board, coordinate));
+          break;
+        case "G":
+          addValidMoves(validGrasshopperMoves(board, coordinate));
+          break;
+        case "L":
+          addValidMoves(validLadybugMoves(board, coordinate));
+          break;
+        case "P":
+          addValidMoves(validPillbugMoves(board, coordinate));
+          break;
+        case "Q":
+          addValidMoves(validQueenMoves(board, coordinate));
+          break;
+        case "S":
+          addValidMoves(validSpiderMoves(board, coordinate));
+          break;
+      }
+    });
+    return valid;
+  }
+
   // src/move.ts
   function createMovePass() {
     return {
@@ -196,24 +402,69 @@
   function moveBreaksHive(board, coordinate) {
     if (getStackHeight(board, coordinate) > 1)
       return false;
-    const neighbor = getOccupiedNeighbors(board, coordinate)[0];
+    const neighbor = getOccupiedNeighbors(board, coordinate).at(0);
+    if (!neighbor)
+      return false;
     const walkedPath = walkBoard(board, neighbor, coordinate);
     const coordinates = getOccupiedCoordinates(board);
-    return walkedPath.length !== coordinates.length;
+    return walkedPath.length !== coordinates.length - 1;
   }
-
-  // src/tile.ts
-  function tile(color, tileId) {
-    return `${color}${tileId}`;
-  }
-  function getTileBug(tileId) {
-    return tileId[1];
-  }
-  function getTileColor(tileId) {
-    return tileId[0];
-  }
-  function isOwnTile(tileId, player) {
-    return getTileColor(tileId) === player;
+  function validMoves(board, color, coordinate) {
+    const tile2 = getTileAt(board, coordinate);
+    if (!tile2)
+      return [];
+    let valid = [];
+    if (getTileColor(tile2) === color) {
+      switch (getTileBug(tile2)) {
+        case "A":
+          valid = validAntMoves(board, coordinate);
+          break;
+        case "B":
+          valid = validBeetleMoves(board, coordinate);
+          break;
+        case "G":
+          valid = validGrasshopperMoves(board, coordinate);
+          break;
+        case "L":
+          valid = validLadybugMoves(board, coordinate);
+          break;
+        case "M":
+          valid = validMosquitoMoves(board, coordinate);
+          break;
+        case "P":
+          valid = validPillbugMoves(board, coordinate);
+          break;
+        case "Q":
+          valid = validQueenMoves(board, coordinate);
+          break;
+        case "S":
+          valid = validSpiderMoves(board, coordinate);
+          break;
+      }
+    }
+    const pillbugs = [];
+    eachNeighboringStack(board, coordinate, (neighbor, neighborStack) => {
+      const topTile = neighborStack[neighborStack.length - 1];
+      if (getTileBug(topTile) === "P" && getTileColor(topTile) === color) {
+        pillbugs.push(neighbor);
+      }
+    });
+    if (pillbugs.length) {
+      const visited = new Set(valid.map(hexCoordinateKey));
+      const addValidMoves = (coordinates) => {
+        coordinates.forEach((coordinate2) => {
+          const key = hexCoordinateKey(coordinate2);
+          if (!visited.has(key)) {
+            visited.add(key);
+            valid.push(coordinate2);
+          }
+        });
+      };
+      pillbugs.forEach((pillbug) => {
+        addValidMoves(validPillbugPushes(board, coordinate, pillbug));
+      });
+    }
+    return valid;
   }
 
   // node_modules/immer/dist/immer.mjs
@@ -905,6 +1156,9 @@
       );
     });
   }
+  function chainBoardChanges(...fns) {
+    return (board) => fns.reduce((brd, fn) => fn(brd), board);
+  }
   function eachClimbDirection(board, coordinate, iteratee) {
     const stackHeight = getStackHeight(board, coordinate);
     if (!stackHeight)
@@ -1018,10 +1272,10 @@
         return;
       }
       if (isMovePlacement(move)) {
-        _placeTile(board, move.tileId, move.to);
+        placeTileMutate(board, move.tileId, move.to);
       }
       if (isMoveMovement(move)) {
-        _moveTile(board, move.from, move.to);
+        moveTileMutate(board, move.from, move.to);
       }
     });
     return board;
@@ -1114,35 +1368,54 @@
   function isSpaceOccupied(board, coordinate) {
     return getStack(board, coordinate).length > 0;
   }
-  function moveTile(board, from, to) {
+  function moveTileProduce(board, from, to) {
     return produce(board, (draft) => {
-      _moveTile(draft, from, to);
+      moveTileMutate(draft, from, to);
     });
   }
-  function _moveTile(board, from, to) {
+  function moveTileMutate(board, from, to) {
     const tile2 = getTileAt(board, from);
     if (!tile2)
       throw new NoTileAtCoordinateError(from);
-    _popTile(board, from);
-    _placeTile(board, tile2, to);
+    return placeTileMutate(popTileMutate(board, from), tile2, to);
   }
-  function placeTile(board, tileId, coordinate) {
+  function moveTile(board, from, to) {
+    const clone = structuredClone(board);
+    return moveTileMutate(clone, from, to);
+  }
+  function placeTileProduce(board, tileId, coordinate) {
     return produce(board, (draft) => {
-      _placeTile(draft, tileId, coordinate);
+      placeTileMutate(draft, tileId, coordinate);
     });
   }
-  function _placeTile(board, tileId, coordinate) {
+  function placeTileMutate(board, tileId, coordinate) {
     const { q, r } = coordinate;
     if (!(q in board))
       board[q] = {};
     if (!(r in board[q]))
       board[q][r] = [];
     board[q][r].push(tileId);
+    return board;
   }
-  function popTile(board, coordinate) {
-    return produce(board, (draft) => _popTile(draft, coordinate));
+  function placeTile(boardOrTileId, tileIdOrCoordinate, coordinate) {
+    if (arguments.length === 2) {
+      return (board) => placeTile(
+        board,
+        boardOrTileId,
+        tileIdOrCoordinate
+      );
+    }
+    const clone = structuredClone(boardOrTileId);
+    return placeTileMutate(
+      clone,
+      tileIdOrCoordinate,
+      coordinate
+    );
   }
-  function _popTile(board, coordinate) {
+  function popTileProduce(board, coordinate) {
+    return produce(board, (draft) => popTileMutate(draft, coordinate));
+  }
+  function popTileMutate(board, coordinate) {
     const { q, r } = coordinate;
     const stack = board[q]?.[r] || [];
     const tileId = stack.pop();
@@ -1152,6 +1425,16 @@
       delete board[q][r];
     if (Object.keys(board[q]).length === 0)
       delete board[q];
+    return board;
+  }
+  function popTile(boardOrCoordinate, coordinate) {
+    if (arguments.length === 1) {
+      return (board) => {
+        return popTile(board, boardOrCoordinate);
+      };
+    }
+    const clone = structuredClone(boardOrCoordinate);
+    return popTileMutate(clone, coordinate);
   }
   function renderSort(stacks) {
     return stacks.slice().sort((a, b) => {
@@ -1193,11 +1476,12 @@
 
   // src/ant.ts
   function validAntMoves(board, coordinate) {
+    if (moveBreaksHive(board, coordinate))
+      return [];
     const valid = [];
     const visited = /* @__PURE__ */ new Set([hexCoordinateKey(coordinate)]);
     const walk = (board2, coordinate2) => {
       eachSlideDirection(board2, coordinate2, (neighbor) => {
-        console.log("slide dir", coordinate2);
         const key = hexCoordinateKey(neighbor);
         if (!visited.has(key)) {
           const tile2 = getTileAt(board2, coordinate2);
@@ -1205,7 +1489,7 @@
             throw new ExpectedTileAtCoordinateError(coordinate2);
           visited.add(key);
           valid.push(neighbor);
-          walk(moveTile(board2, coordinate2, neighbor), neighbor);
+          walk(moveTileProduce(board2, coordinate2, neighbor), neighbor);
         }
       });
     };
@@ -1332,12 +1616,12 @@
       return [
         moveTo(corners[5], precision),
         ...corners.map((corner) => lineTo(corner, precision))
-      ].join(" ");
+      ].join(" ") + "z";
     }
     const edgePoints = generateEdgePoints(corners, rounding / 2);
     const pathPoints = groupEdgePointsForPathRendering(edgePoints);
     const commands = convertPathPointGroupsToCommands(pathPoints, precision);
-    return commands.join(" ");
+    return commands.join(" ") + "z";
   }
   function moveTo(point, precision) {
     return `M${point.x.toFixed(precision)} ${point.y.toFixed(precision)}`;
@@ -1387,13 +1671,16 @@
   }
   function convertPathPointGroupsToCommands(groups, precision) {
     let commands = [];
+    const lastIndex = groups.length - 1;
     groups.forEach(([a, b, c], index) => {
       if (index === 0) {
         commands.push(moveTo(a, precision));
       } else {
         commands.push(lineTo(a, precision));
       }
-      commands.push(curveTo(b, c, precision));
+      if (index !== lastIndex) {
+        commands.push(curveTo(b, c, precision));
+      }
     });
     return commands;
   }
