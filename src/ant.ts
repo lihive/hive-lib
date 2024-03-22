@@ -1,7 +1,8 @@
 import { GameBoard, HexCoordinate } from './types';
 import { hexCoordinateKey } from './hex';
-import { eachSlideDirection, getTileAt, moveTile } from './board';
+import { eachSlideDirection, getTileAt, moveTileProduce } from './board';
 import { ExpectedTileAtCoordinateError } from './error';
+import { moveBreaksHive } from './move';
 
 /**
  * Get all coordinates that are valid moves for the tile at the given coordinate
@@ -16,6 +17,8 @@ export function validAntMoves(
   board: GameBoard,
   coordinate: HexCoordinate
 ): HexCoordinate[] {
+  if (moveBreaksHive(board, coordinate)) return [];
+
   const valid: HexCoordinate[] = [];
   const visited = new Set<string>([hexCoordinateKey(coordinate)]);
 
@@ -27,7 +30,7 @@ export function validAntMoves(
         if (!tile) throw new ExpectedTileAtCoordinateError(coordinate);
         visited.add(key);
         valid.push(neighbor);
-        walk(moveTile(board, coordinate, neighbor), neighbor);
+        walk(moveTileProduce(board, coordinate, neighbor), neighbor);
       }
     });
   };

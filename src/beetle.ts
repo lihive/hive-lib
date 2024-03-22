@@ -4,6 +4,7 @@ import {
   eachDropDirection,
   eachSlideDirection
 } from './board';
+import { moveBreaksHive } from './move';
 
 /**
  * Get all coordinates that are valid moves for the tile at the given coordinate
@@ -18,6 +19,8 @@ export function validBeetleMoves(
   board: GameBoard,
   coordinate: HexCoordinate
 ): HexCoordinate[] {
+  if (moveBreaksHive(board, coordinate)) return [];
+
   const valid: HexCoordinate[] = [];
   eachClimbDirection(board, coordinate, (neighbor) => {
     valid.push(neighbor);

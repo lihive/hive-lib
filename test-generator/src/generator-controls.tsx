@@ -1,11 +1,11 @@
 import styles from './generator-controls.module.css';
-import { useTable } from './table-provider';
+import { useBoard } from './board-provider';
 
 export const GeneratorControls = () => {
-  const [table] = useTable();
+  const { board } = useBoard();
   return (
     <div class={styles.generatorControls}>
-      <pre>{JSON.stringify(table.board, null, 2)}</pre>
+      <pre>{JSON.stringify(board(), null, 2)}</pre>
     </div>
   );
 };

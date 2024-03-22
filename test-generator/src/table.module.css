@@ -4,15 +4,15 @@
 }
 
 .hoverHex {
-  fill: var(--green-2);
-  opacity: 0.5;
+  fill: mediumseagreen;
+  opacity: 0.1;
   pointer-events: none;
 }
 
 .selectedHex {
-  stroke: var(--green-9);
-  stroke-width: 2;
-  fill: none;
+  fill: mediumseagreen;
+  opacity: 0.25;
+  pointer-events: none;
 }
 
 .clickable {

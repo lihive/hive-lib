@@ -1,18 +1,11 @@
 import {
-  BugId,
   FLAT_TOP,
-  GameBoard,
-  getTileAt,
-  getTileBug,
-  getTileColor,
   HexCoordinate,
   HexOrientation,
-  placeTileMut,
-  popTileMut,
-  tile
+  relativeHexCoordinate
 } from '@hive-lib';
 import { createContext, ParentProps, useContext } from 'solid-js';
-import { createStore, produce, SetStoreFunction, Store } from 'solid-js/store';
+import { createStore, SetStoreFunction, Store } from 'solid-js/store';
 import { createShortcut } from '@solid-primitives/keyboard';
 
 interface TableConfig {
@@ -25,8 +18,7 @@ interface TableConfig {
   tilePadding: number;
   tileRounding: number;
 
-  // board + interactivity
-  board: GameBoard;
+  // interactive coordinates
   hoverCoordinate: HexCoordinate | undefined;
   selectedCoordinate: HexCoordinate | undefined;
 }
@@ -41,72 +33,25 @@ export const TableProvider = (props: ParentProps) => {
     hexPrecision: 0,
     tilePadding: 4,
     tileRounding: 8,
-    board: {},
     hoverCoordinate: undefined,
     selectedCoordinate: undefined
   });
 
-  const removeSelectedTile = () => {
-    const coordinate = table.selectedCoordinate;
-    if (!coordinate) return;
+  const selectInDirection = (flat: number, pointy: number) => () => {
+    if (!table.selectedCoordinate) return;
     setTable(
-      produce((table) => {
-        popTileMut(table.board, coordinate);
-      })
+      'selectedCoordinate',
+      table.hexOrientation.id === 'flat-top'
+        ? relativeHexCoordinate(table.selectedCoordinate, flat)
+        : relativeHexCoordinate(table.selectedCoordinate, pointy)
     );
   };
 
-  const toggleSelectedTile = (bug: BugId) => {
-    const coordinate = table.selectedCoordinate;
-    if (!coordinate) return;
-    const currentTile = getTileAt(table.board, coordinate);
-
-    // place white tile if there isn't any tile
-    if (!currentTile) {
-      setTable(
-        produce((table) => {
-          placeTileMut(table.board, tile('w', bug), coordinate);
-        })
-      );
-      return;
-    }
-
-    const currentBug = getTileBug(currentTile);
-    const currentColor = getTileColor(currentTile);
-
-    // if a different bug is there, replace it
-    if (currentBug !== bug) {
-      setTable(
-        produce((table) => {
-          popTileMut(table.board, coordinate);
-          placeTileMut(table.board, tile('w', bug), coordinate);
-        })
-      );
-      return;
-    }
-
-    setTable(
-      produce((table) => {
-        popTileMut(table.board, coordinate);
-        placeTileMut(
-          table.board,
-          tile(currentColor === 'w' ? 'b' : 'w', bug),
-          coordinate
-        );
-      })
-    );
-  };
-
+  createShortcut(['ArrowUp'], selectInDirection(6, 1));
+  createShortcut(['ArrowDown'], selectInDirection(3, 4));
+  createShortcut(['ArrowLeft'], selectInDirection(4, 5));
+  createShortcut(['ArrowRight'], selectInDirection(1, 2));
   createShortcut(['escape'], () => setTable('selectedCoordinate', undefined));
-  createShortcut(['A'], () => toggleSelectedTile('A'));
-  createShortcut(['B'], () => toggleSelectedTile('B'));
-  createShortcut(['G'], () => toggleSelectedTile('G'));
-  createShortcut(['L'], () => toggleSelectedTile('L'));
-  createShortcut(['M'], () => toggleSelectedTile('M'));
-  createShortcut(['P'], () => toggleSelectedTile('P'));
-  createShortcut(['Q'], () => toggleSelectedTile('Q'));
-  createShortcut(['S'], () => toggleSelectedTile('S'));
-  createShortcut(['X'], () => removeSelectedTile());
 
   return (
     <TableContext.Provider value={[table, setTable]}>

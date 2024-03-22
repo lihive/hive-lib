@@ -1,7 +1,10 @@
 import styles from './table.module.css';
 import { createSignal, ParentProps } from 'solid-js';
+import { BugSymbols } from './bug-symbols';
+import { useTable } from './table-provider';
 
 export const Table = (props: ParentProps) => {
+  const [, setTable] = useTable();
   const [tableDimensions, setTableDimensions] = createSignal({
     width: 0,
     height: 0
@@ -20,10 +23,15 @@ export const Table = (props: ParentProps) => {
         height: contentRect.height
       });
     }).observe(svg);
+
+    svg.addEventListener('mouseout', () => {
+      setTable('hoverCoordinate', undefined);
+    });
   };
 
   return (
     <svg ref={ref} class={styles.table} viewBox={viewbox()}>
+      <BugSymbols />
       {props.children}
     </svg>
   );

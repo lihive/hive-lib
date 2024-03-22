@@ -3,6 +3,7 @@ import { HexCoordinate, hexToTransform } from '@hive-lib';
 import { For } from 'solid-js';
 import { useTable } from './table-provider';
 import { RoundedHex } from './rounded-hex';
+import { SVGGMouseEventHandler } from './types';
 
 const grid: HexCoordinate[] = hexgrid(10);
 
@@ -12,11 +13,19 @@ export const Grid = () => {
     <g>
       <For each={grid}>
         {(coord) => {
+          const onClickHex: SVGGMouseEventHandler = () => {
+            setTable('selectedCoordinate', { ...coord });
+          };
+
+          const onMouseEnterHex: SVGGMouseEventHandler = () => {
+            setTable('hoverCoordinate', { ...coord });
+          };
+
           return (
             <g
               class={styles.clickable}
-              onMouseEnter={() => setTable('hoverCoordinate', coord)}
-              onClick={() => setTable('selectedCoordinate', coord)}
+              onMouseEnter={onMouseEnterHex}
+              onClick={onClickHex}
               transform={hexToTransform(
                 coord,
                 table.hexSize,

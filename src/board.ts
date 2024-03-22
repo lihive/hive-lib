@@ -68,6 +68,12 @@ export function allQueensSurrounded(board: GameBoard, color: Color): boolean {
   });
 }
 
+export function chainBoardChanges(
+  ...fns: ((board: GameBoard) => GameBoard)[]
+): (board: GameBoard) => GameBoard {
+  return (board: GameBoard) => fns.reduce((brd, fn) => fn(brd), board);
+}
+
 /**
  * Iterate over all neighboring stacks onto which the tile at the given
  * coordinate could climb, calling iteratee for each. The following conditions
@@ -118,7 +124,7 @@ export function eachDirection(iteratee: DirectionFn): boolean {
 }
 
 /**
- * Iterate over all neighboring coordinate into which the tile at the given
+ * Iterate over all neighboring coordinates into which the tile at the given
  * coordinate could drop, calling iteratee for each. The following conditions
  * must be met for a tile to be able to drop into a neighboring coordinate (and
  * are checked by this iterator):
@@ -369,10 +375,10 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard {
       return;
     }
     if (isMovePlacement(move)) {
-      placeTileMut(board, move.tileId, move.to);
+      placeTileMutate(board, move.tileId, move.to);
     }
     if (isMoveMovement(move)) {
-      moveTileMut(board, move.from, move.to);
+      moveTileMutate(board, move.from, move.to);
     }
   });
   return board;
@@ -617,13 +623,13 @@ export function isSpaceOccupied(
  * @param to The hex coordinate where the tile will be placed.
  * @return A new game board with the removed.
  */
-export function moveTile(
+export function moveTileProduce(
   board: GameBoard,
   from: HexCoordinate,
   to: HexCoordinate
 ) {
   return produce(board, (draft) => {
-    moveTileMut(draft, from, to);
+    moveTileMutate(draft, from, to);
   });
 }
 
@@ -636,15 +642,23 @@ export function moveTile(
  * @param from The hex coordinate of the tile to move.
  * @param to The hex coordinate where the tile will be placed.
  */
-export function moveTileMut(
+export function moveTileMutate(
   board: GameBoard,
   from: HexCoordinate,
   to: HexCoordinate
-) {
+): GameBoard {
   const tile = getTileAt(board, from);
   if (!tile) throw new NoTileAtCoordinateError(from);
-  popTileMut(board, from);
-  placeTileMut(board, tile, to);
+  return placeTileMutate(popTileMutate(board, from), tile, to);
+}
+
+export function moveTile(
+  board: GameBoard,
+  from: HexCoordinate,
+  to: HexCoordinate
+): GameBoard {
+  const clone = structuredClone(board);
+  return moveTileMutate(clone, from, to);
 }
 
 /**
@@ -655,13 +669,13 @@ export function moveTileMut(
  * @param coordinate The location where `tileId` will be placed.
  * @return A new game board with the tile added.
  */
-export function placeTile(
+export function placeTileProduce(
   board: GameBoard,
   tileId: TileId,
   coordinate: HexCoordinate
 ): GameBoard {
   return produce(board, (draft) => {
-    placeTileMut(draft, tileId, coordinate);
+    placeTileMutate(draft, tileId, coordinate);
   });
 }
 
@@ -674,15 +688,49 @@ export function placeTile(
  * @param tileId The tile to place at `coordinate`.
  * @param coordinate The location where `tileId` will be placed.
  */
-export function placeTileMut(
+export function placeTileMutate(
   board: GameBoard,
   tileId: TileId,
   coordinate: HexCoordinate
-) {
+): GameBoard {
   const { q, r } = coordinate;
   if (!(q in board)) board[q] = {};
   if (!(r in board[q])) board[q][r] = [];
   board[q][r].push(tileId);
+  return board;
+}
+
+export function placeTile(
+  tileId: TileId,
+  coordinate: HexCoordinate
+): (board: GameBoard) => GameBoard;
+export function placeTile(
+  board: GameBoard,
+  tileId: TileId,
+  coordinate: HexCoordinate
+): GameBoard;
+export function placeTile(
+  boardOrTileId: GameBoard | TileId,
+  tileIdOrCoordinate: TileId | HexCoordinate,
+  coordinate?: HexCoordinate
+): GameBoard | ((board: GameBoard) => GameBoard) {
+  // return a function that will do the tile placement
+  if (arguments.length === 2) {
+    return (board: GameBoard) =>
+      placeTile(
+        board,
+        boardOrTileId as TileId,
+        tileIdOrCoordinate as HexCoordinate
+      );
+  }
+
+  // clone the board and do the tile placement
+  const clone = structuredClone(boardOrTileId as GameBoard);
+  return placeTileMutate(
+    clone,
+    tileIdOrCoordinate as TileId,
+    coordinate as HexCoordinate
+  );
 }
 
 /**
@@ -695,11 +743,11 @@ export function placeTileMut(
  * @throws {@link NoTileAtCoordinateError}
  * Thrown if there are no tiles at `coordinate`.
  */
-export function popTile(
+export function popTileProduce(
   board: GameBoard,
   coordinate: HexCoordinate
 ): GameBoard {
-  return produce(board, (draft) => popTileMut(draft, coordinate));
+  return produce(board, (draft) => popTileMutate(draft, coordinate));
 }
 
 /**
@@ -712,13 +760,47 @@ export function popTile(
  * @throws {@link NoTileAtCoordinateError}
  * Thrown if there are no tiles at `coordinate`.
  */
-export function popTileMut(board: GameBoard, coordinate: HexCoordinate) {
+export function popTileMutate(
+  board: GameBoard,
+  coordinate: HexCoordinate
+): GameBoard {
   const { q, r } = coordinate;
   const stack = board[q]?.[r] || [];
   const tileId = stack.pop();
   if (!tileId) throw new NoTileAtCoordinateError(coordinate);
   if (stack.length === 0) delete board[q][r];
   if (Object.keys(board[q]).length === 0) delete board[q];
+  return board;
+}
+
+export function popTile(board: GameBoard, coordinate: HexCoordinate): GameBoard;
+/**
+ * Docs for this one.
+ * @param coordinate
+ */
+export function popTile(
+  coordinate: HexCoordinate
+): (board: GameBoard) => GameBoard;
+
+/**
+ * Docs for when no params are typed yet.
+ * @param boardOrCoordinate
+ * @param coordinate
+ */
+export function popTile(
+  boardOrCoordinate: GameBoard | HexCoordinate,
+  coordinate?: HexCoordinate
+): GameBoard | ((board: GameBoard) => GameBoard) {
+  // return a function that will do the tile popping
+  if (arguments.length === 1) {
+    return (board: GameBoard) => {
+      return popTile(board, boardOrCoordinate as HexCoordinate);
+    };
+  }
+
+  // clone the board and pop the tile
+  const clone = structuredClone(boardOrCoordinate as GameBoard);
+  return popTileMutate(clone, coordinate as HexCoordinate);
 }
 
 /**
@@ -761,7 +843,7 @@ export function someNeighboringSpace(
 }
 
 /**
- * Visit every stack on the board, beginning at the provided starting coordiante
+ * Visit every stack on the board, beginning at the provided starting coordinate
  * and recursively visiting neighbors. Each stack will be visited exactly once
  * assuming that the hive is not broken. Including the `omit` coordinate will
  * cause the walk to treat that coordinate as if it were empty; this is useful

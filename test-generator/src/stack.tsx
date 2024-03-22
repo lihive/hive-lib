@@ -1,7 +1,15 @@
 import styles from './table.module.css';
-import { Color, getTileColor, HexStack, hexToTransform } from '@hive-lib';
+import {
+  Color,
+  getTileBug,
+  getTileColor,
+  HexStack,
+  hexToTransform
+} from '@hive-lib';
 import { RoundedHex } from './rounded-hex';
 import { useTable } from './table-provider';
+import { Bug } from './bug';
+import { SVGGMouseEventHandler } from './types';
 
 interface StackProps {
   stack: HexStack;
@@ -11,11 +19,15 @@ export const Stack = (props: StackProps) => {
   const [table, setTable] = useTable();
   const topTile = () => props.stack.tiles[props.stack.tiles.length - 1];
   const color = () => getTileColor(topTile());
+
+  const onClickStack: SVGGMouseEventHandler = () => {
+    setTable('selectedCoordinate', { ...props.stack.coordinate });
+  };
+
   return (
     <g
       class={styles.clickable}
-      onMouseEnter={() => setTable('hoverCoordinate', props.stack.coordinate)}
-      onClick={() => setTable('selectedCoordinate', props.stack.coordinate)}
+      onClick={onClickStack}
       transform={hexToTransform(
         props.stack.coordinate,
         table.hexSize,
@@ -31,13 +43,7 @@ export const Stack = (props: StackProps) => {
         hexPadding={table.tilePadding}
         hexRounding={table.tileRounding}
       />
-      <text
-        text-anchor='middle'
-        dominant-baseline='middle'
-        fill={stroke(color())}
-      >
-        {topTile()}
-      </text>
+      <Bug bug={getTileBug(topTile())} color={getTileColor(topTile())} />
     </g>
   );
 };

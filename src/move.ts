@@ -9,11 +9,23 @@ import {
   TilePlacement
 } from './types';
 import {
+  eachNeighboringStack,
   getOccupiedCoordinates,
   getOccupiedNeighbors,
   getStackHeight,
+  getTileAt,
   walkBoard
 } from './board';
+import { getTileBug, getTileColor } from './tile';
+import { hexCoordinateKey } from './hex';
+import { validAntMoves } from './ant';
+import { validBeetleMoves } from './beetle';
+import { validGrasshopperMoves } from './grasshopper';
+import { validLadybugMoves } from './ladybug';
+import { validMosquitoMoves } from './mosquito';
+import { validPillbugMoves, validPillbugPushes } from './pillbug';
+import { validQueenMoves } from './queen';
+import { validSpiderMoves } from './spider';
 
 /**
  * Create a passing move.
@@ -112,11 +124,82 @@ export function moveBreaksHive(
   // moving a tile on top of the hive cannot break the hive
   if (getStackHeight(board, coordinate) > 1) return false;
   // pick a random neighbor of the target coordinate
-  const neighbor = getOccupiedNeighbors(board, coordinate)[0];
+  const neighbor = getOccupiedNeighbors(board, coordinate).at(0);
+  // no neighbors means single stack on board
+  if (!neighbor) return false;
   // walk the board starting at `neighbor` as if `coordinate` were empty
   const walkedPath = walkBoard(board, neighbor, coordinate);
   // get all occupied coordinates
   const coordinates = getOccupiedCoordinates(board);
   // if the walked path did not touch every coordinate, move is invalid
-  return walkedPath.length !== coordinates.length;
+  return walkedPath.length !== coordinates.length - 1;
+}
+
+export function validMoves(
+  board: GameBoard,
+  color: Color,
+  coordinate: HexCoordinate
+): HexCoordinate[] {
+  const tile = getTileAt(board, coordinate);
+  if (!tile) return [];
+
+  let valid: HexCoordinate[] = [];
+
+  // Get tile's own movements
+  if (getTileColor(tile) === color) {
+    switch (getTileBug(tile)) {
+      case 'A':
+        valid = validAntMoves(board, coordinate);
+        break;
+      case 'B':
+        valid = validBeetleMoves(board, coordinate);
+        break;
+      case 'G':
+        valid = validGrasshopperMoves(board, coordinate);
+        break;
+      case 'L':
+        valid = validLadybugMoves(board, coordinate);
+        break;
+      case 'M':
+        valid = validMosquitoMoves(board, coordinate);
+        break;
+      case 'P':
+        valid = validPillbugMoves(board, coordinate);
+        break;
+      case 'Q':
+        valid = validQueenMoves(board, coordinate);
+        break;
+      case 'S':
+        valid = validSpiderMoves(board, coordinate);
+        break;
+    }
+  }
+
+  // Get movements resulting from own adjacent pillbugs
+  const pillbugs: HexCoordinate[] = [];
+  eachNeighboringStack(board, coordinate, (neighbor, neighborStack) => {
+    const topTile = neighborStack[neighborStack.length - 1];
+    if (getTileBug(topTile) === 'P' && getTileColor(topTile) === color) {
+      pillbugs.push(neighbor);
+    }
+  });
+
+  if (pillbugs.length) {
+    const visited = new Set<string>(valid.map(hexCoordinateKey));
+    const addValidMoves = (coordinates: HexCoordinate[]) => {
+      coordinates.forEach((coordinate) => {
+        const key = hexCoordinateKey(coordinate);
+        if (!visited.has(key)) {
+          visited.add(key);
+          valid.push(coordinate);
+        }
+      });
+    };
+
+    pillbugs.forEach((pillbug) => {
+      addValidMoves(validPillbugPushes(board, coordinate, pillbug));
+    });
+  }
+
+  return valid;
 }
