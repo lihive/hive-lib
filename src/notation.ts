@@ -1,5 +1,81 @@
-import { HexCoordinate, Move, TileId } from './types';
+import { GameBoard, HexCoordinate, Move, TileId } from './types';
 import { isMoveMovement, isMovePass, isMovePlacement } from './move';
+
+export function boardNotation(board: GameBoard): string {
+  const str = JSON.stringify(board);
+  if (str === '{}') return '<>';
+  let notation = '';
+  for (let c of str) {
+    switch (c) {
+      case '{':
+        notation += '>';
+        break;
+      case '}':
+        notation += '<';
+        break;
+      case '"':
+      case ',':
+      case ':':
+      case '[':
+      case ']':
+        break;
+      default:
+        notation += c;
+    }
+  }
+  notation = '<' + notation.slice(1, -2);
+  return notation;
+}
+
+export function parseBoardNotation(notation: string): GameBoard {
+  const iter = notation[Symbol.iterator]();
+  const board: GameBoard = {};
+  if (notation === '<>') return board;
+  let q: number | undefined = undefined;
+  let r: number | undefined = undefined;
+  let char = iter.next();
+
+  const readNumber = (advance = false) => {
+    if (advance) char = iter.next();
+    let acc = '';
+    while (!char.done && isNumberChar(char.value)) {
+      acc += char.value;
+      char = iter.next();
+    }
+    return +acc;
+  };
+
+  const readBug = () => {
+    let acc = char.value;
+    char = iter.next();
+    if (!char.done) {
+      acc += char.value;
+    }
+    char = iter.next();
+    return acc;
+  };
+
+  const isNumberChar = (char: string) => {
+    return /[-\d]/.test(char);
+  };
+
+  while (!char.done) {
+    if (char.value === '<') {
+      q = readNumber(true);
+      board[q] = {};
+    } else if (char.value === '>') {
+      r = readNumber(true);
+      board[q!][r] = [];
+    } else if (isNumberChar(char.value)) {
+      r = readNumber();
+      board[q!][r] = [];
+    } else {
+      board[q!][r!].push(readBug());
+    }
+  }
+
+  return board;
+}
 
 /**
  * Generate a game notation string from an array of {@link Move}s.
@@ -30,29 +106,6 @@ export function movementNotation(
   to: HexCoordinate
 ): string {
   return `(${from.q},${from.r})(${to.q},${to.r})`;
-}
-
-/**
- * Generate a passing move notation string.
- *
- * @return A passing move notation string.
- */
-export function passNotation(): string {
-  return 'x';
-}
-
-/**
- * Generate a tile placement notation string.
- *
- * @param tileId The tile being placed.
- * @param coordinate The placement location.
- * @return A tile placement notation string.
- */
-export function placementNotation(
-  tileId: TileId,
-  coordinate: HexCoordinate
-): string {
-  return `(${coordinate.q},${coordinate.r})[${tileId}]`;
 }
 
 /**
@@ -118,4 +171,27 @@ export function parseGameNotation(notation: string): Move[] {
     }
   }
   return moves;
+}
+
+/**
+ * Generate a passing move notation string.
+ *
+ * @return A passing move notation string.
+ */
+export function passNotation(): string {
+  return 'x';
+}
+
+/**
+ * Generate a tile placement notation string.
+ *
+ * @param tileId The tile being placed.
+ * @param coordinate The placement location.
+ * @return A tile placement notation string.
+ */
+export function placementNotation(
+  tileId: TileId,
+  coordinate: HexCoordinate
+): string {
+  return `(${coordinate.q},${coordinate.r})[${tileId}]`;
 }

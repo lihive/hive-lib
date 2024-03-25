@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@solid-primitives/keyboard": "^1.2.8",
+    "@solid-primitives/storage": "^3.0.0",
     "esbuild": "^0.20.1",
     "prettier": "3.2.5",
     "solid-js": "^1.8.15",

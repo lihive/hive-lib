@@ -2,6 +2,7 @@ import {
   FLAT_TOP,
   HexCoordinate,
   HexOrientation,
+  POINTY_TOP,
   relativeHexCoordinate
 } from '@hive-lib';
 import { createContext, ParentProps, useContext } from 'solid-js';
@@ -52,6 +53,12 @@ export const TableProvider = (props: ParentProps) => {
   createShortcut(['ArrowLeft'], selectInDirection(4, 5));
   createShortcut(['ArrowRight'], selectInDirection(1, 2));
   createShortcut(['escape'], () => setTable('selectedCoordinate', undefined));
+  createShortcut(['O'], () =>
+    setTable(
+      'hexOrientation',
+      table.hexOrientation.id === 'flat-top' ? POINTY_TOP : FLAT_TOP
+    )
+  );
 
   return (
     <TableContext.Provider value={[table, setTable]}>

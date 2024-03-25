@@ -8,22 +8,25 @@ import { SelectedHex } from './selected-hex';
 import { Stacks } from './stacks';
 import { ValidMoves } from './valid-moves';
 import { BoardProvider } from './board-provider';
+import { GeneratorProvider } from './generator-provider';
 
 export const App = () => {
   return (
     <TableProvider>
       <BoardProvider>
-        <div class={styles.app}>
-          <GeneratorControls />
-          <Table>
-            <Grid />
-            <Stacks />
-            <ValidMoves />
-            <SelectedHex />
-            <HoverHex />
-          </Table>
-          <g></g>
-        </div>
+        <GeneratorProvider>
+          <div class={styles.app}>
+            <GeneratorControls />
+            <Table>
+              <Grid />
+              <Stacks />
+              <ValidMoves />
+              <SelectedHex />
+              <HoverHex />
+            </Table>
+            <g></g>
+          </div>
+        </GeneratorProvider>
       </BoardProvider>
     </TableProvider>
   );

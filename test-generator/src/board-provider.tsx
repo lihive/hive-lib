@@ -1,7 +1,9 @@
 import {
   BugId,
   chainBoardChanges,
+  Color,
   GameBoard,
+  getStackHeight,
   getTileAt,
   getTileBug,
   getTileColor,
@@ -24,7 +26,9 @@ import { createShortcut } from '@solid-primitives/keyboard';
 
 interface GameBoardAPI {
   board: Accessor<GameBoard>;
+  playerColor: Accessor<Color>;
   validMoves: Accessor<HexCoordinate[]>;
+  validMovesVisible: Accessor<boolean>;
 }
 
 const BoardContext = createContext<GameBoardAPI>();
@@ -32,6 +36,7 @@ const BoardContext = createContext<GameBoardAPI>();
 export const BoardProvider = (props: ParentProps) => {
   const [table] = useTable();
   const [board, setBoard] = createSignal<GameBoard>({});
+  const [playerColor, setPlayerColor] = createSignal<Color>('w');
   const [validMovesVisible, setValidMovesVisible] = createSignal(true);
 
   const validPlayerMoves = createMemo(() => {
@@ -39,7 +44,7 @@ export const BoardProvider = (props: ParentProps) => {
     const tile = getTileAt(board(), table.selectedCoordinate);
     if (!tile) return [];
 
-    return validMoves(board(), 'w', table.selectedCoordinate);
+    return validMoves(board(), playerColor(), table.selectedCoordinate);
   });
 
   const removeSelectedTile = () => {
@@ -82,8 +87,44 @@ export const BoardProvider = (props: ParentProps) => {
     );
   };
 
+  const togglePlayerColor = () => {
+    setPlayerColor((curr) => (curr === 'w' ? 'b' : 'w'));
+  };
+
   const toggleValidMovesVisible = () => {
     setValidMovesVisible((curr) => !curr);
+  };
+
+  const increaseStackHeight = () => {
+    const coordinate = table.selectedCoordinate;
+    if (!coordinate) return;
+    const topTile = getTileAt(board(), coordinate);
+    if (!topTile) return;
+
+    setBoard(
+      chainBoardChanges(
+        popTile(coordinate),
+        placeTile(tile('w', 'A'), coordinate),
+        placeTile(topTile, coordinate)
+      )
+    );
+  };
+
+  const decreaseStackHeight = () => {
+    const coordinate = table.selectedCoordinate;
+    if (!coordinate) return;
+    const stackHeight = getStackHeight(board(), coordinate);
+    if (stackHeight <= 1) return;
+    const topTile = getTileAt(board(), coordinate);
+    if (!topTile) return;
+
+    setBoard(
+      chainBoardChanges(
+        popTile(coordinate),
+        popTile(coordinate),
+        placeTile(topTile, coordinate)
+      )
+    );
   };
 
   createShortcut(['A'], () => toggleSelectedTile('A'));
@@ -96,9 +137,19 @@ export const BoardProvider = (props: ParentProps) => {
   createShortcut(['S'], () => toggleSelectedTile('S'));
   createShortcut(['X'], () => removeSelectedTile());
   createShortcut(['tab'], toggleValidMovesVisible, { preventDefault: true });
+  createShortcut(['Shift', '+'], increaseStackHeight);
+  createShortcut(['-'], decreaseStackHeight);
+  createShortcut(['C'], togglePlayerColor);
 
   return (
-    <BoardContext.Provider value={{ board, validMoves: validPlayerMoves }}>
+    <BoardContext.Provider
+      value={{
+        board,
+        playerColor,
+        validMoves: validPlayerMoves,
+        validMovesVisible
+      }}
+    >
       {props.children}
     </BoardContext.Provider>
   );

@@ -34,7 +34,6 @@ export const Grid = () => {
             >
               <RoundedHex
                 hexSize={table.hexSize}
-                hexOrientation={table.hexOrientation}
                 hexPrecision={table.hexPrecision}
                 stroke='#eee'
                 fill='#fff'

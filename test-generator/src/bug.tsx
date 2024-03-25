@@ -1,19 +1,21 @@
 import { BugId, Color, hexHeight, hexWidth } from '@hive-lib';
 import { useTable } from './table-provider';
+import { JSX, splitProps } from 'solid-js';
 
-interface BugProps {
+type BugProps = JSX.GSVGAttributes<SVGGElement> & {
   bug: BugId;
   color: Color;
-}
+};
 
-export const Bug = (props: BugProps) => {
+export const Bug = (allProps: BugProps) => {
+  const [props, rest] = splitProps(allProps, ['bug', 'color']);
   const [table] = useTable();
   const width = () => hexWidth(table.hexSize - table.tilePadding);
   const height = () => hexHeight(table.hexSize - table.tilePadding);
   const x = () => -width() / 2;
   const y = () => -height() / 2;
   return (
-    <>
+    <g {...rest}>
       <use
         href={`#${props.bug}-base`}
         width={width()}
@@ -32,7 +34,7 @@ export const Bug = (props: BugProps) => {
         stroke='none'
         fill={getAccentColor(props.color)}
       />
-    </>
+    </g>
   );
 };
 

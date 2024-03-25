@@ -1,9 +1,8 @@
-import { HexOrientation, hexPath } from '@hive-lib';
+import { hexPath } from '@hive-lib';
 import { JSX, splitProps } from 'solid-js';
 
 type RoundedHexProps = JSX.PathSVGAttributes<SVGPathElement> & {
   hexSize: number;
-  hexOrientation: HexOrientation;
   hexPrecision: number;
   hexPadding?: number;
   hexRounding?: number;
@@ -12,7 +11,6 @@ type RoundedHexProps = JSX.PathSVGAttributes<SVGPathElement> & {
 export const RoundedHex = (props: RoundedHexProps) => {
   const [ownProps, rest] = splitProps(props, [
     'hexSize',
-    'hexOrientation',
     'hexPadding',
     'hexRounding',
     'hexPrecision'

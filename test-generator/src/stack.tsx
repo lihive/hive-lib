@@ -10,6 +10,7 @@ import { RoundedHex } from './rounded-hex';
 import { useTable } from './table-provider';
 import { Bug } from './bug';
 import { SVGGMouseEventHandler } from './types';
+import { For } from 'solid-js';
 
 interface StackProps {
   stack: HexStack;
@@ -34,16 +35,27 @@ export const Stack = (props: StackProps) => {
         table.hexOrientation
       )}
     >
-      <RoundedHex
-        fill={fill(color())}
-        stroke={stroke(color())}
-        hexSize={table.hexSize}
-        hexOrientation={table.hexOrientation}
-        hexPrecision={table.hexPrecision}
-        hexPadding={table.tilePadding}
-        hexRounding={table.tileRounding}
-      />
-      <Bug bug={getTileBug(topTile())} color={getTileColor(topTile())} />
+      <For each={props.stack.tiles}>
+        {(tile, index) => {
+          return (
+            <g transform={tileOffsetTransform(index())}>
+              <RoundedHex
+                fill={fill(color())}
+                stroke={stroke(color())}
+                hexSize={table.hexSize}
+                hexPrecision={table.hexPrecision}
+                hexPadding={table.tilePadding}
+                hexRounding={table.tileRounding}
+              />
+              <Bug
+                transform={`rotate(${-table.hexOrientation.startAngle})`}
+                bug={getTileBug(tile)}
+                color={getTileColor(tile)}
+              />
+            </g>
+          );
+        }}
+      </For>
     </g>
   );
 };
@@ -59,4 +71,8 @@ function stroke(color: Color, selected?: boolean): string {
   if (color === 'b') return '#aaa';
   if (color === 'w') return '#888';
   return 'none';
+}
+
+function tileOffsetTransform(index: number) {
+  return `translate(${3 * index} ${-2 * index})`;
 }
