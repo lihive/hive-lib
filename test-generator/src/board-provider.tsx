@@ -21,6 +21,7 @@ import {
   createMemo,
   createSignal,
   ParentProps,
+  Setter,
   useContext
 } from 'solid-js';
 import { useTable } from './table-provider';
@@ -35,6 +36,7 @@ interface GameBoardAPI {
 
   clearBoard: () => void;
   setBoardByNotation: (notation: string) => void;
+  setPlayerColor: Setter<Color>;
 }
 
 const BoardContext = createContext<GameBoardAPI>();
@@ -168,7 +170,8 @@ export const BoardProvider = (props: ParentProps) => {
         validMovesVisible,
 
         clearBoard,
-        setBoardByNotation
+        setBoardByNotation,
+        setPlayerColor
       }}
     >
       {props.children}

@@ -1,53 +1,76 @@
 import styles from './generator-controls.module.css';
 import { useBoard } from './board-provider';
-import { For, Show } from 'solid-js';
+import { createSignal, For, Match, Show, Switch } from 'solid-js';
 import { useTable } from './table-provider';
 import { RoundedHex } from './rounded-hex';
-import { hexToTransform } from '@hive-lib';
+import {
+  Color,
+  HexCoordinate,
+  hexesEqual,
+  hexToTransform,
+  parseHexCoordinateKey
+} from '@hive-lib';
 import { useGenerator } from './generator-provider';
 
 export const GeneratorControls = () => {
   const { validMovesVisible, clearBoard } = useBoard();
   const { cases, clearSuite } = useGenerator();
 
+  const [view, setView] = createSignal<'default' | 'save' | 'load'>('default');
+
   const boardKeys = () => Object.keys(cases);
-  const saveSuite = () => {
-    console.log(JSON.stringify(cases));
-  };
+
+  const loadSuite = () => {};
 
   return (
     <div class={styles.generatorControls}>
-      <Show when={validMovesVisible()}>
-        <div class={styles.section}>
-          <div class={styles.grid}>
-            <ActivePlayerRow />
+      <Switch>
+        <Match when={view() === 'save'}>
+          <div class={styles.sectionButtons}>
+            <div class={styles.textButton} onClick={() => setView('default')}>
+              Back
+            </div>
           </div>
-        </div>
-      </Show>
-      <div class={styles.section}>
-        <div class={styles.grid}>
-          <OrientationRow />
-        </div>
-      </div>
-      <div class={styles.sectionButtons}>
-        <div class={styles.textButton} onClick={clearBoard}>
-          Clear board
-        </div>
-        <div class={styles.textButton} onClick={clearSuite}>
-          Clear test suite
-        </div>
-        <div class={styles.textButton}>Load test suite</div>
-        <div class={styles.textButton} onClick={saveSuite}>
-          Save test suite
-        </div>
-      </div>
-      <div class={styles.sectionScrollable}>
-        <div class={styles.cases}>
-          <For each={boardKeys()}>
-            {(board) => <TestCaseRow board={board} />}
-          </For>
-        </div>
-      </div>
+          <div class={styles.sectionScrollable}>
+            <div class={styles.pre}>{JSON.stringify(cases)}</div>
+          </div>
+        </Match>
+        <Match when={view() === 'default'}>
+          <Show when={validMovesVisible()}>
+            <div class={styles.section}>
+              <div class={styles.grid}>
+                <ActivePlayerRow />
+              </div>
+            </div>
+          </Show>
+          <div class={styles.section}>
+            <div class={styles.grid}>
+              <OrientationRow />
+            </div>
+          </div>
+          <div class={styles.sectionButtons}>
+            <div class={styles.textButton} onClick={clearBoard}>
+              Clear board
+            </div>
+            <div class={styles.textButton} onClick={clearSuite}>
+              Clear test suite
+            </div>
+            <div class={styles.textButton} onClick={loadSuite}>
+              Load test suite
+            </div>
+            <div class={styles.textButton} onClick={() => setView('save')}>
+              Save test suite
+            </div>
+          </div>
+          <div class={styles.sectionScrollable}>
+            <div class={styles.cases}>
+              <For each={boardKeys()}>
+                {(board) => <TestCaseRow board={board} />}
+              </For>
+            </div>
+          </div>
+        </Match>
+      </Switch>
     </div>
   );
 };
@@ -93,10 +116,37 @@ const OrientationRow = () => {
   );
 };
 
+interface DetailData {
+  color: Color;
+  target: HexCoordinate;
+  valid: HexCoordinate[];
+}
+
 const TestCaseRow = (props: { board: string }) => {
-  const { deleteCase } = useGenerator();
-  const { boardNotation, setBoardByNotation } = useBoard();
+  const { cases, deleteCase } = useGenerator();
+  const { boardNotation, setBoardByNotation, setPlayerColor } = useBoard();
+  const [table, setTable] = useTable();
+
   const isActive = () => boardNotation() === props.board;
+
+  const details = (): DetailData[] => {
+    const detailData: DetailData[] = [];
+    const parse = (color: Color) => {
+      const data = cases[props.board][color];
+      if (!data) return;
+      Object.entries(data).forEach(([targetKey, validKeys]) => {
+        const target = parseHexCoordinateKey(targetKey);
+        const valid = validKeys.length
+          ? validKeys.split(',').map(parseHexCoordinateKey)
+          : [];
+        detailData.push({ color, target, valid });
+      });
+    };
+    parse('b');
+    parse('w');
+    return detailData;
+  };
+
   return (
     <div class={styles.caseRow}>
       <div
@@ -111,6 +161,31 @@ const TestCaseRow = (props: { board: string }) => {
       <div class={styles.textButton} onClick={() => deleteCase(props.board)}>
         x
       </div>
+      <Show when={isActive()}>
+        <div class={styles.caseDetails}>
+          <For each={details()}>
+            {(detail: DetailData) => {
+              const isDetailActive = () =>
+                hexesEqual(table.selectedCoordinate, detail.target);
+              return (
+                <div
+                  classList={{
+                    [styles.caseDetailRow]: true,
+                    [styles.boldText]: isDetailActive()
+                  }}
+                  onClick={() => {
+                    setPlayerColor(detail.color);
+                    setTable('selectedCoordinate', detail.target);
+                  }}
+                >
+                  {detail.color}({detail.target.q}, {detail.target.r}){' '}
+                  {detail.valid.length} valid moves
+                </div>
+              );
+            }}
+          </For>
+        </div>
+      </Show>
     </div>
   );
 };
