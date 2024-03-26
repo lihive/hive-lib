@@ -1,4 +1,5 @@
 import {
+  boardNotation,
   BugId,
   chainBoardChanges,
   Color,
@@ -8,6 +9,7 @@ import {
   getTileBug,
   getTileColor,
   HexCoordinate,
+  parseBoardNotation,
   placeTile,
   popTile,
   tile,
@@ -26,15 +28,19 @@ import { createShortcut } from '@solid-primitives/keyboard';
 
 interface GameBoardAPI {
   board: Accessor<GameBoard>;
+  boardNotation: Accessor<string>;
   playerColor: Accessor<Color>;
   validMoves: Accessor<HexCoordinate[]>;
   validMovesVisible: Accessor<boolean>;
+
+  clearBoard: () => void;
+  setBoardByNotation: (notation: string) => void;
 }
 
 const BoardContext = createContext<GameBoardAPI>();
 
 export const BoardProvider = (props: ParentProps) => {
-  const [table] = useTable();
+  const [table, setTable] = useTable();
   const [board, setBoard] = createSignal<GameBoard>({});
   const [playerColor, setPlayerColor] = createSignal<Color>('w');
   const [validMovesVisible, setValidMovesVisible] = createSignal(true);
@@ -127,6 +133,17 @@ export const BoardProvider = (props: ParentProps) => {
     );
   };
 
+  const clearBoard = () => {
+    setBoard({});
+    setTable('selectedCoordinate', undefined);
+  };
+
+  const getBoardNotation = () => boardNotation(board());
+
+  const setBoardByNotation = (notation: string) => {
+    setBoard(parseBoardNotation(notation));
+  };
+
   createShortcut(['A'], () => toggleSelectedTile('A'));
   createShortcut(['B'], () => toggleSelectedTile('B'));
   createShortcut(['G'], () => toggleSelectedTile('G'));
@@ -145,9 +162,13 @@ export const BoardProvider = (props: ParentProps) => {
     <BoardContext.Provider
       value={{
         board,
+        boardNotation: getBoardNotation,
         playerColor,
         validMoves: validPlayerMoves,
-        validMovesVisible
+        validMovesVisible,
+
+        clearBoard,
+        setBoardByNotation
       }}
     >
       {props.children}

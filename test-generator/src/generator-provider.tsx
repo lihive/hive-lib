@@ -1,30 +1,26 @@
 import { createContext, ParentProps, useContext } from 'solid-js';
 import { createShortcut } from '@solid-primitives/keyboard';
-import {
-  boardNotation,
-  Color,
-  HexCoordinate,
-  hexCoordinateKey
-} from '@hive-lib';
+import { boardNotation, hexCoordinateKey } from '@hive-lib';
 import { useTable } from './table-provider';
 import { useBoard } from './board-provider';
-import { createStore } from 'solid-js/store';
+import { createStore, reconcile } from 'solid-js/store';
 import { makePersisted } from '@solid-primitives/storage';
 
 type TestCaseSet = {
   // board notation
   [key: string]: {
     // player color
-    [key in Color]: {
+    [key: string]: {
       // hex coordinate
-      [key: string]: HexCoordinate[]; // valid moves
+      [key: string]: string; // valid moves
     };
   };
 };
 
 interface GeneratorAPI {
   cases: TestCaseSet;
-  deleteBoard: (board: string) => void;
+  clearSuite: () => void;
+  deleteCase: (board: string) => void;
 }
 
 const GeneratorContext = createContext<GeneratorAPI>();
@@ -35,7 +31,11 @@ export const GeneratorProvider = (props: ParentProps) => {
   const [table] = useTable();
   const { board, playerColor, validMoves } = useBoard();
 
-  const deleteBoard = (board: string) => {
+  const clearSuite = () => {
+    setCases(reconcile({}));
+  };
+
+  const deleteCase = (board: string) => {
     setCases(board, undefined!);
   };
 
@@ -49,7 +49,7 @@ export const GeneratorProvider = (props: ParentProps) => {
         notation,
         playerColor(),
         hexCoordinateKey(table.selectedCoordinate),
-        validMoves()
+        validMoves().map(hexCoordinateKey).join(',')
       );
     }
   };
@@ -57,7 +57,7 @@ export const GeneratorProvider = (props: ParentProps) => {
   createShortcut(['Meta', 'S'], saveCurrent, { preventDefault: true });
 
   return (
-    <GeneratorContext.Provider value={{ cases, deleteBoard }}>
+    <GeneratorContext.Provider value={{ cases, clearSuite, deleteCase }}>
       {props.children}
     </GeneratorContext.Provider>
   );

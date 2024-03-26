@@ -6,22 +6,22 @@ import {
   includesHex,
   relativeHexCoordinate,
   toHexDirection
-} from './hex';
-import { HexCoordinate } from './types';
-import { describe, test, expect } from 'vitest'
+} from '../src/hex';
+import { HexCoordinate } from '../src/types';
+import { describe, test, expect } from 'vitest';
 
 describe('hex properties', () => {
   describe('hexCoordinateKey', () => {
-    test('(0, 0)', () => expect(hexCoordinateKey({ q: 0, r: 0 })).toBe('00'));
-    test('(1, 2)', () => expect(hexCoordinateKey({ q: 1, r: 2 })).toBe('12'));
+    test('(0, 0)', () => expect(hexCoordinateKey({ q: 0, r: 0 })).toBe('0.0'));
+    test('(1, 2)', () => expect(hexCoordinateKey({ q: 1, r: 2 })).toBe('1.2'));
     test('(-1, -2)', () =>
-      expect(hexCoordinateKey({ q: -1, r: -2 })).toBe('-1-2'));
+      expect(hexCoordinateKey({ q: -1, r: -2 })).toBe('-1.-2'));
     test('(-10, 10)', () =>
-      expect(hexCoordinateKey({ q: -10, r: 10 })).toBe('-1010'));
+      expect(hexCoordinateKey({ q: -10, r: 10 })).toBe('-10.10'));
     test('(10, -10)', () =>
-      expect(hexCoordinateKey({ q: 10, r: -10 })).toBe('10-10'));
+      expect(hexCoordinateKey({ q: 10, r: -10 })).toBe('10.-10'));
     test('(-4, 58)', () =>
-      expect(hexCoordinateKey({ q: -4, r: 58 })).toBe('-458'));
+      expect(hexCoordinateKey({ q: -4, r: 58 })).toBe('-4.58'));
   });
   describe('hexesAreNeighbors', () => {
     const h0 = { q: 0, r: 0 };

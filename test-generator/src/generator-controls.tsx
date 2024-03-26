@@ -7,8 +7,13 @@ import { hexToTransform } from '@hive-lib';
 import { useGenerator } from './generator-provider';
 
 export const GeneratorControls = () => {
-  const { validMovesVisible } = useBoard();
-  const { cases, deleteBoard } = useGenerator();
+  const { validMovesVisible, clearBoard } = useBoard();
+  const { cases, clearSuite } = useGenerator();
+
+  const boardKeys = () => Object.keys(cases);
+  const saveSuite = () => {
+    console.log(JSON.stringify(cases));
+  };
 
   return (
     <div class={styles.generatorControls}>
@@ -24,11 +29,25 @@ export const GeneratorControls = () => {
           <OrientationRow />
         </div>
       </div>
-      <For each={Object.keys(cases)}>
-        {(board) => {
-          return <div onClick={() => deleteBoard(board)}>{board}</div>;
-        }}
-      </For>
+      <div class={styles.sectionButtons}>
+        <div class={styles.textButton} onClick={clearBoard}>
+          Clear board
+        </div>
+        <div class={styles.textButton} onClick={clearSuite}>
+          Clear test suite
+        </div>
+        <div class={styles.textButton}>Load test suite</div>
+        <div class={styles.textButton} onClick={saveSuite}>
+          Save test suite
+        </div>
+      </div>
+      <div class={styles.sectionScrollable}>
+        <div class={styles.cases}>
+          <For each={boardKeys()}>
+            {(board) => <TestCaseRow board={board} />}
+          </For>
+        </div>
+      </div>
     </div>
   );
 };
@@ -71,5 +90,27 @@ const OrientationRow = () => {
       </div>
       <kbd>O</kbd>
     </>
+  );
+};
+
+const TestCaseRow = (props: { board: string }) => {
+  const { deleteCase } = useGenerator();
+  const { boardNotation, setBoardByNotation } = useBoard();
+  const isActive = () => boardNotation() === props.board;
+  return (
+    <div class={styles.caseRow}>
+      <div
+        classList={{
+          [styles.caseLabel]: true,
+          [styles.boldText]: isActive()
+        }}
+        onClick={() => setBoardByNotation(props.board)}
+      >
+        {props.board}
+      </div>
+      <div class={styles.textButton} onClick={() => deleteCase(props.board)}>
+        x
+      </div>
+    </div>
   );
 };

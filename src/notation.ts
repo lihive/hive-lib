@@ -1,80 +1,49 @@
 import { GameBoard, HexCoordinate, Move, TileId } from './types';
 import { isMoveMovement, isMovePass, isMovePlacement } from './move';
 
+const OPEN_BRACKET = '.';
+const CLOSE_BRACKET = '~';
+
+/**
+ * Generate a board notation string from a {@link GameBoard}.
+ *
+ * @remarks
+ * A game board notation string is a simple compressed string representation of
+ * the result of passing the board into `JSON.stringify`. The opening and
+ * closing brackets are replaced with URL-safe characters and tiles are assumed
+ * to be white unless explicitly noted as black. Finally, extraneous characters
+ * are omitted and a simple change to the first and last characters of the string
+ * are made to simplify parsing. Note that board notation is not intended to be
+ * human-readable; rather, it's optimized for size and potential use in a URL.
+ *
+ * @param board A game board.
+ * @return A board notation string.
+ */
 export function boardNotation(board: GameBoard): string {
   const str = JSON.stringify(board);
-  if (str === '{}') return '<>';
+  if (str === '{}') return CLOSE_BRACKET + OPEN_BRACKET;
   let notation = '';
   for (let c of str) {
     switch (c) {
       case '{':
-        notation += '>';
+        notation += OPEN_BRACKET;
         break;
       case '}':
-        notation += '<';
+        notation += CLOSE_BRACKET;
         break;
       case '"':
       case ',':
       case ':':
       case '[':
       case ']':
+      case 'w':
         break;
       default:
         notation += c;
     }
   }
-  notation = '<' + notation.slice(1, -2);
+  notation = CLOSE_BRACKET + notation.slice(1, -2);
   return notation;
-}
-
-export function parseBoardNotation(notation: string): GameBoard {
-  const iter = notation[Symbol.iterator]();
-  const board: GameBoard = {};
-  if (notation === '<>') return board;
-  let q: number | undefined = undefined;
-  let r: number | undefined = undefined;
-  let char = iter.next();
-
-  const readNumber = (advance = false) => {
-    if (advance) char = iter.next();
-    let acc = '';
-    while (!char.done && isNumberChar(char.value)) {
-      acc += char.value;
-      char = iter.next();
-    }
-    return +acc;
-  };
-
-  const readBug = () => {
-    let acc = char.value;
-    char = iter.next();
-    if (!char.done) {
-      acc += char.value;
-    }
-    char = iter.next();
-    return acc;
-  };
-
-  const isNumberChar = (char: string) => {
-    return /[-\d]/.test(char);
-  };
-
-  while (!char.done) {
-    if (char.value === '<') {
-      q = readNumber(true);
-      board[q] = {};
-    } else if (char.value === '>') {
-      r = readNumber(true);
-      board[q!][r] = [];
-    } else if (isNumberChar(char.value)) {
-      r = readNumber();
-      board[q!][r] = [];
-    } else {
-      board[q!][r!].push(readBug());
-    }
-  }
-
-  return board;
 }
 
 /**
@@ -106,6 +75,56 @@ export function movementNotation(
   to: HexCoordinate
 ): string {
   return `(${from.q},${from.r})(${to.q},${to.r})`;
+}
+
+export function parseBoardNotation(notation: string): GameBoard {
+  const iter = notation[Symbol.iterator]();
+  const board: GameBoard = {};
+  if (notation === CLOSE_BRACKET + OPEN_BRACKET) return board;
+  let q: number | undefined = undefined;
+  let r: number | undefined = undefined;
+  let char = iter.next();
+
+  const readNumber = (advance = false) => {
+    if (advance) char = iter.next();
+    let acc = '';
+    while (!char.done && isNumberChar(char.value)) {
+      acc += char.value;
+      char = iter.next();
+    }
+    return +acc;
+  };
+
+  const readBug = () => {
+    let acc = char.value;
+    char = iter.next();
+    if (!char.done && acc === 'b') {
+      acc += char.value;
+      char = iter.next();
+    }
+    return acc.length === 1 ? 'w' + acc : acc;
+  };
+
+  const isNumberChar = (char: string) => {
+    return /[-\d]/.test(char);
+  };
+
+  while (!char.done) {
+    if (char.value === CLOSE_BRACKET) {
+      q = readNumber(true);
+      board[q] = {};
+    } else if (char.value === OPEN_BRACKET) {
+      r = readNumber(true);
+      board[q!][r] = [];
+    } else if (isNumberChar(char.value)) {
+      r = readNumber();
+      board[q!][r] = [];
+    } else {
+      board[q!][r!].push(readBug());
+    }
+  }
+
+  return board;
 }
 
 /**

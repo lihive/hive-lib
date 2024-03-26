@@ -42,7 +42,7 @@ export function cartesianToHex(
  * @return A string unique to the coordinate.
  */
 export function hexCoordinateKey(coordinate: HexCoordinate): string {
-  return `${coordinate.q}${coordinate.r}`;
+  return `${coordinate.q}.${coordinate.r}`;
 }
 
 /**
@@ -145,6 +145,20 @@ export function includesHex(
   hex: HexCoordinate
 ): boolean {
   return hexes.findIndex((curr) => hexesEqual(hex, curr)) !== -1;
+}
+
+/**
+ * Convert a hex coordinate into a hex coordinate.
+ *
+ * @param coordinateKey A hex coordinate key.
+ * @return A hex coordinate.
+ */
+export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate {
+  const values = coordinateKey.split('.');
+  return {
+    q: +values[0],
+    r: +values[1]
+  };
 }
 
 /**

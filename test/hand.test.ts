@@ -1,7 +1,7 @@
-import { GameConfig } from './types';
+import { GameConfig } from '../src/types';
 import { describe, expect, test } from 'vitest';
-import { stacksInHand, tilesInHand } from './hand';
-import { createBaseGameConfig } from './game';
+import { stacksInHand, tilesInHand } from '../src/hand';
+import { createBaseGameConfig } from '../src/game';
 
 describe('player hands', () => {
   describe('getStacksInHand', () => {

@@ -1,7 +1,7 @@
 .generatorControls {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #777;
+  border-right: 1px solid #ccc;
   font-family: var(--monospace);
   font-size: 13px;
 }
@@ -9,7 +9,25 @@
 .section {
   display: flex;
   flex-direction: column;
+  min-height: 0;
   padding: 6px 4px;
+}
+
+.sectionScrollable {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 4px;
+  overflow: auto;
+}
+
+.sectionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 .grid {
@@ -42,6 +60,55 @@
   padding: 1px 3px;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+.cases {
+  flex-shrink: 0;
+  padding: 4px;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr auto;
+  column-gap: 4px;
+}
+
+.caseRow {
+  display: contents;
+  cursor: pointer;
+}
+
+.boldText {
+  font-weight: bold;
+}
+
+.caseLabel {
+  /*min-height: 12px;*/
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 4px;
+  &:hover {
+    background: #efefef;
+  }
+}
+
+.textButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  line-height: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #777;
+    box-shadow: 1px 1px 1px #777;
+  }
+  &:active {
+    border: 1px solid #777;
+    box-shadow: none;
+  }
 }
 
 pre {
