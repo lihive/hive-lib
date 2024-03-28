@@ -1,0 +1,53 @@
+.modalContainer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.shortcutsModal {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: #fafafa;
+  max-height: 75vh;
+  max-width: 70vw;
+  box-shadow: 1px 1px 3px #bababa;
+}
+
+.header {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 1.6rem 2rem 0.8rem 2rem;
+}
+
+.shortcutsGrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 0 2rem 1.6rem 2rem;
+  overflow: auto;
+  user-select: none;
+}
+
+.row {
+  display: contents;
+  &:hover .cell {
+    background: #bababa;
+  }
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  &:first-child {
+    padding-right: 12px;
+  }
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}

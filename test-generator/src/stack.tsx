@@ -20,10 +20,8 @@ interface StackProps {
 }
 
 export const Stack = (props: StackProps) => {
-  const { table, setSelectedCoordinate } = useTable();
+  const { table, setHoverCoordinate, setSelectedCoordinate } = useTable();
   const { board, setPlayerColor } = useBoard();
-  const topTile = () => props.stack.tiles[props.stack.tiles.length - 1];
-  const color = () => getTileColor(topTile());
 
   const onClickStack: SVGGMouseEventHandler = () => {
     if (hexesEqual(table.selectedCoordinate, props.stack.coordinate)) {
@@ -36,10 +34,15 @@ export const Stack = (props: StackProps) => {
     }
   };
 
+  const onHoverStack = () => {
+    setHoverCoordinate(props.stack.coordinate);
+  };
+
   return (
     <g
       class={styles.clickable}
       onClick={onClickStack}
+      onMouseOver={onHoverStack}
       transform={hexToTransform(
         props.stack.coordinate,
         table.hexSize,
@@ -51,8 +54,8 @@ export const Stack = (props: StackProps) => {
           return (
             <g transform={tileOffsetTransform(index())}>
               <RoundedHex
-                fill={fill(color())}
-                stroke={stroke(color())}
+                fill={fill(getTileColor(tile))}
+                stroke={stroke(getTileColor(tile))}
                 hexSize={table.hexSize}
                 hexPrecision={table.hexPrecision}
                 hexPadding={table.tilePadding}

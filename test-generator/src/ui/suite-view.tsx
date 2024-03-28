@@ -21,6 +21,8 @@ export const SuiteView = (props: SuiteViewProps) => {
   return (
     <>
       <div class={styles.info}>
+        <div>Keyboard shortcuts</div>
+        <kbd>?</kbd>
         <GridRowActivePlayer />
         <GridRowOrientation />
       </div>

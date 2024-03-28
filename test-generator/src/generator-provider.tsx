@@ -42,8 +42,6 @@ export const GeneratorProvider = (props: ParentProps) => {
   };
 
   const deleteTarget = (board: string, color: string, target: string) => {
-    console.log('delete', board, color, target);
-
     setCases(board, color, target, undefined!);
     const black = Object.keys(cases[board]['b'] || {});
     const white = Object.keys(cases[board]['w'] || {});

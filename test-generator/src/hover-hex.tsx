@@ -1,15 +1,18 @@
 import styles from './table.module.css';
 import { useTable } from './table-provider';
-import { hexToTransform } from '@hive-lib';
+import { getStackHeight, hexToTransform } from '@hive-lib';
 import { Show } from 'solid-js';
 import { RoundedHex } from '../../hex-editor/src/rounded-hex';
+import { useBoard } from './board-provider';
 
 export const HoverHex = () => {
   const { table } = useTable();
+  const { board } = useBoard();
 
   return (
     <Show when={table.hoverCoordinate}>
       {(coordinate) => {
+        const stackHeight = () => getStackHeight(board(), coordinate());
         return (
           <g
             transform={hexToTransform(
@@ -23,8 +26,8 @@ export const HoverHex = () => {
               hexSize={table.hexSize}
               hexOrientation={table.hexOrientation}
               hexPrecision={table.hexPrecision}
-              hexPadding={0}
-              hexRounding={0}
+              hexPadding={() => (stackHeight() === 0 ? 0 : table.tilePadding)}
+              hexRounding={() => (stackHeight() === 0 ? 0 : table.tileRounding)}
             />
           </g>
         );
