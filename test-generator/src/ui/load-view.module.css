@@ -1,0 +1,17 @@
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  border-bottom: 1px solid #ccc;
+}
+
+.input {
+  flex: 1;
+  height: 100%;
+  outline: none;
+  resize: none;
+  padding: 8px 6px;
+  overflow-wrap: break-word;
+  border: none;
+}

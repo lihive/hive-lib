@@ -28,6 +28,22 @@ body {
   font-family: var(--sans-serif);
 }
 
+kbd {
+  display: inline-block;
+  border-radius: 3px;
+  padding: 0 4px;
+  box-shadow: 1px 1px 1px #777;
+  margin: 2px;
+  font-size: small;
+  vertical-align: text-bottom;
+  background: #eee;
+  color: #555;
+  font-variant: small-caps;
+  font-weight: 600;
+  letter-spacing: 1px;
+  user-select: none;
+}
+
 .app {
   width: 100vw;
   height: 100vh;

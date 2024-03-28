@@ -8,17 +8,17 @@ import { SVGGMouseEventHandler } from './types';
 const grid: HexCoordinate[] = hexgrid(10);
 
 export const Grid = () => {
-  const [table, setTable] = useTable();
+  const { table, setSelectedCoordinate, setHoverCoordinate } = useTable();
   return (
     <g>
       <For each={grid}>
         {(coord) => {
           const onClickHex: SVGGMouseEventHandler = () => {
-            setTable('selectedCoordinate', { ...coord });
+            setSelectedCoordinate({ ...coord });
           };
 
           const onMouseEnterHex: SVGGMouseEventHandler = () => {
-            setTable('hoverCoordinate', { ...coord });
+            setHoverCoordinate({ ...coord });
           };
 
           return (

@@ -1,8 +1,10 @@
 import styles from './table.module.css';
 import {
   Color,
+  getTileAt,
   getTileBug,
   getTileColor,
+  hexesEqual,
   HexStack,
   hexToTransform
 } from '@hive-lib';
@@ -11,18 +13,27 @@ import { useTable } from './table-provider';
 import { Bug } from './bug';
 import { SVGGMouseEventHandler } from './types';
 import { For } from 'solid-js';
+import { useBoard } from './board-provider';
 
 interface StackProps {
   stack: HexStack;
 }
 
 export const Stack = (props: StackProps) => {
-  const [table, setTable] = useTable();
+  const { table, setSelectedCoordinate } = useTable();
+  const { board, setPlayerColor } = useBoard();
   const topTile = () => props.stack.tiles[props.stack.tiles.length - 1];
   const color = () => getTileColor(topTile());
 
   const onClickStack: SVGGMouseEventHandler = () => {
-    setTable('selectedCoordinate', { ...props.stack.coordinate });
+    if (hexesEqual(table.selectedCoordinate, props.stack.coordinate)) {
+      const tile = getTileAt(board(), props.stack.coordinate);
+      if (tile) {
+        setPlayerColor(getTileColor(tile));
+      }
+    } else {
+      setSelectedCoordinate({ ...props.stack.coordinate });
+    }
   };
 
   return (

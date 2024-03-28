@@ -32,7 +32,6 @@ interface GameBoardAPI {
   boardNotation: Accessor<string>;
   playerColor: Accessor<Color>;
   validMoves: Accessor<HexCoordinate[]>;
-  validMovesVisible: Accessor<boolean>;
 
   clearBoard: () => void;
   setBoardByNotation: (notation: string) => void;
@@ -42,23 +41,22 @@ interface GameBoardAPI {
 const BoardContext = createContext<GameBoardAPI>();
 
 export const BoardProvider = (props: ParentProps) => {
-  const [table, setTable] = useTable();
+  const { table, setSelectedCoordinate } = useTable();
   const [board, setBoard] = createSignal<GameBoard>({});
   const [playerColor, setPlayerColor] = createSignal<Color>('w');
-  const [validMovesVisible, setValidMovesVisible] = createSignal(true);
 
   const validPlayerMoves = createMemo(() => {
-    if (!validMovesVisible() || !table.selectedCoordinate) return [];
+    if (!table.selectedCoordinate) return [];
     const tile = getTileAt(board(), table.selectedCoordinate);
     if (!tile) return [];
 
     return validMoves(board(), playerColor(), table.selectedCoordinate);
   });
 
-  const removeSelectedTile = () => {
+  const pushSelectedTile = (bug: BugId) => {
     const coordinate = table.selectedCoordinate;
-    if (!coordinate || !getTileAt(board(), coordinate)) return;
-    setBoard(popTile(coordinate));
+    if (!coordinate) return;
+    setBoard(placeTile(tile(playerColor(), bug), coordinate));
   };
 
   const toggleSelectedTile = (bug: BugId) => {
@@ -99,45 +97,18 @@ export const BoardProvider = (props: ParentProps) => {
     setPlayerColor((curr) => (curr === 'w' ? 'b' : 'w'));
   };
 
-  const toggleValidMovesVisible = () => {
-    setValidMovesVisible((curr) => !curr);
-  };
-
-  const increaseStackHeight = () => {
-    const coordinate = table.selectedCoordinate;
-    if (!coordinate) return;
-    const topTile = getTileAt(board(), coordinate);
-    if (!topTile) return;
-
-    setBoard(
-      chainBoardChanges(
-        popTile(coordinate),
-        placeTile(tile('w', 'A'), coordinate),
-        placeTile(topTile, coordinate)
-      )
-    );
-  };
-
-  const decreaseStackHeight = () => {
+  const removeTopTile = () => {
     const coordinate = table.selectedCoordinate;
     if (!coordinate) return;
     const stackHeight = getStackHeight(board(), coordinate);
-    if (stackHeight <= 1) return;
-    const topTile = getTileAt(board(), coordinate);
-    if (!topTile) return;
+    if (stackHeight === 0) return;
 
-    setBoard(
-      chainBoardChanges(
-        popTile(coordinate),
-        popTile(coordinate),
-        placeTile(topTile, coordinate)
-      )
-    );
+    setBoard(popTile(coordinate));
   };
 
   const clearBoard = () => {
     setBoard({});
-    setTable('selectedCoordinate', undefined);
+    setSelectedCoordinate(undefined);
   };
 
   const getBoardNotation = () => boardNotation(board());
@@ -146,18 +117,12 @@ export const BoardProvider = (props: ParentProps) => {
     setBoard(parseBoardNotation(notation));
   };
 
-  createShortcut(['A'], () => toggleSelectedTile('A'));
-  createShortcut(['B'], () => toggleSelectedTile('B'));
-  createShortcut(['G'], () => toggleSelectedTile('G'));
-  createShortcut(['L'], () => toggleSelectedTile('L'));
-  createShortcut(['M'], () => toggleSelectedTile('M'));
-  createShortcut(['P'], () => toggleSelectedTile('P'));
-  createShortcut(['Q'], () => toggleSelectedTile('Q'));
-  createShortcut(['S'], () => toggleSelectedTile('S'));
-  createShortcut(['X'], () => removeSelectedTile());
-  createShortcut(['tab'], toggleValidMovesVisible, { preventDefault: true });
-  createShortcut(['Shift', '+'], increaseStackHeight);
-  createShortcut(['-'], decreaseStackHeight);
+  const placeableBugs: BugId[] = ['A', 'B', 'G', 'L', 'M', 'P', 'Q', 'S', 'X'];
+  placeableBugs.forEach((bug) => {
+    createShortcut([bug], () => toggleSelectedTile(bug));
+    createShortcut(['Shift', bug], () => pushSelectedTile(bug));
+  });
+  createShortcut(['-'], removeTopTile);
   createShortcut(['C'], togglePlayerColor);
 
   return (
@@ -167,7 +132,6 @@ export const BoardProvider = (props: ParentProps) => {
         boardNotation: getBoardNotation,
         playerColor,
         validMoves: validPlayerMoves,
-        validMovesVisible,
 
         clearBoard,
         setBoardByNotation,

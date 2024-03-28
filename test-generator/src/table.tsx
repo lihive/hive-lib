@@ -4,7 +4,7 @@ import { BugSymbols } from './bug-symbols';
 import { useTable } from './table-provider';
 
 export const Table = (props: ParentProps) => {
-  const [, setTable] = useTable();
+  const { setHoverCoordinate } = useTable();
   const [tableDimensions, setTableDimensions] = createSignal({
     width: 0,
     height: 0
@@ -25,7 +25,7 @@ export const Table = (props: ParentProps) => {
     }).observe(svg);
 
     svg.addEventListener('mouseout', () => {
-      setTable('hoverCoordinate', undefined);
+      setHoverCoordinate(undefined);
     });
   };
 

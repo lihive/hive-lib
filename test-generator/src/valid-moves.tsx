@@ -4,7 +4,7 @@ import { hexToTransform } from '@hive-lib';
 import { useBoard } from './board-provider';
 
 export const ValidMoves = () => {
-  const [table] = useTable();
+  const { table } = useTable();
   const { validMoves } = useBoard();
 
   return (

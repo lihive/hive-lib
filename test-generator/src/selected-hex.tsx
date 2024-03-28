@@ -5,7 +5,7 @@ import { Show } from 'solid-js';
 import { RoundedHex } from '../../hex-editor/src/rounded-hex';
 
 export const SelectedHex = () => {
-  const [table] = useTable();
+  const { table } = useTable();
 
   return (
     <Show when={table.selectedCoordinate}>

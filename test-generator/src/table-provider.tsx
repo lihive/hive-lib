@@ -6,7 +6,7 @@ import {
   relativeHexCoordinate
 } from '@hive-lib';
 import { createContext, ParentProps, useContext } from 'solid-js';
-import { createStore, SetStoreFunction, Store } from 'solid-js/store';
+import { createStore } from 'solid-js/store';
 import { createShortcut } from '@solid-primitives/keyboard';
 
 interface TableConfig {
@@ -24,8 +24,13 @@ interface TableConfig {
   selectedCoordinate: HexCoordinate | undefined;
 }
 
-const TableContext =
-  createContext<[Store<TableConfig>, SetStoreFunction<TableConfig>]>();
+interface TableAPI {
+  table: TableConfig;
+  setHoverCoordinate: (coordinate: HexCoordinate | undefined) => void;
+  setSelectedCoordinate: (coordinate: HexCoordinate | undefined) => void;
+}
+
+const TableContext = createContext<TableAPI>();
 
 export const TableProvider = (props: ParentProps) => {
   const [table, setTable] = createStore<TableConfig>({
@@ -48,6 +53,12 @@ export const TableProvider = (props: ParentProps) => {
     );
   };
 
+  const setHoverCoordinate = (coordinate: HexCoordinate | undefined) =>
+    setTable('hoverCoordinate', coordinate);
+
+  const setSelectedCoordinate = (coordinate: HexCoordinate | undefined) =>
+    setTable('selectedCoordinate', coordinate);
+
   createShortcut(['ArrowUp'], selectInDirection(6, 1));
   createShortcut(['ArrowDown'], selectInDirection(3, 4));
   createShortcut(['ArrowLeft'], selectInDirection(4, 5));
@@ -61,7 +72,9 @@ export const TableProvider = (props: ParentProps) => {
   );
 
   return (
-    <TableContext.Provider value={[table, setTable]}>
+    <TableContext.Provider
+      value={{ table, setHoverCoordinate, setSelectedCoordinate }}
+    >
       {props.children}
     </TableContext.Provider>
   );

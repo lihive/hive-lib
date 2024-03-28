@@ -1,0 +1,19 @@
+.textButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  line-height: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid #777;
+    box-shadow: 1px 1px 1px #777;
+  }
+  &:active {
+    border: 1px solid #777;
+    box-shadow: none;
+  }
+}

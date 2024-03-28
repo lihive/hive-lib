@@ -1,6 +1,6 @@
 import { BugId, Color, hexHeight, hexWidth } from '@hive-lib';
 import { useTable } from './table-provider';
-import { JSX, splitProps } from 'solid-js';
+import { JSX, Show, splitProps } from 'solid-js';
 
 type BugProps = JSX.GSVGAttributes<SVGGElement> & {
   bug: BugId;
@@ -9,7 +9,7 @@ type BugProps = JSX.GSVGAttributes<SVGGElement> & {
 
 export const Bug = (allProps: BugProps) => {
   const [props, rest] = splitProps(allProps, ['bug', 'color']);
-  const [table] = useTable();
+  const { table } = useTable();
   const width = () => hexWidth(table.hexSize - table.tilePadding);
   const height = () => hexHeight(table.hexSize - table.tilePadding);
   const x = () => -width() / 2;
@@ -25,15 +25,17 @@ export const Bug = (allProps: BugProps) => {
         stroke='none'
         fill={getBugColor(props.bug, props.color)}
       />
-      <use
-        href={`#${props.bug}-accent`}
-        width={width()}
-        height={height()}
-        x={x()}
-        y={y()}
-        stroke='none'
-        fill={getAccentColor(props.color)}
-      />
+      <Show when={props.bug !== 'X'}>
+        <use
+          href={`#${props.bug}-accent`}
+          width={width()}
+          height={height()}
+          x={x()}
+          y={y()}
+          stroke='none'
+          fill={getAccentColor(props.color)}
+        />
+      </Show>
     </g>
   );
 };

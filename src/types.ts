@@ -8,8 +8,9 @@
  * - P: Pillbug
  * - Q: Queen
  * - S: Spider
+ * - X: Blank
  */
-export type BugId = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S';
+export type BugId = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S' | 'X';
 
 /**
  * A character representing a hive player color.

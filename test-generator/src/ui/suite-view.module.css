@@ -1,0 +1,82 @@
+.info {
+  padding: 4px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border-bottom: 1px solid #ccc;
+}
+
+.boardsScroller {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 4px;
+  overflow: auto;
+}
+
+.boards {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 4px;
+  padding: 4px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.playerTagBlack {
+  padding: 1px 3px;
+  background: black;
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.playerTagWhite {
+  padding: 1px 3px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.rowContents {
+  display: contents;
+  cursor: pointer;
+}
+
+.rowText {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.boardLabel {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  padding: 6px 4px;
+  &:hover {
+    background: #efefef;
+  }
+}
+
+.validMoveSet {
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  margin-left: 16px;
+  &:hover {
+    background: #efefef;
+  }
+}
+
+.bold {
+  font-weight: bold;
+}

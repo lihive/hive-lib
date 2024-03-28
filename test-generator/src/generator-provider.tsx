@@ -20,7 +20,9 @@ type TestCaseSet = {
 interface GeneratorAPI {
   cases: TestCaseSet;
   clearSuite: () => void;
-  deleteCase: (board: string) => void;
+  deleteBoard: (board: string) => void;
+  deleteTarget: (board: string, color: string, target: string) => void;
+  loadSuite: (suite: string) => void;
 }
 
 const GeneratorContext = createContext<GeneratorAPI>();
@@ -28,15 +30,30 @@ const GeneratorContext = createContext<GeneratorAPI>();
 export const GeneratorProvider = (props: ParentProps) => {
   const [cases, setCases] = makePersisted(createStore<TestCaseSet>({}));
 
-  const [table] = useTable();
+  const { table } = useTable();
   const { board, playerColor, validMoves } = useBoard();
 
   const clearSuite = () => {
     setCases(reconcile({}));
   };
 
-  const deleteCase = (board: string) => {
+  const deleteBoard = (board: string) => {
     setCases(board, undefined!);
+  };
+
+  const deleteTarget = (board: string, color: string, target: string) => {
+    console.log('delete', board, color, target);
+
+    setCases(board, color, target, undefined!);
+    const black = Object.keys(cases[board]['b'] || {});
+    const white = Object.keys(cases[board]['w'] || {});
+    if (black.length === 0 && white.length === 0) {
+      deleteBoard(board);
+    }
+  };
+
+  const loadSuite = (suite: string) => {
+    setCases(JSON.parse(suite));
   };
 
   const saveCurrent = () => {
@@ -57,7 +74,9 @@ export const GeneratorProvider = (props: ParentProps) => {
   createShortcut(['Meta', 'S'], saveCurrent, { preventDefault: true });
 
   return (
-    <GeneratorContext.Provider value={{ cases, clearSuite, deleteCase }}>
+    <GeneratorContext.Provider
+      value={{ cases, clearSuite, deleteBoard, deleteTarget, loadSuite }}
+    >
       {props.children}
     </GeneratorContext.Provider>
   );

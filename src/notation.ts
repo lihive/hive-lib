@@ -77,6 +77,12 @@ export function movementNotation(
   return `(${from.q},${from.r})(${to.q},${to.r})`;
 }
 
+/**
+ * Generate a {@link GameBoard} from a board notation string.
+ *
+ * @param notation A board notation string.
+ * @return A game board.
+ */
 export function parseBoardNotation(notation: string): GameBoard {
   const iter = notation[Symbol.iterator]();
   const board: GameBoard = {};
@@ -132,7 +138,7 @@ export function parseBoardNotation(notation: string): GameBoard {
  * string.
  *
  * @param notation A game notation string.
- * @return An array of {@link Move}s.
+ * @return An array of moves.
  */
 export function parseGameNotation(notation: string): Move[] {
   function parseToken(token: string): HexCoordinate | TileId {

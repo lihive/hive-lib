@@ -4,7 +4,7 @@ import { useBoard } from './board-provider';
 import { Show } from 'solid-js';
 
 export const WalkingPath = () => {
-  const [table] = useTable();
+  const { table } = useTable();
   const { board } = useBoard();
 
   const path = () => {

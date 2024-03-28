@@ -142,12 +142,17 @@ export function validMoves(
 ): HexCoordinate[] {
   const tile = getTileAt(board, coordinate);
   if (!tile) return [];
+  const tileColor = getTileColor(tile);
+  const tileBug = getTileBug(tile);
 
   let valid: HexCoordinate[] = [];
 
+  // Ignore blank tiles
+  if (tileBug === 'X') return valid;
+
   // Get tile's own movements
-  if (getTileColor(tile) === color) {
-    switch (getTileBug(tile)) {
+  if (tileColor === color) {
+    switch (tileBug) {
       case 'A':
         valid = validAntMoves(board, coordinate);
         break;
