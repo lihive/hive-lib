@@ -82,7 +82,7 @@
     };
   }
   function hexCoordinateKey(coordinate) {
-    return `${coordinate.q}${coordinate.r}`;
+    return `${coordinate.q}.${coordinate.r}`;
   }
   function hexesAreNeighbors(a, b) {
     return Math.abs(a.q - b.q) <= 1 && Math.abs(a.r - b.r) <= 1;
@@ -112,6 +112,13 @@
   }
   function includesHex(hexes, hex) {
     return hexes.findIndex((curr) => hexesEqual(hex, curr)) !== -1;
+  }
+  function parseHexCoordinateKey(coordinateKey) {
+    const values = coordinateKey.split(".");
+    return {
+      q: +values[0],
+      r: +values[1]
+    };
   }
   function relativeHexCoordinate(coordinate, direction) {
     const { q, r } = coordinate;
@@ -413,9 +420,13 @@
     const tile2 = getTileAt(board, coordinate);
     if (!tile2)
       return [];
+    const tileColor = getTileColor(tile2);
+    const tileBug = getTileBug(tile2);
     let valid = [];
-    if (getTileColor(tile2) === color) {
-      switch (getTileBug(tile2)) {
+    if (tileBug === "X")
+      return valid;
+    if (tileColor === color) {
+      switch (tileBug) {
         case "A":
           valid = validAntMoves(board, coordinate);
           break;
@@ -1529,6 +1540,35 @@
   }
 
   // src/notation.ts
+  var OPEN_BRACKET = ".";
+  var CLOSE_BRACKET = "~";
+  function boardNotation(board) {
+    const str = JSON.stringify(board);
+    if (str === "{}")
+      return CLOSE_BRACKET + OPEN_BRACKET;
+    let notation = "";
+    for (let c of str) {
+      switch (c) {
+        case "{":
+          notation += OPEN_BRACKET;
+          break;
+        case "}":
+          notation += CLOSE_BRACKET;
+          break;
+        case '"':
+        case ",":
+        case ":":
+        case "[":
+        case "]":
+        case "w":
+          break;
+        default:
+          notation += c;
+      }
+    }
+    notation = CLOSE_BRACKET + notation.slice(1, -2);
+    return notation;
+  }
   function gameNotation(moves) {
     return moves.map((move) => {
       if (isMovePass(move))
@@ -1543,11 +1583,51 @@
   function movementNotation(from, to) {
     return `(${from.q},${from.r})(${to.q},${to.r})`;
   }
-  function passNotation() {
-    return "x";
-  }
-  function placementNotation(tileId, coordinate) {
-    return `(${coordinate.q},${coordinate.r})[${tileId}]`;
+  function parseBoardNotation(notation) {
+    const iter = notation[Symbol.iterator]();
+    const board = {};
+    if (notation === CLOSE_BRACKET + OPEN_BRACKET)
+      return board;
+    let q = void 0;
+    let r = void 0;
+    let char = iter.next();
+    const readNumber = (advance = false) => {
+      if (advance)
+        char = iter.next();
+      let acc = "";
+      while (!char.done && isNumberChar(char.value)) {
+        acc += char.value;
+        char = iter.next();
+      }
+      return +acc;
+    };
+    const readBug = () => {
+      let acc = char.value;
+      char = iter.next();
+      if (!char.done && acc === "b") {
+        acc += char.value;
+        char = iter.next();
+      }
+      return acc.length === 1 ? "w" + acc : acc;
+    };
+    const isNumberChar = (char2) => {
+      return /[-\d]/.test(char2);
+    };
+    while (!char.done) {
+      if (char.value === CLOSE_BRACKET) {
+        q = readNumber(true);
+        board[q] = {};
+      } else if (char.value === OPEN_BRACKET) {
+        r = readNumber(true);
+        board[q][r] = [];
+      } else if (isNumberChar(char.value)) {
+        r = readNumber();
+        board[q][r] = [];
+      } else {
+        board[q][r].push(readBug());
+      }
+    }
+    return board;
   }
   function parseGameNotation(notation) {
     function parseToken(token2) {
@@ -1600,6 +1680,12 @@
       }
     }
     return moves;
+  }
+  function passNotation() {
+    return "x";
+  }
+  function placementNotation(tileId, coordinate) {
+    return `(${coordinate.q},${coordinate.r})[${tileId}]`;
   }
 
   // src/svg.ts
