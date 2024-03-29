@@ -1,4 +1,5 @@
 import {
+  CartesianCoordinate,
   FLAT_TOP,
   HexCoordinate,
   HexOrientation,
@@ -20,6 +21,7 @@ interface TableConfig {
   tileRounding: number;
 
   // interactive coordinates
+  mouseCoordinate: CartesianCoordinate | undefined;
   hoverCoordinate: HexCoordinate | undefined;
   selectedCoordinate: HexCoordinate | undefined;
 }
@@ -27,6 +29,7 @@ interface TableConfig {
 interface TableAPI {
   table: TableConfig;
   setHoverCoordinate: (coordinate: HexCoordinate | undefined) => void;
+  setMouseCoordinate: (coordinate: CartesianCoordinate | undefined) => void;
   setSelectedCoordinate: (coordinate: HexCoordinate | undefined) => void;
 }
 
@@ -39,6 +42,7 @@ export const TableProvider = (props: ParentProps) => {
     hexPrecision: 0,
     tilePadding: 4,
     tileRounding: 8,
+    mouseCoordinate: undefined,
     hoverCoordinate: undefined,
     selectedCoordinate: undefined
   });
@@ -55,6 +59,9 @@ export const TableProvider = (props: ParentProps) => {
 
   const setHoverCoordinate = (coordinate: HexCoordinate | undefined) =>
     setTable('hoverCoordinate', coordinate);
+
+  const setMouseCoordinate = (coordinate: CartesianCoordinate | undefined) =>
+    setTable('mouseCoordinate', coordinate);
 
   const setSelectedCoordinate = (coordinate: HexCoordinate | undefined) =>
     setTable('selectedCoordinate', coordinate);
@@ -73,7 +80,12 @@ export const TableProvider = (props: ParentProps) => {
 
   return (
     <TableContext.Provider
-      value={{ table, setHoverCoordinate, setSelectedCoordinate }}
+      value={{
+        table,
+        setHoverCoordinate,
+        setMouseCoordinate,
+        setSelectedCoordinate
+      }}
     >
       {props.children}
     </TableContext.Provider>

@@ -21,7 +21,7 @@ export const SelectedHex = () => {
               table.hexOrientation
             )}
           >
-            <g transform={tileOffsetTransform(stackHeight() - 1)}>
+            <g transform={tileOffsetTransform(Math.max(0, stackHeight() - 1))}>
               <RoundedHex
                 class={styles.selectedHex}
                 hexSize={table.hexSize}

@@ -5,6 +5,7 @@ import { SaveView } from './ui/save-view';
 import { SuiteView } from './ui/suite-view';
 import { createShortcut } from '@solid-primitives/keyboard';
 import { ShortcutsModal } from './ui/shortcuts-modal';
+import { MouseCoordinates } from './mouse-coordinates';
 
 export const GeneratorControls = () => {
   const [view, setView] = createSignal<'suite' | 'save' | 'load'>('suite');
@@ -33,6 +34,7 @@ export const GeneratorControls = () => {
       <Show when={showShortcuts()}>
         <ShortcutsModal close={() => setShowShortcuts(false)} />
       </Show>
+      <MouseCoordinates />
     </div>
   );
 };
