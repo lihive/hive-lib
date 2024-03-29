@@ -6,7 +6,7 @@
   "author": "Tristan Dyer",
   "private": true,
   "scripts": {
-    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js",
+    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js && tsc -p tsconfig.json",
     "test": "vitest run --reporter verbose",
     "tool:hex-editor": "vite serve hex-editor",
     "tool:test-generator": "vite serve test-generator"

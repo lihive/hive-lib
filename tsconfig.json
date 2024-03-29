@@ -1,23 +1,11 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "lib": [
-      "ESNext",
-      "dom"
-    ],
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "esModuleInterop": true,
-    "exactOptionalPropertyTypes": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true
-  }
+    "declaration": true,
+    "declarationDir": "dist/dts",
+    "emitDeclarationOnly": true,
+    "target": "ESNext",
+    "moduleResolution": "Node"
+  },
+  "include": ["index.ts"]
 }
