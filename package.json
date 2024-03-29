@@ -1,7 +1,8 @@
 {
   "name": "hive-lib",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/hive-lib.js",
+  "types": "dist/hive-lib.d.ts",
   "repository": "https://github.com/lihive/hive-lib.git",
   "author": "Tristan Dyer",
   "private": true,
@@ -12,6 +13,7 @@
     "tool:test-generator": "vite serve test-generator"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.43.0",
     "@solid-primitives/keyboard": "^1.2.8",
     "@solid-primitives/storage": "^3.0.0",
     "esbuild": "^0.20.1",
