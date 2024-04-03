@@ -1,19 +1,22 @@
 import { CartesianCoordinate, HexCoordinate, HexOrientation } from './types';
 import { CoordinatesNotAdjacentError, InvalidDirectionError } from './error';
-import { SQRT3 } from './constants';
+import { _SQRT3 } from './constants';
 
 /**
  * Convert a cartesian coordinate to a hex coordinate.
  *
- * @param coordinate A cartesian coordinate.
- * @param size The hex size.
- * @return The coordinate of the hex that contains the given cartesian coordinate.
+ * @param coordinate - A cartesian coordinate.
+ * @param size - The hex size.
+ * @returns The coordinate of the hex that contains the given cartesian
+ * coordinate.
+ *
+ * @public
  */
 export function cartesianToHex(
   coordinate: CartesianCoordinate,
   size: number
 ): HexCoordinate {
-  const x = ((SQRT3 / 3) * coordinate.x - (1 / 3) * coordinate.y) / size;
+  const x = ((_SQRT3 / 3) * coordinate.x - (1 / 3) * coordinate.y) / size;
   const y = ((2 / 3) * coordinate.y) / size;
   const z = -x - y;
 
@@ -38,8 +41,10 @@ export function cartesianToHex(
  * Generate a unique string for a hex coordinate. This function will always
  * generate the same string for a given coordinate.
  *
- * @param coordinate The hex coordinate.
- * @return A string unique to the coordinate.
+ * @param coordinate - The hex coordinate.
+ * @returns A string unique to the coordinate.
+ *
+ * @public
  */
 export function hexCoordinateKey(coordinate: HexCoordinate): string {
   return `${coordinate.q}.${coordinate.r}`;
@@ -48,9 +53,11 @@ export function hexCoordinateKey(coordinate: HexCoordinate): string {
 /**
  * Determine if two hex coordinates are adjacent.
  *
- * @param a The first coordinate.
- * @param b The second coordinate.
- * @return true if the hex coordinates are adjacent, false otherwise.
+ * @param a - The first coordinate.
+ * @param b - The second coordinate.
+ * @returns true if the hex coordinates are adjacent, false otherwise.
+ *
+ * @public
  */
 export function hexesAreNeighbors(a: HexCoordinate, b: HexCoordinate): boolean {
   return Math.abs(a.q - b.q) <= 1 && Math.abs(a.r - b.r) <= 1;
@@ -59,9 +66,11 @@ export function hexesAreNeighbors(a: HexCoordinate, b: HexCoordinate): boolean {
 /**
  * Determine if two hex coordinates are equivalent.
  *
- * @param a The first hex coordinate.
- * @param b The second hex coordinate.
- * @return true if the coordinates are the same, false otherwise.
+ * @param a - The first hex coordinate.
+ * @param b - The second hex coordinate.
+ * @returns true if the coordinates are the same, false otherwise.
+ *
+ * @public
  */
 export function hexesEqual(a?: HexCoordinate, b?: HexCoordinate): boolean {
   if (!a || !b) return false;
@@ -74,8 +83,10 @@ export function hexesEqual(a?: HexCoordinate, b?: HexCoordinate): boolean {
  * Refer to [Red Blob Games](https://www.redblobgames.com/grids/hexagons/#size-and-spacing)
  * for definition of hexagon size.
  *
- * @param hexSize A hex size.
- * @return The height of a hexagon with the given size.
+ * @param hexSize - A hex size.
+ * @returns The height of a hexagon with the given size.
+ *
+ * @public
  */
 export function hexHeight(hexSize: number): number {
   return 2 * hexSize;
@@ -84,10 +95,12 @@ export function hexHeight(hexSize: number): number {
 /**
  * Convert a hex coordinate to a cartesian coordinate.
  *
- * @param coordinate The hex coordinate.
- * @param size The hexagon size.
- * @param orientation A hex orientation.
- * @return A cartesian coordinate representing the center of the hexagon.
+ * @param coordinate - The hex coordinate.
+ * @param size - The hexagon size.
+ * @param orientation - A hex orientation.
+ * @returns A cartesian coordinate representing the center of the hexagon.
+ *
+ * @public
  */
 export function hexToCartesian(
   coordinate: HexCoordinate,
@@ -106,10 +119,12 @@ export function hexToCartesian(
  * Create an SVG transform string that can be used to translate to the center
  * of a given hex coordinate.
  *
- * @param coordinate A hex coordinate.
- * @param size The hexagon size.
- * @param orientation A hex orientation.
- * @return An svg transform string.
+ * @param coordinate - A hex coordinate.
+ * @param size - The hexagon size.
+ * @param orientation - A hex orientation.
+ * @returns An svg transform string.
+ *
+ * @public
  */
 export function hexToTransform(
   coordinate: HexCoordinate,
@@ -126,19 +141,23 @@ export function hexToTransform(
  * Refer to [Red Blob Games](https://www.redblobgames.com/grids/hexagons/#size-and-spacing)
  * for definition of hexagon size.
  *
- * @param hexSize A hex size.
- * @return The width of a hexagon with the given size.
+ * @param hexSize - A hex size.
+ * @returns The width of a hexagon with the given size.
+ *
+ * @public
  */
 export function hexWidth(hexSize: number): number {
-  return SQRT3 * hexSize;
+  return _SQRT3 * hexSize;
 }
 
 /**
  * Determine if an array of hex coordinates includes a specific coordinate.
  *
- * @param hexes An array of hex coordinates.
- * @param hex The hex coordinate to search for.
- * @return true if hex is in the array hexes, false otherwise.
+ * @param hexes - An array of hex coordinates.
+ * @param hex - The hex coordinate to search for.
+ * @returns true if hex is in the array hexes, false otherwise.
+ *
+ * @public
  */
 export function includesHex(
   hexes: HexCoordinate[],
@@ -150,8 +169,10 @@ export function includesHex(
 /**
  * Convert a hex coordinate into a hex coordinate.
  *
- * @param coordinateKey A hex coordinate key.
- * @return A hex coordinate.
+ * @param coordinateKey - A hex coordinate key.
+ * @returns A hex coordinate.
+ *
+ * @public
  */
 export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate {
   const values = coordinateKey.split('.');
@@ -165,9 +186,14 @@ export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate {
  * Get the hex coordinate in one of the six directions relative to the given
  * base coordinate, or on top of that coordinate.
  *
- * @param coordinate The base coordinate, from which the relative coordinate will be calculated.
- * @param direction The direction relative to the base coordinate. Starting with 1 at the top-right, and proceeding clockwise through 6.
- * @return The relative coordinate, or the same coordinate if direction is zero.
+ * @param coordinate - The base coordinate, from which the relative coordinate
+ * will be calculated.
+ * @param direction - The direction relative to the base coordinate. Starting
+ * with 1 at the top-right, and proceeding clockwise through 6.
+ * @returns The relative coordinate, or the same coordinate if direction is
+ * zero.
+ *
+ * @public
  */
 export function relativeHexCoordinate(
   coordinate: HexCoordinate,
@@ -197,10 +223,12 @@ export function relativeHexCoordinate(
 /**
  * Get the hex direction pointing from source to target.
  *
- * @param source The source coordinate.
- * @param target The target coordinate.
- * @return The hex direction pointing from source to target.
+ * @param source - The source coordinate.
+ * @param target - The target coordinate.
+ * @returns The hex direction pointing from source to target.
  * @throws Error if the hex coordinates are not adjacent.
+ *
+ * @public
  */
 export function relativeHexDirection(
   source: HexCoordinate,
@@ -226,8 +254,10 @@ export function relativeHexDirection(
 /**
  * Convert a number to a hex direction.
  *
- * @param number The number to convert.
- * @return A number in the range [1, 6]
+ * @param number - The number to convert.
+ * @returns A number in the range [1, 6].
+ *
+ * @public
  */
 export function toHexDirection(number: number): number {
   while (number < 1) number += 6;

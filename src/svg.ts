@@ -1,6 +1,24 @@
 import { CartesianCoordinate } from './types';
-import { M_PI } from './constants';
+import { _M_PI } from './constants';
 
+/**
+ * Generate a SVG path data string that represents a hexagon.
+ *
+ * @remarks
+ * The `size` of a hexagon is its width, measured between any two opposing
+ * corners. A hexagon with rounded corners can be drawn by passing a positive
+ * `rounding` value. The `rounding` value is proportional to the length of the
+ * hexagon's edges (the non-rounded portion), where the edge length
+ * (`size` - `rounding`) / 2. Therefore the `rounding` value should fall in the
+ * range [0, `size`].
+ *
+ * @param size - The size of the hexagon, in pixels.
+ * @param rounding - The amount of corner rounding, in the range [0, `size`].
+ * @param precision - The floating point precision to use for numeric values.
+ * @returns A string that can be used to define an SVG path.
+ *
+ * @public
+ */
 export function hexPath(
   size: number,
   rounding: number,
@@ -8,7 +26,7 @@ export function hexPath(
 ): string {
   const corners: CartesianCoordinate[] = [];
   for (let i = 0; i < 6; ++i) {
-    const angle = (2 * M_PI * i) / 6;
+    const angle = (2 * _M_PI * i) / 6;
     corners.push({
       x: size * Math.cos(angle),
       y: size * Math.sin(angle)

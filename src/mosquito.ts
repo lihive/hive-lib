@@ -11,6 +11,25 @@ import { validQueenMoves } from './queen';
 import { validSpiderMoves } from './spider';
 import { validPillbugMoves } from './pillbug';
 
+/**
+ * Get all valid moves for the tile at the given coordinate acting as a
+ * mosquito.
+ *
+ * @remarks
+ * The mosquito rules state that the mosquito takes on the movement
+ * characteristics of any bug it touches, regardless of color. If moved as a
+ * beetle on top of the hive, it continues to move as a beetle until it climbs
+ * down from the hive. If when on the ground level it is next to a stacked
+ * beetle, it may move as a beetle and not any piece below the beetle. If
+ * only touching another mosquito (including a stacked one) and no other piece,
+ * it may not move.
+ *
+ * @param board - A game board.
+ * @param coordinate - The location of the tile acting as a mosquito.
+ * @returns An array of hex coordinates.
+ *
+ * @public
+ */
 export function validMosquitoMoves(
   board: GameBoard,
   coordinate: HexCoordinate

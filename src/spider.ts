@@ -1,8 +1,23 @@
 import { GameBoard, HexCoordinate } from './types';
-import { eachSlideDirection, moveTileProduce } from './board';
+import { eachSlideDirection, _moveTileProduce } from './board';
 import { hexCoordinateKey, includesHex } from './hex';
 import { moveBreaksHive } from './move';
 
+/**
+ * Get all valid moves for the tile at the given coordinate acting as a spider.
+ *
+ * @remarks
+ * The spider rules state that a spider moves exactly three spaces per turn. It
+ * must move in a direct path and cannot backtrack on itself. I may only move
+ * around pieces it is in direct contact with on each step of its move and it
+ * may not move across to a piece that it is not in direct contact with.
+ *
+ * @param board - A game board.
+ * @param coordinate - The location of the tile acting as a spider.
+ * @returns An array of hex coordinates.
+ *
+ * @public
+ */
 export function validSpiderMoves(
   board: GameBoard,
   coordinate: HexCoordinate
@@ -22,7 +37,7 @@ export function validSpiderMoves(
             valid.push(neighbor);
           }
         } else {
-          walk(moveTileProduce(board, current, neighbor), [...path, neighbor]);
+          walk(_moveTileProduce(board, current, neighbor), [...path, neighbor]);
         }
       }
     });
