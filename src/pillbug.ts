@@ -1,13 +1,21 @@
-import { GameBoard, HexCoordinate } from './types';
-import { moveBreaksHive } from './move';
+import { Color, GameBoard, HexCoordinate, Move } from './types';
+import {
+  _ownValidMoves,
+  isMovePass,
+  isMovePlacement,
+  moveBreaksHive
+} from './move';
 import {
   eachDropDirection,
   eachSlideDirection,
   getStackHeight,
   isGated,
-  _moveTileProduce
+  _moveTileProduce,
+  getTileAt
 } from './board';
-import { hexesEqual, relativeHexDirection } from './hex';
+import { hexesEqual, includesHex, relativeHexDirection } from './hex';
+import { getTileColor } from './tile';
+import { NoTileAtCoordinateError } from './error';
 
 /**
  * Get all valid moves for the tile at the given coordinate acting as a pillbug.
@@ -88,4 +96,49 @@ export function validPillbugPushes(
   });
 
   return valid;
+}
+
+/**
+ * Determine if a move was a pillbug push.
+ *
+ * @remarks
+ * This function is typically used to determine if the latest move in a game
+ * was a pillbug push
+ *
+ * @param color - The color of the player who performed the move.
+ * @param move - The move in question.
+ * @param board - The state of the game board *after* the move.
+ * @returns true if the move was a pillbug push, false otherwise.
+ *
+ * @throws {@link NoTileAtCoordinateError}
+ * Throws if there is no tile at the destination of the move.
+ *
+ * @public
+ */
+export function wasPillbugPush(
+  color: Color,
+  move: Move,
+  board: GameBoard
+): boolean {
+  if (isMovePass(move) || isMovePlacement(move)) {
+    return false;
+  }
+
+  // get the tile that was moved
+  const tile = getTileAt(board, move.to);
+  if (!tile) throw new NoTileAtCoordinateError(move.to);
+
+  // if the tile is not the same color as the player who moved it, it must have
+  // been moved by a pillbug
+  if (getTileColor(tile) !== color) {
+    return true;
+  }
+
+  // move the tile back
+  const previous = _moveTileProduce(board, move.to, move.from);
+
+  // could the tile have moved on its own? if so, not a pillbug push, otherwise,
+  // a pillbug must have moved it.
+  const ownMoves = _ownValidMoves(previous, move.from);
+  return !includesHex(ownMoves, move.to);
 }

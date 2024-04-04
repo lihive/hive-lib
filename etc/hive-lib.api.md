@@ -280,6 +280,9 @@ export class NoTileAtCoordinateError extends Error {
     constructor(coordinate: HexCoordinate);
 }
 
+// @internal
+export function _ownValidMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
+
 // @public
 export function parseBoardNotation(notation: string): GameBoard;
 
@@ -388,7 +391,7 @@ export function validLadybugMoves(board: GameBoard, coordinate: HexCoordinate): 
 export function validMosquitoMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
 // @public
-export function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate): HexCoordinate[];
+export function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate, moves?: Move[]): HexCoordinate[];
 
 // @public
 export function validPillbugMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
@@ -404,6 +407,9 @@ export function validSpiderMoves(board: GameBoard, coordinate: HexCoordinate): H
 
 // @public
 export function walkBoard(board: GameBoard, start: HexCoordinate, omit?: HexCoordinate): HexCoordinate[];
+
+// @public
+export function wasPillbugPush(color: Color, move: Move, board: GameBoard): boolean;
 
 // (No @packageDocumentation comment for this package)
 

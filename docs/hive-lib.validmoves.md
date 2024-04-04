@@ -9,7 +9,7 @@ Get an array of valid moves for the specified color player moving the top tile a
 **Signature:**
 
 ```typescript
-export declare function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate): HexCoordinate[];
+export declare function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate, moves?: Move[]): HexCoordinate[];
 ```
 
 ## Parameters
@@ -78,6 +78,22 @@ The coordinate of the tile being moved.
 
 
 </td></tr>
+<tr><td>
+
+moves
+
+
+</td><td>
+
+[Move](./hive-lib.move.md)<!-- -->\[\]
+
+
+</td><td>
+
+_(Optional)_ The current sequence of game moves.
+
+
+</td></tr>
 </tbody></table>
 **Returns:**
 
@@ -87,5 +103,5 @@ An array of coordinates indicating valid destinations for the tile being moved b
 
 ## Remarks
 
-Note that it is possible for a player to move tiles that are not their own color using the pillbug.
+The `moves` paramater should always be included when possible. The pillbug's special ability to move other tiles relies on knowledge of the previous move to determine which tiles are eligible to be moved during the current turn. When the `moves` parameter is not provided, it is assumed that no tiles are restricted from movement based on pillbug rules.
 

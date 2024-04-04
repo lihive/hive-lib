@@ -885,7 +885,7 @@ Get all valid moves for the tile at the given coordinate acting as a mosquito.
 </td></tr>
 <tr><td>
 
-[validMoves(board, color, coordinate)](./hive-lib.validmoves.md)
+[validMoves(board, color, coordinate, moves)](./hive-lib.validmoves.md)
 
 
 </td><td>
@@ -946,6 +946,17 @@ Get all valid moves for the tile at the given coordinate acting as a spider.
 </td><td>
 
 Create a sequence of coordinates that represent walking the board, visiting each occupied coordinate exactly once.
+
+
+</td></tr>
+<tr><td>
+
+[wasPillbugPush(color, move, board)](./hive-lib.waspillbugpush.md)
+
+
+</td><td>
+
+Determine if a move was a pillbug push.
 
 
 </td></tr>
