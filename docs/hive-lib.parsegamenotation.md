@@ -4,6 +4,9 @@
 
 ## parseGameNotation() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Generate an ordered array of [Move](./hive-lib.move.md) objects from a game notation string.
 
 **Signature:**

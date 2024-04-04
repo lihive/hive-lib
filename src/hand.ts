@@ -10,7 +10,7 @@ import { tile } from './tile';
  * @param config - A game config object.
  * @returns A list of tile ids in the given players hand, grouped by bug type.
  *
- * @public
+ * @beta
  */
 export function stacksInHand(
   board: GameBoard,
@@ -37,7 +37,7 @@ export function stacksInHand(
  * @param config - A game config object.
  * @returns A list of tile ids in the given player's hand.
  *
- * @public
+ * @beta
  */
 export function tilesInHand(
   board: GameBoard,

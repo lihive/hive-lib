@@ -32,7 +32,7 @@ import { produce } from 'immer';
  * @returns true if the number of queens of the given color on the board is
  * equal to the number of queens in the game config, false otherwise.
  *
- * @public
+ * @beta
  */
 export function allQueensPlaced(
   board: GameBoard,
@@ -59,7 +59,7 @@ export function allQueensPlaced(
  * color on the board is occupied, false otherwise. Returns true if there are no
  * queens of the given color on the board.
  *
- * @public
+ * @beta
  */
 export function allQueensSurrounded(board: GameBoard, color: Color): boolean {
   const queenCoordinates = findTileCoordinates(board, `${color}Q`);
@@ -100,7 +100,7 @@ export function allQueensSurrounded(board: GameBoard, color: Color): boolean {
  * @returns A function that when called, applies the sequence of changes to the
  * provided game board parameter.
  *
- * @public
+ * @beta
  */
 export function chainBoardChanges(
   ...fns: ((board: GameBoard) => GameBoard)[]
@@ -126,7 +126,7 @@ export function chainBoardChanges(
  * @returns false if the iteration ended early, true otherwise. If there is no
  * stack at the given coordinate, true is returned.
  *
- * @public
+ * @beta
  *
  */
 export function eachClimbDirection(
@@ -156,7 +156,7 @@ export function eachClimbDirection(
  * @param iteratee - The function invoked per iteration.
  * @returns false if iteration ended early, true otherwise.
  *
- * @public
+ * @beta
  */
 export function eachDirection(iteratee: DirectionFn): boolean {
   for (let i = 1; i <= 6; ++i) {
@@ -183,7 +183,7 @@ export function eachDirection(iteratee: DirectionFn): boolean {
  * @returns false if the iteration ended early, true otherwise. If there is no
  * stack at the given coordinate, true is returned.
  *
- * @public
+ * @beta
  */
 export function eachDropDirection(
   board: GameBoard,
@@ -215,7 +215,7 @@ export function eachDropDirection(
  * @param iteratee - The function invoked per iteration.
  * @returns false if iteration ended early, true otherwise.
  *
- * @public
+ * @beta
  */
 export function eachNeighboringCoordinate(
   board: GameBoard,
@@ -240,7 +240,7 @@ export function eachNeighboringCoordinate(
  * @param iteratee - The function invoked per iteration.
  * @returns false if iteration ended early, true otherwise.
  *
- * @public
+ * @beta
  */
 export function eachNeighboringStack(
   board: GameBoard,
@@ -275,7 +275,7 @@ export function eachNeighboringStack(
  * @returns false if iteration ended early, true otherwise. If there is no stack
  * at the given coordinate, true is returned.
  *
- * @public
+ * @beta
  */
 export function eachSlideDirection(
   board: GameBoard,
@@ -312,7 +312,7 @@ export function eachSlideDirection(
  * @param iteratee - The function invoked per iteration.
  * @returns false if iteration ended early, true otherwise.
  *
- * @public
+ * @beta
  */
 export function eachStack(board: GameBoard, iteratee: StackFn): boolean {
   for (const q in board) {
@@ -338,7 +338,7 @@ export function eachStack(board: GameBoard, iteratee: StackFn): boolean {
  * @param iteratee - The function invoked per iteration.
  * @returns false if iteration ended early, true otherwise.
  *
- * @public
+ * @beta
  */
 export function eachUnoccupiedCoordinate(
   board: GameBoard,
@@ -366,7 +366,7 @@ export function eachUnoccupiedCoordinate(
  * @param predicate - A predicate to test.
  * @returns true if predicate evalutes to true for every neighbor, false otherwise.
  *
- * @public
+ * @beta
  */
 export function everyNeighboringCoordinate(
   board: GameBoard,
@@ -393,7 +393,7 @@ export function everyNeighboringCoordinate(
  * @returns the first hex coordinate for which predicate returns true or undefined
  * if the predicate never evaluates to true.
  *
- * @public
+ * @beta
  */
 export function findNeighborCoordinate(
   board: GameBoard,
@@ -422,7 +422,7 @@ export function findNeighborCoordinate(
  * @param tileId - The tile id to search for.
  * @returns The locations of the tile on the board.
  *
- * @public
+ * @beta
  */
 export function findTileCoordinates(
   board: GameBoard,
@@ -447,7 +447,7 @@ export function findTileCoordinates(
  * @param upTo - The move index up to which the board will be generated.
  * @returns A game board
  *
- * @public
+ * @beta
  */
 export function gameBoard(moves: Move[], upTo?: number): GameBoard {
   const board: GameBoard = {};
@@ -476,7 +476,7 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard {
  * @returns The number of total tiles on the board if no color or bug was
  * provided, otherwise the number of tiles of the given color/bug.
  *
- * @public
+ * @beta
  */
 export function getNumTiles(
   board: GameBoard,
@@ -505,7 +505,7 @@ export function getNumTiles(
  * @param board - A game board.
  * @returns An array of coordinates that contain tile stacks.
  *
- * @public
+ * @beta
  */
 export function getOccupiedCoordinates(board: GameBoard): HexCoordinate[] {
   const coordinates: HexCoordinate[] = [];
@@ -521,7 +521,7 @@ export function getOccupiedCoordinates(board: GameBoard): HexCoordinate[] {
  * @param coordinate - The coordinate whose neighbors will be searched.
  * @returns An array of coordinates.
  *
- * @public
+ * @beta
  */
 export function getOccupiedNeighbors(
   board: GameBoard,
@@ -544,7 +544,7 @@ export function getOccupiedNeighbors(
  * @param coordinate - A hex coordinate
  * @returns The tile stack at the given coordinate.
  *
- * @public
+ * @beta
  */
 export function getStack(
   board: GameBoard,
@@ -562,7 +562,7 @@ export function getStack(
  * @param coordinate - The hex coordinate
  * @returns The height of the stack at the given coordinate.
  *
- * @public
+ * @beta
  */
 export function getStackHeight(
   board: GameBoard,
@@ -582,7 +582,7 @@ export function getStackHeight(
  * @param sortForRender - Flag indicating tiles should be sorted for rendering.
  * @returns An array of stacks.
  *
- * @public
+ * @beta
  */
 export function getStacks(
   board: GameBoard,
@@ -602,7 +602,7 @@ export function getStacks(
  * @returns The tile on top of that stack at the given coordinate if there is
  * one, otherwise undefined.
  *
- * @public
+ * @beta
  */
 export function getTileAt(
   board: GameBoard,
@@ -617,7 +617,7 @@ export function getTileAt(
  * @param board - A game board.
  * @returns An array of all tiles that are on the game board.
  *
- * @public
+ * @beta
  */
 export function getTilesOnBoard(board: GameBoard): TileId[] {
   const tiles: TileId[] = [];
@@ -632,7 +632,7 @@ export function getTilesOnBoard(board: GameBoard): TileId[] {
  * @returns An array of hex coordinates that are touching the hive and do not
  * contain tiles.
  *
- * @public
+ * @beta
  */
 export function getUnoccupiedCoordinates(board: GameBoard): HexCoordinate[] {
   const visited = new Set<string>();
@@ -655,7 +655,7 @@ export function getUnoccupiedCoordinates(board: GameBoard): HexCoordinate[] {
  * @param board - A game board.
  * @returns true if there are no tiles on the board, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isBoardEmpty(board: GameBoard): boolean {
   return Object.keys(board).length === 0;
@@ -669,7 +669,7 @@ export function isBoardEmpty(board: GameBoard): boolean {
  * @returns true if there is at least one tile at the given coordinate, false
  * otherwise.
  *
- * @public
+ * @beta
  */
 export function isCoordinateOccupied(
   board: GameBoard,
@@ -687,7 +687,7 @@ export function isCoordinateOccupied(
  * @param direction - The direction of movement.
  * @returns true if there is a gate blocking movement, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isGated(
   board: GameBoard,
@@ -733,7 +733,7 @@ export function isGated(
  * @throws {@link NoTileAtCoordinateError}
  * Throws if there is no tile located at the specified `from` coordinate.
  *
- * @public
+ * @beta
  */
 export function moveTile(
   board: GameBoard,
@@ -757,7 +757,7 @@ export function moveTile(
  * @param coordinate - The coordinate where the tile will be placed.
  * @returns A new game board with the tile placed at the specified coordinate.
  *
- * @public
+ * @beta
  */
 export function placeTile(
   board: GameBoard,
@@ -774,7 +774,7 @@ export function placeTile(
  * @returns A function that takes a game board as a parameter; when called, the
  * function will place `tileId` at `coordinate` on the board.
  *
- * @public
+ * @beta
  */
 export function placeTile(
   tileId: TileId,
@@ -784,7 +784,7 @@ export function placeTile(
 /**
  * Place a tile on a board.
  *
- * @public
+ * @beta
  */
 export function placeTile(
   boardOrTileId: GameBoard | TileId,
@@ -825,7 +825,7 @@ export function placeTile(
  * @throws {@link NoTileAtCoordinateError}
  * Throws if there is no tile at `coordinate`.
  *
- * @public
+ * @beta
  */
 export function popTile(board: GameBoard, coordinate: HexCoordinate): GameBoard;
 
@@ -838,7 +838,7 @@ export function popTile(board: GameBoard, coordinate: HexCoordinate): GameBoard;
  * will throw {@link NoTileAtCoordinateError} if there is no tile at
  * `coordinate`.
  *
- * @public
+ * @beta
  */
 export function popTile(
   coordinate: HexCoordinate
@@ -847,7 +847,7 @@ export function popTile(
 /**
  * Remove a tile from a board.
  *
- * @public
+ * @beta
  */
 export function popTile(
   boardOrCoordinate: GameBoard | HexCoordinate,
@@ -872,7 +872,7 @@ export function popTile(
  * @param stacks - An array of stacks.
  * @returns A sorted copy of the array of stacks.
  *
- * @public
+ * @beta
  */
 export function renderSort(stacks: HexStack[]): HexStack[] {
   return stacks.slice().sort((a, b) => {
@@ -892,7 +892,7 @@ export function renderSort(stacks: HexStack[]): HexStack[] {
  * @param iteratee - The predicate function called for neighbors.
  * @returns true if the predicate evaluates to true for any neighbor, false otherwise.
  *
- * @public
+ * @beta
  */
 export function someNeighboringCoordinate(
   board: GameBoard,
@@ -925,7 +925,7 @@ export function someNeighboringCoordinate(
  * @param omit - A coordinate to treat as empty.
  * @returns The sequence of visited hex coordinates.
  *
- * @public
+ * @beta
  */
 export function walkBoard(
   board: GameBoard,

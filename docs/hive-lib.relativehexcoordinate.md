@@ -4,6 +4,9 @@
 
 ## relativeHexCoordinate() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Get the hex coordinate in one of the six directions relative to the given base coordinate, or on top of that coordinate.
 
 **Signature:**

@@ -4,6 +4,9 @@
 
 ## GameConfig interface
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 An object describing which play variants are being used in a game.
 
 **Signature:**
@@ -50,6 +53,8 @@ Partial&lt;{ \[key in [BugId](./hive-lib.bugid.md)<!-- -->\]: number; }&gt;
 
 </td><td>
 
+**_(BETA)_**
+
 
 </td></tr>
 <tr><td>
@@ -67,7 +72,7 @@ true
 
 </td><td>
 
-_(Optional)_
+**_(BETA)_** _(Optional)_
 
 
 </td></tr>

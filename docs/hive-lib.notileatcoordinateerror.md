@@ -4,6 +4,9 @@
 
 ## NoTileAtCoordinateError class
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 An error indicating that there is no tile at a coordinate where there was expected to be one.
 
 **Signature:**
@@ -41,7 +44,7 @@ Description
 
 </td><td>
 
-Constructs a new instance of the `NoTileAtCoordinateError` class
+**_(BETA)_** Constructs a new instance of the `NoTileAtCoordinateError` class
 
 
 </td></tr>

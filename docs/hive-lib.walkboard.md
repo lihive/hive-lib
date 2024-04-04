@@ -4,6 +4,9 @@
 
 ## walkBoard() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Create a sequence of coordinates that represent walking the board, visiting each occupied coordinate exactly once.
 
 **Signature:**

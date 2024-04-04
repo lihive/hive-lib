@@ -37,7 +37,7 @@ import { validSpiderMoves } from './spider';
  *
  * @returns A passing move.
  *
- * @public
+ * @beta
  */
 export function createMovePass(): Pass {
   return {
@@ -53,7 +53,7 @@ export function createMovePass(): Pass {
  * @returns A move indicating placement of the specified tile at the specified
  * coordinate.
  *
- * @public
+ * @beta
  */
 export function createTilePlacement(
   tileId: TileId,
@@ -73,7 +73,7 @@ export function createTilePlacement(
  * @returns A move indicating movement of a tile from the specified coordinate
  * to the specified destination.
  *
- * @public
+ * @beta
  */
 export function createTileMovement(
   from: HexCoordinate,
@@ -91,7 +91,7 @@ export function createTileMovement(
  * @param moves - The current sequence of game moves.
  * @returns The color of the player who plays next.
  *
- * @public
+ * @beta
  */
 export function getNextMoveColor(moves: Move[]): Color {
   return moves.length % 2 ? 'b' : 'w';
@@ -103,7 +103,7 @@ export function getNextMoveColor(moves: Move[]): Color {
  * @param move - A move.
  * @returns true if the move is a passing move, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isMovePass(move: Move): move is Pass {
   return 'pass' in move && move.pass;
@@ -115,7 +115,7 @@ export function isMovePass(move: Move): move is Pass {
  * @param move - A move.
  * @returns true if the move is a tile placement, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isMovePlacement(move: Move): move is TilePlacement {
   return 'tileId' in move && 'to' in move;
@@ -127,7 +127,7 @@ export function isMovePlacement(move: Move): move is TilePlacement {
  * @param move - A move.
  * @returns true if the move is a tile movement, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isMoveMovement(move: Move): move is TileMovement {
   return 'from' in move && 'to' in move;
@@ -142,7 +142,7 @@ export function isMoveMovement(move: Move): move is TileMovement {
  * @returns true if moving the topmost tile from the given coordinate would break
  * the tile, false otherwise.
  *
- * @public
+ * @beta
  */
 export function moveBreaksHive(
   board: GameBoard,
@@ -179,7 +179,7 @@ export function moveBreaksHive(
  * @returns An array of coordinates indicating valid destinations for the tile
  * being moved by the specified player.
  *
- * @public
+ * @beta
  */
 export function validMoves(
   gameOrBoard: Game | GameBoard,

@@ -21,7 +21,7 @@ import { hexCoordinateKey, includesHex } from './hex';
  * @param coordinate - The location of the tile acting as a ladybug.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validLadybugMoves(
   board: GameBoard,

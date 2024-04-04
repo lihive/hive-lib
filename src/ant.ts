@@ -15,7 +15,7 @@ import { moveBreaksHive } from './move';
  * @param coordinate - The location of the tile acting as an ant.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validAntMoves(
   board: GameBoard,

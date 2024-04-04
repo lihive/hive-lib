@@ -4,6 +4,9 @@
 
 ## HexCoordinate interface
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 A coordinate in 2D space in a hexagonal coordinate system.
 
 **Signature:**
@@ -50,6 +53,8 @@ number
 
 </td><td>
 
+**_(BETA)_**
+
 
 </td></tr>
 <tr><td>
@@ -66,6 +71,8 @@ number
 
 
 </td><td>
+
+**_(BETA)_**
 
 
 </td></tr>

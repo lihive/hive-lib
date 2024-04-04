@@ -17,7 +17,7 @@ import { _M_PI } from './constants';
  * @param precision - The floating point precision to use for numeric values.
  * @returns A string that can be used to define an SVG path.
  *
- * @public
+ * @beta
  */
 export function hexPath(
   size: number,

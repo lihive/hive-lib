@@ -5,6 +5,9 @@ import { BASE_GAME } from './constants';
  * Generate a new game with the provided configuration.
  *
  * @param config - A game config
+ * @returns A game object.
+ *
+ * @beta
  */
 export function createGame(config: GameConfig): Game {
   return {
@@ -19,6 +22,9 @@ export function createGame(config: GameConfig): Game {
  * any of the three expansion tiles.
  *
  * @param options - An object indicating which expansion tiles to include.
+ * @returns A game object.
+ *
+ * @beta
  */
 export function createBaseGameConfig(options: {
   ladybug: boolean;

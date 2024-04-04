@@ -13,7 +13,7 @@ import { moveBreaksHive } from './move';
  * The beetle rules state that the beetle can move only one space per turn but
  * can also move on top of the hive.
  *
- * @public
+ * @beta
  * @param board - nA game board.
  * @param coordinate - The location of the tile acting as a beetle.
  * @returns An array of hex coordinates.

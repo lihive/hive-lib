@@ -28,7 +28,7 @@ import { validPillbugMoves } from './pillbug';
  * @param coordinate - The location of the tile acting as a mosquito.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validMosquitoMoves(
   board: GameBoard,

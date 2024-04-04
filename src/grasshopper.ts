@@ -16,7 +16,7 @@ import { hexesEqual, relativeHexCoordinate } from './hex';
  * @param coordinate - The location of the tile acting as an ant.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validGrasshopperMoves(
   board: GameBoard,

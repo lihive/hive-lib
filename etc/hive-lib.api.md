@@ -4,25 +4,25 @@
 
 ```ts
 
-// @public
+// @beta
 export function allQueensPlaced(board: GameBoard, color: Color, config: GameConfig): boolean;
 
-// @public
+// @beta
 export function allQueensSurrounded(board: GameBoard, color: Color): boolean;
 
-// @public
+// @beta
 export const BASE_GAME: GameConfig;
 
-// @public
+// @beta
 export const BASE_GAME_TOURNAMENT: GameConfig;
 
-// @public
+// @beta
 export function boardNotation(board: GameBoard): string;
 
-// @public
+// @beta
 export type BugId = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S' | 'X';
 
-// @public
+// @beta
 export interface CartesianCoordinate {
     // (undocumented)
     x: number;
@@ -30,86 +30,96 @@ export interface CartesianCoordinate {
     y: number;
 }
 
-// @public
+// @beta
 export function cartesianToHex(coordinate: CartesianCoordinate, size: number): HexCoordinate;
 
-// @public
+// @beta
 export function chainBoardChanges(...fns: ((board: GameBoard) => GameBoard)[]): (board: GameBoard) => GameBoard;
 
-// @public
+// @beta
 export type Color = 'b' | 'w';
 
-// @public
+// @beta
 export class CoordinatesNotAdjacentError extends Error {
     constructor(a: HexCoordinate, b: HexCoordinate);
 }
 
-// @public
+// @beta
+export function createBaseGameConfig(options: {
+    ladybug: boolean;
+    mosquito: boolean;
+    pillbug: boolean;
+}): GameConfig;
+
+// @beta
+export function createGame(config: GameConfig): Game;
+
+// @beta
 export function createMovePass(): Pass;
 
-// @public
+// @beta
 export function createTileMovement(from: HexCoordinate, to: HexCoordinate): TileMovement;
 
-// @public
+// @beta
 export function createTilePlacement(tileId: TileId, to: HexCoordinate): TilePlacement;
 
-// @public
+// @beta
 export type DirectionFn = (direction: number) => any;
 
-// @public
+// @beta
 export function eachClimbDirection(board: GameBoard, coordinate: HexCoordinate, iteratee: NeighborFn): boolean;
 
-// @public
+// @beta
 export function eachDirection(iteratee: DirectionFn): boolean;
 
-// @public
+// @beta
 export function eachDropDirection(board: GameBoard, coordinate: HexCoordinate, iteratee: NeighborFn): boolean;
 
-// @public
+// @beta
 export function eachNeighboringCoordinate(board: GameBoard, coordinate: HexCoordinate, iteratee: NeighborFn): boolean;
 
-// @public
+// @beta
 export function eachNeighboringStack(board: GameBoard, coordinate: HexCoordinate, iteratee: StackFn): boolean;
 
-// @public
+// @beta
 export function eachSlideDirection(board: GameBoard, coordinate: HexCoordinate, iteratee: NeighborFn): boolean;
 
-// @public
+// @beta
 export function eachStack(board: GameBoard, iteratee: StackFn): boolean;
 
-// @public
+// @beta
 export function eachUnoccupiedCoordinate(board: GameBoard, iteratee: StackFn): boolean;
 
-// @public
+// @beta
 export function everyNeighboringCoordinate(board: GameBoard, coordinate: HexCoordinate, predicate: StackFn): boolean;
 
-// @public
+// @beta
 export function findNeighborCoordinate(board: GameBoard, coordinate: HexCoordinate, predicate: StackFn): HexCoordinate | undefined;
 
-// @public
+// @beta
 export function findTileCoordinates(board: GameBoard, tileId: TileId): HexCoordinate[];
 
-// @public
+// @beta
 export const FLAT_TOP: HexOrientation;
 
-// @public
+// @beta
 export type Game = {
     config: GameConfig;
     board: GameBoard;
     moves: Move[];
 };
 
-// @public
+// @beta
 export type GameBoard = {
     [q: number]: {
         [r: number]: TileId[];
     };
 };
 
-// @public
+// @beta
 export function gameBoard(moves: Move[], upTo?: number): GameBoard;
 
-// @public
+// @beta
 export interface GameConfig {
     // (undocumented)
     tileset: Partial<{
@@ -119,46 +129,46 @@ export interface GameConfig {
     tournament?: true;
 }
 
-// @public
+// @beta
 export function gameNotation(moves: Move[]): string;
 
-// @public
+// @beta
 export function getNextMoveColor(moves: Move[]): Color;
 
-// @public
+// @beta
 export function getNumTiles(board: GameBoard, color?: Color, bug?: BugId): number;
 
-// @public
+// @beta
 export function getOccupiedCoordinates(board: GameBoard): HexCoordinate[];
 
-// @public
+// @beta
 export function getOccupiedNeighbors(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function getStack(board: GameBoard, coordinate: HexCoordinate): TileId[];
 
-// @public
+// @beta
 export function getStackHeight(board: GameBoard, coordinate: HexCoordinate): number;
 
-// @public
+// @beta
 export function getStacks(board: GameBoard, sortForRender?: boolean): HexStack[];
 
-// @public
+// @beta
 export function getTileAt(board: GameBoard, coordinate: HexCoordinate): TileId | undefined;
 
-// @public
+// @beta
 export function getTileBug(tileId: TileId): BugId;
 
-// @public
+// @beta
 export function getTileColor(tileId: TileId): Color;
 
-// @public
+// @beta
 export function getTilesOnBoard(board: GameBoard): TileId[];
 
-// @public
+// @beta
 export function getUnoccupiedCoordinates(board: GameBoard): HexCoordinate[];
 
-// @public
+// @beta
 export interface HexCoordinate {
     // (undocumented)
     q: number;
@@ -166,19 +176,19 @@ export interface HexCoordinate {
     r: number;
 }
 
-// @public
+// @beta
 export function hexCoordinateKey(coordinate: HexCoordinate): string;
 
-// @public
+// @beta
 export function hexesAreNeighbors(a: HexCoordinate, b: HexCoordinate): boolean;
 
-// @public
+// @beta
 export function hexesEqual(a?: HexCoordinate, b?: HexCoordinate): boolean;
 
-// @public
+// @beta
 export function hexHeight(hexSize: number): number;
 
-// @public
+// @beta
 export interface HexOrientation {
     // (undocumented)
     b0: number;
@@ -202,10 +212,10 @@ export interface HexOrientation {
     startAngle: number;
 }
 
-// @public
+// @beta
 export function hexPath(size: number, rounding: number, precision: number): string;
 
-// @public
+// @beta
 export interface HexStack {
     // (undocumented)
     coordinate: HexCoordinate;
@@ -213,57 +223,57 @@ export interface HexStack {
     tiles: TileId[];
 }
 
-// @public
+// @beta
 export function hexToCartesian(coordinate: HexCoordinate, size: number, orientation: HexOrientation): CartesianCoordinate;
 
-// @public
+// @beta
 export function hexToTransform(coordinate: HexCoordinate, size: number, orientation: HexOrientation): string;
 
-// @public
+// @beta
 export function hexWidth(hexSize: number): number;
 
-// @public
+// @beta
 export function includesHex(hexes: HexCoordinate[], hex: HexCoordinate): boolean;
 
-// @public
+// @beta
 export class InvalidDirectionError extends Error {
     constructor(direction: number);
 }
 
-// @public
+// @beta
 export function isBoardEmpty(board: GameBoard): boolean;
 
-// @public
+// @beta
 export function isCoordinateOccupied(board: GameBoard, coordinate: HexCoordinate): boolean;
 
-// @public
+// @beta
 export function isGated(board: GameBoard, coordinate: HexCoordinate, direction: number): boolean;
 
-// @public
+// @beta
 export function isMoveMovement(move: Move): move is TileMovement;
 
-// @public
+// @beta
 export function isMovePass(move: Move): move is Pass;
 
-// @public
+// @beta
 export function isMovePlacement(move: Move): move is TilePlacement;
 
-// @public
+// @beta
 export function isOwnTile(tileId: TileId, player: Color): boolean;
 
 // @internal (undocumented)
 export const _M_PI: number;
 
-// @public
+// @beta
 export type Move = TilePlacement | TileMovement | Pass;
 
-// @public
+// @beta
 export function moveBreaksHive(board: GameBoard, coordinate: HexCoordinate): boolean;
 
-// @public
+// @beta
 export function movementNotation(from: HexCoordinate, to: HexCoordinate): string;
 
-// @public
+// @beta
 export function moveTile(board: GameBoard, from: HexCoordinate, to: HexCoordinate): GameBoard;
 
 // @internal
@@ -272,10 +282,10 @@ export function _moveTileMutate(board: GameBoard, from: HexCoordinate, to: HexCo
 // @internal
 export function _moveTileProduce(board: GameBoard, from: HexCoordinate, to: HexCoordinate): GameBoard;
 
-// @public
+// @beta
 export type NeighborFn = (neighbor: HexCoordinate, stack: TileId[], direction: number) => any;
 
-// @public
+// @beta
 export class NoTileAtCoordinateError extends Error {
     constructor(coordinate: HexCoordinate);
 }
@@ -283,30 +293,30 @@ export class NoTileAtCoordinateError extends Error {
 // @internal
 export function _ownValidMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function parseBoardNotation(notation: string): GameBoard;
 
-// @public
+// @beta
 export function parseGameNotation(notation: string): Move[];
 
-// @public
+// @beta
 export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate;
 
-// @public
+// @beta
 export type Pass = {
     pass: true;
 };
 
-// @public
+// @beta
 export function passNotation(): string;
 
-// @public
+// @beta
 export function placementNotation(tileId: TileId, coordinate: HexCoordinate): string;
 
-// @public
+// @beta
 export function placeTile(board: GameBoard, tileId: TileId, coordinate: HexCoordinate): GameBoard;
 
-// @public
+// @beta
 export function placeTile(tileId: TileId, coordinate: HexCoordinate): (board: GameBoard) => GameBoard;
 
 // @internal
@@ -315,13 +325,13 @@ export function _placeTileMutate(board: GameBoard, tileId: TileId, coordinate: H
 // @internal
 export function _placeTileProduce(board: GameBoard, tileId: TileId, coordinate: HexCoordinate): GameBoard;
 
-// @public
+// @beta
 export const POINTY_TOP: HexOrientation;
 
-// @public
+// @beta
 export function popTile(board: GameBoard, coordinate: HexCoordinate): GameBoard;
 
-// @public
+// @beta
 export function popTile(coordinate: HexCoordinate): (board: GameBoard) => GameBoard;
 
 // @internal
@@ -330,85 +340,85 @@ export function _popTileMutate(board: GameBoard, coordinate: HexCoordinate): Gam
 // @internal
 export function _popTileProduce(board: GameBoard, coordinate: HexCoordinate): GameBoard;
 
-// @public
+// @beta
 export function relativeHexCoordinate(coordinate: HexCoordinate, direction: number): HexCoordinate;
 
-// @public
+// @beta
 export function relativeHexDirection(source: HexCoordinate, target: HexCoordinate): number;
 
-// @public
+// @beta
 export function renderSort(stacks: HexStack[]): HexStack[];
 
-// @public
+// @beta
 export function someNeighboringCoordinate(board: GameBoard, coordinate: HexCoordinate, iteratee: NeighborFn): boolean;
 
 // @internal (undocumented)
 export const _SQRT3: number;
 
-// @public
+// @beta
 export type StackFn = (coordinate: HexCoordinate, stack: TileId[]) => any;
 
-// @public
+// @beta
 export function stacksInHand(board: GameBoard, color: Color, config: GameConfig): TileId[][];
 
-// @public
+// @beta
 export function tile(color: Color, bugId: BugId): TileId;
 
-// @public
+// @beta
 export type TileId = `${Color}${BugId}`;
 
-// @public
+// @beta
 export type TileMovement = {
     from: HexCoordinate;
     to: HexCoordinate;
 };
 
-// @public
+// @beta
 export type TilePlacement = {
     tileId: TileId;
     to: HexCoordinate;
 };
 
-// @public
+// @beta
 export function tilesInHand(board: GameBoard, color: Color, config: GameConfig): TileId[];
 
-// @public
+// @beta
 export function toHexDirection(number: number): number;
 
-// @public
+// @beta
 export function validAntMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validBeetleMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validGrasshopperMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validLadybugMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validMosquitoMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validMoves(gameOrBoard: Game | GameBoard, color: Color, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validPillbugMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validPillbugPushes(board: GameBoard, target: HexCoordinate, pillbug: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validQueenMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function validSpiderMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function walkBoard(board: GameBoard, start: HexCoordinate, omit?: HexCoordinate): HexCoordinate[];
 
-// @public
+// @beta
 export function wasPillbugPush(color: Color, move: Move, board: GameBoard): boolean;
 
 // (No @packageDocumentation comment for this package)

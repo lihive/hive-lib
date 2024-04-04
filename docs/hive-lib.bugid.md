@@ -4,6 +4,9 @@
 
 ## BugId type
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 A character that represents a bug type. - A: Ant - B: Beetle - G: Grasshopper - L: Ladybug - M: Mosquito - P: Pillbug - Q: Queen - S: Spider - X: Blank
 
 **Signature:**

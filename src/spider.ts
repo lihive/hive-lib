@@ -16,7 +16,7 @@ import { moveBreaksHive } from './move';
  * @param coordinate - The location of the tile acting as a spider.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validSpiderMoves(
   board: GameBoard,

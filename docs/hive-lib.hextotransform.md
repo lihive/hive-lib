@@ -4,6 +4,9 @@
 
 ## hexToTransform() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Create an SVG transform string that can be used to translate to the center of a given hex coordinate.
 
 **Signature:**

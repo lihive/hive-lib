@@ -10,7 +10,7 @@ import { _SQRT3 } from './constants';
  * @returns The coordinate of the hex that contains the given cartesian
  * coordinate.
  *
- * @public
+ * @beta
  */
 export function cartesianToHex(
   coordinate: CartesianCoordinate,
@@ -44,7 +44,7 @@ export function cartesianToHex(
  * @param coordinate - The hex coordinate.
  * @returns A string unique to the coordinate.
  *
- * @public
+ * @beta
  */
 export function hexCoordinateKey(coordinate: HexCoordinate): string {
   return `${coordinate.q}.${coordinate.r}`;
@@ -57,7 +57,7 @@ export function hexCoordinateKey(coordinate: HexCoordinate): string {
  * @param b - The second coordinate.
  * @returns true if the hex coordinates are adjacent, false otherwise.
  *
- * @public
+ * @beta
  */
 export function hexesAreNeighbors(a: HexCoordinate, b: HexCoordinate): boolean {
   return Math.abs(a.q - b.q) <= 1 && Math.abs(a.r - b.r) <= 1;
@@ -70,7 +70,7 @@ export function hexesAreNeighbors(a: HexCoordinate, b: HexCoordinate): boolean {
  * @param b - The second hex coordinate.
  * @returns true if the coordinates are the same, false otherwise.
  *
- * @public
+ * @beta
  */
 export function hexesEqual(a?: HexCoordinate, b?: HexCoordinate): boolean {
   if (!a || !b) return false;
@@ -86,7 +86,7 @@ export function hexesEqual(a?: HexCoordinate, b?: HexCoordinate): boolean {
  * @param hexSize - A hex size.
  * @returns The height of a hexagon with the given size.
  *
- * @public
+ * @beta
  */
 export function hexHeight(hexSize: number): number {
   return 2 * hexSize;
@@ -100,7 +100,7 @@ export function hexHeight(hexSize: number): number {
  * @param orientation - A hex orientation.
  * @returns A cartesian coordinate representing the center of the hexagon.
  *
- * @public
+ * @beta
  */
 export function hexToCartesian(
   coordinate: HexCoordinate,
@@ -124,7 +124,7 @@ export function hexToCartesian(
  * @param orientation - A hex orientation.
  * @returns An svg transform string.
  *
- * @public
+ * @beta
  */
 export function hexToTransform(
   coordinate: HexCoordinate,
@@ -144,7 +144,7 @@ export function hexToTransform(
  * @param hexSize - A hex size.
  * @returns The width of a hexagon with the given size.
  *
- * @public
+ * @beta
  */
 export function hexWidth(hexSize: number): number {
   return _SQRT3 * hexSize;
@@ -157,7 +157,7 @@ export function hexWidth(hexSize: number): number {
  * @param hex - The hex coordinate to search for.
  * @returns true if hex is in the array hexes, false otherwise.
  *
- * @public
+ * @beta
  */
 export function includesHex(
   hexes: HexCoordinate[],
@@ -172,7 +172,7 @@ export function includesHex(
  * @param coordinateKey - A hex coordinate key.
  * @returns A hex coordinate.
  *
- * @public
+ * @beta
  */
 export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate {
   const values = coordinateKey.split('.');
@@ -193,7 +193,7 @@ export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate {
  * @returns The relative coordinate, or the same coordinate if direction is
  * zero.
  *
- * @public
+ * @beta
  */
 export function relativeHexCoordinate(
   coordinate: HexCoordinate,
@@ -228,7 +228,7 @@ export function relativeHexCoordinate(
  * @returns The hex direction pointing from source to target.
  * @throws Error if the hex coordinates are not adjacent.
  *
- * @public
+ * @beta
  */
 export function relativeHexDirection(
   source: HexCoordinate,
@@ -257,7 +257,7 @@ export function relativeHexDirection(
  * @param number - The number to convert.
  * @returns A number in the range [1, 6].
  *
- * @public
+ * @beta
  */
 export function toHexDirection(number: number): number {
   while (number < 1) number += 6;

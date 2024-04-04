@@ -4,6 +4,9 @@
 
 ## eachUnoccupiedCoordinate() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Call iteratee for every unoccupied coordinate that is adjacent to an occupied coordinate on a board.
 
 **Signature:**

@@ -4,6 +4,9 @@
 
 ## renderSort() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Sort stacks of tiles so that they are ordered from back to front, shortest to tallest.
 
 **Signature:**

@@ -7,7 +7,7 @@ import { BugId, Color, TileId } from './types';
  * @param bugId - The bug id.
  * @returns A tile id.
  *
- * @public
+ * @beta
  */
 export function tile(color: Color, bugId: BugId): TileId {
   return `${color}${bugId}`;
@@ -19,7 +19,7 @@ export function tile(color: Color, bugId: BugId): TileId {
  * @param tileId - The tile id.
  * @returns The bug id portion of the tile id.
  *
- * @public
+ * @beta
  */
 export function getTileBug(tileId: TileId): BugId {
   return tileId[1] as BugId;
@@ -31,7 +31,7 @@ export function getTileBug(tileId: TileId): BugId {
  * @param tileId - The tile's tile id
  * @returns The tile's color
  *
- * @public
+ * @beta
  */
 export function getTileColor(tileId: TileId): Color {
   return tileId[0] as Color;
@@ -44,7 +44,7 @@ export function getTileColor(tileId: TileId): Color {
  * @param player - The player in question.
  * @returns true if the tile id and player are the same color, false otherwise.
  *
- * @public
+ * @beta
  */
 export function isOwnTile(tileId: TileId, player: Color): boolean {
   return getTileColor(tileId) === player;

@@ -4,6 +4,9 @@
 
 ## someNeighboringCoordinate() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Determine if there is some coordinate neighboring the given coordinate for which the given predicate holds true.
 
 **Signature:**

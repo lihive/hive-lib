@@ -4,6 +4,9 @@
 
 ## hexWidth() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Get the width of a hexagon given its size.
 
 Refer to \[Red Blob Games\](https://www.redblobgames.com/grids/hexagons/\#size-and-spacing) for definition of hexagon size.

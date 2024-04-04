@@ -24,7 +24,7 @@ Description
 
 </td><td>
 
-An error indicating that two coordinates are not adjacent when they were expected to be.
+**_(BETA)_** An error indicating that two coordinates are not adjacent when they were expected to be.
 
 
 </td></tr>
@@ -35,7 +35,7 @@ An error indicating that two coordinates are not adjacent when they were expecte
 
 </td><td>
 
-An error indicating that a direction value is invalid.
+**_(BETA)_** An error indicating that a direction value is invalid.
 
 
 </td></tr>
@@ -46,7 +46,7 @@ An error indicating that a direction value is invalid.
 
 </td><td>
 
-An error indicating that there is no tile at a coordinate where there was expected to be one.
+**_(BETA)_** An error indicating that there is no tile at a coordinate where there was expected to be one.
 
 
 </td></tr>
@@ -72,7 +72,7 @@ Description
 
 </td><td>
 
-Determine if all queens of the given color are on the board.
+**_(BETA)_** Determine if all queens of the given color are on the board.
 
 
 </td></tr>
@@ -83,7 +83,7 @@ Determine if all queens of the given color are on the board.
 
 </td><td>
 
-Determine if all queens of the given color are completely surrounded.
+**_(BETA)_** Determine if all queens of the given color are completely surrounded.
 
 
 </td></tr>
@@ -94,7 +94,7 @@ Determine if all queens of the given color are completely surrounded.
 
 </td><td>
 
-Generate a board notation string from a [GameBoard](./hive-lib.gameboard.md)<!-- -->.
+**_(BETA)_** Generate a board notation string from a [GameBoard](./hive-lib.gameboard.md)<!-- -->.
 
 
 </td></tr>
@@ -105,7 +105,7 @@ Generate a board notation string from a [GameBoard](./hive-lib.gameboard.md)<!--
 
 </td><td>
 
-Convert a cartesian coordinate to a hex coordinate.
+**_(BETA)_** Convert a cartesian coordinate to a hex coordinate.
 
 
 </td></tr>
@@ -116,7 +116,29 @@ Convert a cartesian coordinate to a hex coordinate.
 
 </td><td>
 
-Generate a function that applies a sequence of changes to a game board.
+**_(BETA)_** Generate a function that applies a sequence of changes to a game board.
+
+
+</td></tr>
+<tr><td>
+
+[createBaseGameConfig(options)](./hive-lib.createbasegameconfig.md)
+
+
+</td><td>
+
+**_(BETA)_** Generate a game config using the base game tile counts, optionally including any of the three expansion tiles.
+
+
+</td></tr>
+<tr><td>
+
+[createGame(config)](./hive-lib.creategame.md)
+
+
+</td><td>
+
+**_(BETA)_** Generate a new game with the provided configuration.
 
 
 </td></tr>
@@ -127,7 +149,7 @@ Generate a function that applies a sequence of changes to a game board.
 
 </td><td>
 
-Create a passing move.
+**_(BETA)_** Create a passing move.
 
 
 </td></tr>
@@ -138,7 +160,7 @@ Create a passing move.
 
 </td><td>
 
-Create a tile movement move.
+**_(BETA)_** Create a tile movement move.
 
 
 </td></tr>
@@ -149,7 +171,7 @@ Create a tile movement move.
 
 </td><td>
 
-Create a tile placement move.
+**_(BETA)_** Create a tile placement move.
 
 
 </td></tr>
@@ -160,7 +182,7 @@ Create a tile placement move.
 
 </td><td>
 
-Call iteratee for every neighboring stack onto which a tile could climb.
+**_(BETA)_** Call iteratee for every neighboring stack onto which a tile could climb.
 
 
 </td></tr>
@@ -171,7 +193,7 @@ Call iteratee for every neighboring stack onto which a tile could climb.
 
 </td><td>
 
-Call iteratee for each of the six hex direction values (1 through 6).
+**_(BETA)_** Call iteratee for each of the six hex direction values (1 through 6).
 
 
 </td></tr>
@@ -182,7 +204,7 @@ Call iteratee for each of the six hex direction values (1 through 6).
 
 </td><td>
 
-Call iteratee for every neighboring coordinate into which a tile could drop.
+**_(BETA)_** Call iteratee for every neighboring coordinate into which a tile could drop.
 
 
 </td></tr>
@@ -193,7 +215,7 @@ Call iteratee for every neighboring coordinate into which a tile could drop.
 
 </td><td>
 
-Call iteratee for every neighboring coordinate.
+**_(BETA)_** Call iteratee for every neighboring coordinate.
 
 
 </td></tr>
@@ -204,7 +226,7 @@ Call iteratee for every neighboring coordinate.
 
 </td><td>
 
-Call iteratee for every neighboring coordinate that contains a tile stack.
+**_(BETA)_** Call iteratee for every neighboring coordinate that contains a tile stack.
 
 
 </td></tr>
@@ -215,7 +237,7 @@ Call iteratee for every neighboring coordinate that contains a tile stack.
 
 </td><td>
 
-Call iteratee for every neighboring coordinate into which a tile could slide.
+**_(BETA)_** Call iteratee for every neighboring coordinate into which a tile could slide.
 
 
 </td></tr>
@@ -226,7 +248,7 @@ Call iteratee for every neighboring coordinate into which a tile could slide.
 
 </td><td>
 
-Call iteratee for every coordinate on the game board that contains tiles.
+**_(BETA)_** Call iteratee for every coordinate on the game board that contains tiles.
 
 
 </td></tr>
@@ -237,7 +259,7 @@ Call iteratee for every coordinate on the game board that contains tiles.
 
 </td><td>
 
-Call iteratee for every unoccupied coordinate that is adjacent to an occupied coordinate on a board.
+**_(BETA)_** Call iteratee for every unoccupied coordinate that is adjacent to an occupied coordinate on a board.
 
 
 </td></tr>
@@ -248,7 +270,7 @@ Call iteratee for every unoccupied coordinate that is adjacent to an occupied co
 
 </td><td>
 
-Determine if some predicate holds true for every coordinate surrounding a specified coordinate.
+**_(BETA)_** Determine if some predicate holds true for every coordinate surrounding a specified coordinate.
 
 
 </td></tr>
@@ -259,7 +281,7 @@ Determine if some predicate holds true for every coordinate surrounding a specif
 
 </td><td>
 
-Find the first neighboring hex coordinate for which a predicate holds true.
+**_(BETA)_** Find the first neighboring hex coordinate for which a predicate holds true.
 
 
 </td></tr>
@@ -270,7 +292,7 @@ Find the first neighboring hex coordinate for which a predicate holds true.
 
 </td><td>
 
-Find the locations of a tile.
+**_(BETA)_** Find the locations of a tile.
 
 
 </td></tr>
@@ -281,7 +303,7 @@ Find the locations of a tile.
 
 </td><td>
 
-Generate a game board from a sequence of moves, optionally up to but not including a certain move index.
+**_(BETA)_** Generate a game board from a sequence of moves, optionally up to but not including a certain move index.
 
 
 </td></tr>
@@ -292,7 +314,7 @@ Generate a game board from a sequence of moves, optionally up to but not includi
 
 </td><td>
 
-Generate a game notation string from an array of [Move](./hive-lib.move.md)<!-- -->s.
+**_(BETA)_** Generate a game notation string from an array of [Move](./hive-lib.move.md)<!-- -->s.
 
 
 </td></tr>
@@ -303,7 +325,7 @@ Generate a game notation string from an array of [Move](./hive-lib.move.md)<!-- 
 
 </td><td>
 
-Get the player who plays next.
+**_(BETA)_** Get the player who plays next.
 
 
 </td></tr>
@@ -314,7 +336,7 @@ Get the player who plays next.
 
 </td><td>
 
-Get the total number of tiles on the board, optionally of a specified color and/or bug.
+**_(BETA)_** Get the total number of tiles on the board, optionally of a specified color and/or bug.
 
 
 </td></tr>
@@ -325,7 +347,7 @@ Get the total number of tiles on the board, optionally of a specified color and/
 
 </td><td>
 
-Get an array of all occupied hex coordinates on a game board.
+**_(BETA)_** Get an array of all occupied hex coordinates on a game board.
 
 
 </td></tr>
@@ -336,7 +358,7 @@ Get an array of all occupied hex coordinates on a game board.
 
 </td><td>
 
-Get an array of all occupied hex coordinates that are neighboring a given coordinate.
+**_(BETA)_** Get an array of all occupied hex coordinates that are neighboring a given coordinate.
 
 
 </td></tr>
@@ -347,7 +369,7 @@ Get an array of all occupied hex coordinates that are neighboring a given coordi
 
 </td><td>
 
-Get the stack of tiles located at the given hex coordinate.
+**_(BETA)_** Get the stack of tiles located at the given hex coordinate.
 
 
 </td></tr>
@@ -358,7 +380,7 @@ Get the stack of tiles located at the given hex coordinate.
 
 </td><td>
 
-Get the height of the stack located at the given hex coordinate.
+**_(BETA)_** Get the height of the stack located at the given hex coordinate.
 
 
 </td></tr>
@@ -369,7 +391,7 @@ Get the height of the stack located at the given hex coordinate.
 
 </td><td>
 
-Get an array of all stacks on a board, optionally sorting for rendering.
+**_(BETA)_** Get an array of all stacks on a board, optionally sorting for rendering.
 
 
 </td></tr>
@@ -380,7 +402,7 @@ Get an array of all stacks on a board, optionally sorting for rendering.
 
 </td><td>
 
-Get the tile on top of the stack at the given coordinate.
+**_(BETA)_** Get the tile on top of the stack at the given coordinate.
 
 
 </td></tr>
@@ -391,7 +413,7 @@ Get the tile on top of the stack at the given coordinate.
 
 </td><td>
 
-Get the bug id from a tile id.
+**_(BETA)_** Get the bug id from a tile id.
 
 
 </td></tr>
@@ -402,7 +424,7 @@ Get the bug id from a tile id.
 
 </td><td>
 
-Get the color of a tile.
+**_(BETA)_** Get the color of a tile.
 
 
 </td></tr>
@@ -413,7 +435,7 @@ Get the color of a tile.
 
 </td><td>
 
-Get an array of all tiles on a game board.
+**_(BETA)_** Get an array of all tiles on a game board.
 
 
 </td></tr>
@@ -424,7 +446,7 @@ Get an array of all tiles on a game board.
 
 </td><td>
 
-Get an array of the unoccupied coordinates touching the hive.
+**_(BETA)_** Get an array of the unoccupied coordinates touching the hive.
 
 
 </td></tr>
@@ -435,7 +457,7 @@ Get an array of the unoccupied coordinates touching the hive.
 
 </td><td>
 
-Generate a unique string for a hex coordinate. This function will always generate the same string for a given coordinate.
+**_(BETA)_** Generate a unique string for a hex coordinate. This function will always generate the same string for a given coordinate.
 
 
 </td></tr>
@@ -446,7 +468,7 @@ Generate a unique string for a hex coordinate. This function will always generat
 
 </td><td>
 
-Determine if two hex coordinates are adjacent.
+**_(BETA)_** Determine if two hex coordinates are adjacent.
 
 
 </td></tr>
@@ -457,7 +479,7 @@ Determine if two hex coordinates are adjacent.
 
 </td><td>
 
-Determine if two hex coordinates are equivalent.
+**_(BETA)_** Determine if two hex coordinates are equivalent.
 
 
 </td></tr>
@@ -468,7 +490,7 @@ Determine if two hex coordinates are equivalent.
 
 </td><td>
 
-Get the height of a hexagon given its size.
+**_(BETA)_** Get the height of a hexagon given its size.
 
 Refer to \[Red Blob Games\](https://www.redblobgames.com/grids/hexagons/\#size-and-spacing) for definition of hexagon size.
 
@@ -481,7 +503,7 @@ Refer to \[Red Blob Games\](https://www.redblobgames.com/grids/hexagons/\#size-a
 
 </td><td>
 
-Generate a SVG path data string that represents a hexagon.
+**_(BETA)_** Generate a SVG path data string that represents a hexagon.
 
 
 </td></tr>
@@ -492,7 +514,7 @@ Generate a SVG path data string that represents a hexagon.
 
 </td><td>
 
-Convert a hex coordinate to a cartesian coordinate.
+**_(BETA)_** Convert a hex coordinate to a cartesian coordinate.
 
 
 </td></tr>
@@ -503,7 +525,7 @@ Convert a hex coordinate to a cartesian coordinate.
 
 </td><td>
 
-Create an SVG transform string that can be used to translate to the center of a given hex coordinate.
+**_(BETA)_** Create an SVG transform string that can be used to translate to the center of a given hex coordinate.
 
 
 </td></tr>
@@ -514,7 +536,7 @@ Create an SVG transform string that can be used to translate to the center of a 
 
 </td><td>
 
-Get the width of a hexagon given its size.
+**_(BETA)_** Get the width of a hexagon given its size.
 
 Refer to \[Red Blob Games\](https://www.redblobgames.com/grids/hexagons/\#size-and-spacing) for definition of hexagon size.
 
@@ -527,7 +549,7 @@ Refer to \[Red Blob Games\](https://www.redblobgames.com/grids/hexagons/\#size-a
 
 </td><td>
 
-Determine if an array of hex coordinates includes a specific coordinate.
+**_(BETA)_** Determine if an array of hex coordinates includes a specific coordinate.
 
 
 </td></tr>
@@ -538,7 +560,7 @@ Determine if an array of hex coordinates includes a specific coordinate.
 
 </td><td>
 
-Determine if a game board is empty.
+**_(BETA)_** Determine if a game board is empty.
 
 
 </td></tr>
@@ -549,7 +571,7 @@ Determine if a game board is empty.
 
 </td><td>
 
-Determine if there is at least one tile at the given coordinate.
+**_(BETA)_** Determine if there is at least one tile at the given coordinate.
 
 
 </td></tr>
@@ -560,7 +582,7 @@ Determine if there is at least one tile at the given coordinate.
 
 </td><td>
 
-Determine if there is a gate blocking movement (sliding, climbing, or dropping) of the tile at the given coordinate in the given direction.
+**_(BETA)_** Determine if there is a gate blocking movement (sliding, climbing, or dropping) of the tile at the given coordinate in the given direction.
 
 
 </td></tr>
@@ -571,7 +593,7 @@ Determine if there is a gate blocking movement (sliding, climbing, or dropping) 
 
 </td><td>
 
-Determine if a move is a tile movement.
+**_(BETA)_** Determine if a move is a tile movement.
 
 
 </td></tr>
@@ -582,7 +604,7 @@ Determine if a move is a tile movement.
 
 </td><td>
 
-Determine if a move is a passing move.
+**_(BETA)_** Determine if a move is a passing move.
 
 
 </td></tr>
@@ -593,7 +615,7 @@ Determine if a move is a passing move.
 
 </td><td>
 
-Determine if a move is a tile placement.
+**_(BETA)_** Determine if a move is a tile placement.
 
 
 </td></tr>
@@ -604,7 +626,7 @@ Determine if a move is a tile placement.
 
 </td><td>
 
-Determine if a tile belongs to a player.
+**_(BETA)_** Determine if a tile belongs to a player.
 
 
 </td></tr>
@@ -615,7 +637,7 @@ Determine if a tile belongs to a player.
 
 </td><td>
 
-Determine if moving the topmost tile from the given coordinate would break the hive.
+**_(BETA)_** Determine if moving the topmost tile from the given coordinate would break the hive.
 
 
 </td></tr>
@@ -626,7 +648,7 @@ Determine if moving the topmost tile from the given coordinate would break the h
 
 </td><td>
 
-Generate a tile movement notation string.
+**_(BETA)_** Generate a tile movement notation string.
 
 
 </td></tr>
@@ -637,7 +659,7 @@ Generate a tile movement notation string.
 
 </td><td>
 
-Move a tile on a board to a new location.
+**_(BETA)_** Move a tile on a board to a new location.
 
 
 </td></tr>
@@ -648,7 +670,7 @@ Move a tile on a board to a new location.
 
 </td><td>
 
-Generate a [GameBoard](./hive-lib.gameboard.md) from a board notation string.
+**_(BETA)_** Generate a [GameBoard](./hive-lib.gameboard.md) from a board notation string.
 
 
 </td></tr>
@@ -659,7 +681,7 @@ Generate a [GameBoard](./hive-lib.gameboard.md) from a board notation string.
 
 </td><td>
 
-Generate an ordered array of [Move](./hive-lib.move.md) objects from a game notation string.
+**_(BETA)_** Generate an ordered array of [Move](./hive-lib.move.md) objects from a game notation string.
 
 
 </td></tr>
@@ -670,7 +692,7 @@ Generate an ordered array of [Move](./hive-lib.move.md) objects from a game nota
 
 </td><td>
 
-Convert a hex coordinate into a hex coordinate.
+**_(BETA)_** Convert a hex coordinate into a hex coordinate.
 
 
 </td></tr>
@@ -681,7 +703,7 @@ Convert a hex coordinate into a hex coordinate.
 
 </td><td>
 
-Generate a passing move notation string.
+**_(BETA)_** Generate a passing move notation string.
 
 
 </td></tr>
@@ -692,7 +714,7 @@ Generate a passing move notation string.
 
 </td><td>
 
-Generate a tile placement notation string.
+**_(BETA)_** Generate a tile placement notation string.
 
 
 </td></tr>
@@ -703,7 +725,7 @@ Generate a tile placement notation string.
 
 </td><td>
 
-Place a tile on a board.
+**_(BETA)_** Place a tile on a board.
 
 
 </td></tr>
@@ -714,7 +736,7 @@ Place a tile on a board.
 
 </td><td>
 
-Create a function that places a tile on a board.
+**_(BETA)_** Create a function that places a tile on a board.
 
 
 </td></tr>
@@ -725,7 +747,7 @@ Create a function that places a tile on a board.
 
 </td><td>
 
-Remove a tile from a board.
+**_(BETA)_** Remove a tile from a board.
 
 
 </td></tr>
@@ -736,7 +758,7 @@ Remove a tile from a board.
 
 </td><td>
 
-Create a function that removes a tile from a board.
+**_(BETA)_** Create a function that removes a tile from a board.
 
 
 </td></tr>
@@ -747,7 +769,7 @@ Create a function that removes a tile from a board.
 
 </td><td>
 
-Get the hex coordinate in one of the six directions relative to the given base coordinate, or on top of that coordinate.
+**_(BETA)_** Get the hex coordinate in one of the six directions relative to the given base coordinate, or on top of that coordinate.
 
 
 </td></tr>
@@ -758,7 +780,7 @@ Get the hex coordinate in one of the six directions relative to the given base c
 
 </td><td>
 
-Get the hex direction pointing from source to target.
+**_(BETA)_** Get the hex direction pointing from source to target.
 
 
 </td></tr>
@@ -769,7 +791,7 @@ Get the hex direction pointing from source to target.
 
 </td><td>
 
-Sort stacks of tiles so that they are ordered from back to front, shortest to tallest.
+**_(BETA)_** Sort stacks of tiles so that they are ordered from back to front, shortest to tallest.
 
 
 </td></tr>
@@ -780,7 +802,7 @@ Sort stacks of tiles so that they are ordered from back to front, shortest to ta
 
 </td><td>
 
-Determine if there is some coordinate neighboring the given coordinate for which the given predicate holds true.
+**_(BETA)_** Determine if there is some coordinate neighboring the given coordinate for which the given predicate holds true.
 
 
 </td></tr>
@@ -791,7 +813,7 @@ Determine if there is some coordinate neighboring the given coordinate for which
 
 </td><td>
 
-Get a list of tiles that a player has in their hand, grouped by bug type.
+**_(BETA)_** Get a list of tiles that a player has in their hand, grouped by bug type.
 
 
 </td></tr>
@@ -802,7 +824,7 @@ Get a list of tiles that a player has in their hand, grouped by bug type.
 
 </td><td>
 
-Create a tile id.
+**_(BETA)_** Create a tile id.
 
 
 </td></tr>
@@ -813,7 +835,7 @@ Create a tile id.
 
 </td><td>
 
-Get a list of tiles that a player has in their hand.
+**_(BETA)_** Get a list of tiles that a player has in their hand.
 
 
 </td></tr>
@@ -824,7 +846,7 @@ Get a list of tiles that a player has in their hand.
 
 </td><td>
 
-Convert a number to a hex direction.
+**_(BETA)_** Convert a number to a hex direction.
 
 
 </td></tr>
@@ -835,7 +857,7 @@ Convert a number to a hex direction.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as an ant.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as an ant.
 
 
 </td></tr>
@@ -846,7 +868,7 @@ Get all valid moves for the tile at the given coordinate acting as an ant.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a beetle.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a beetle.
 
 
 </td></tr>
@@ -857,7 +879,7 @@ Get all valid moves for the tile at the given coordinate acting as a beetle.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a grasshopper.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a grasshopper.
 
 
 </td></tr>
@@ -868,7 +890,7 @@ Get all valid moves for the tile at the given coordinate acting as a grasshopper
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a ladybug.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a ladybug.
 
 
 </td></tr>
@@ -879,7 +901,7 @@ Get all valid moves for the tile at the given coordinate acting as a ladybug.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a mosquito.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a mosquito.
 
 
 </td></tr>
@@ -890,7 +912,7 @@ Get all valid moves for the tile at the given coordinate acting as a mosquito.
 
 </td><td>
 
-Get an array of valid moves for the specified color player moving the top tile at the specified coordiante.
+**_(BETA)_** Get an array of valid moves for the specified color player moving the top tile at the specified coordiante.
 
 
 </td></tr>
@@ -901,7 +923,7 @@ Get an array of valid moves for the specified color player moving the top tile a
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a pillbug.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a pillbug.
 
 
 </td></tr>
@@ -912,7 +934,7 @@ Get all valid moves for the tile at the given coordinate acting as a pillbug.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate being moved by an adjacent pillbug.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate being moved by an adjacent pillbug.
 
 
 </td></tr>
@@ -923,7 +945,7 @@ Get all valid moves for the tile at the given coordinate being moved by an adjac
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a queen.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a queen.
 
 
 </td></tr>
@@ -934,7 +956,7 @@ Get all valid moves for the tile at the given coordinate acting as a queen.
 
 </td><td>
 
-Get all valid moves for the tile at the given coordinate acting as a spider.
+**_(BETA)_** Get all valid moves for the tile at the given coordinate acting as a spider.
 
 
 </td></tr>
@@ -945,7 +967,7 @@ Get all valid moves for the tile at the given coordinate acting as a spider.
 
 </td><td>
 
-Create a sequence of coordinates that represent walking the board, visiting each occupied coordinate exactly once.
+**_(BETA)_** Create a sequence of coordinates that represent walking the board, visiting each occupied coordinate exactly once.
 
 
 </td></tr>
@@ -956,7 +978,7 @@ Create a sequence of coordinates that represent walking the board, visiting each
 
 </td><td>
 
-Determine if a move was a pillbug push.
+**_(BETA)_** Determine if a move was a pillbug push.
 
 
 </td></tr>
@@ -982,7 +1004,7 @@ Description
 
 </td><td>
 
-A coordinate in 2D space in a cartesian coordinate system.
+**_(BETA)_** A coordinate in 2D space in a cartesian coordinate system.
 
 
 </td></tr>
@@ -993,7 +1015,7 @@ A coordinate in 2D space in a cartesian coordinate system.
 
 </td><td>
 
-An object describing which play variants are being used in a game.
+**_(BETA)_** An object describing which play variants are being used in a game.
 
 
 </td></tr>
@@ -1004,7 +1026,7 @@ An object describing which play variants are being used in a game.
 
 </td><td>
 
-A coordinate in 2D space in a hexagonal coordinate system.
+**_(BETA)_** A coordinate in 2D space in a hexagonal coordinate system.
 
 
 </td></tr>
@@ -1015,7 +1037,7 @@ A coordinate in 2D space in a hexagonal coordinate system.
 
 </td><td>
 
-An object that represents a hex orientation.
+**_(BETA)_** An object that represents a hex orientation.
 
 
 </td></tr>
@@ -1026,7 +1048,7 @@ An object that represents a hex orientation.
 
 </td><td>
 
-A stack of tile ids associated with a hex coordinate.
+**_(BETA)_** A stack of tile ids associated with a hex coordinate.
 
 
 </td></tr>
@@ -1052,7 +1074,7 @@ Description
 
 </td><td>
 
-The base game configuration with the tournament opening rule.
+**_(BETA)_** The base game configuration with the tournament opening rule.
 
 
 </td></tr>
@@ -1063,7 +1085,7 @@ The base game configuration with the tournament opening rule.
 
 </td><td>
 
-The base game configuration.
+**_(BETA)_** The base game configuration.
 
 
 </td></tr>
@@ -1074,7 +1096,7 @@ The base game configuration.
 
 </td><td>
 
-The flat-top hex orientation.
+**_(BETA)_** The flat-top hex orientation.
 
 
 </td></tr>
@@ -1085,7 +1107,7 @@ The flat-top hex orientation.
 
 </td><td>
 
-The pointy-top hex orientation.
+**_(BETA)_** The pointy-top hex orientation.
 
 
 </td></tr>
@@ -1111,7 +1133,7 @@ Description
 
 </td><td>
 
-A character that represents a bug type. - A: Ant - B: Beetle - G: Grasshopper - L: Ladybug - M: Mosquito - P: Pillbug - Q: Queen - S: Spider - X: Blank
+**_(BETA)_** A character that represents a bug type. - A: Ant - B: Beetle - G: Grasshopper - L: Ladybug - M: Mosquito - P: Pillbug - Q: Queen - S: Spider - X: Blank
 
 
 </td></tr>
@@ -1122,7 +1144,7 @@ A character that represents a bug type. - A: Ant - B: Beetle - G: Grasshopper - 
 
 </td><td>
 
-A character representing a hive player color.
+**_(BETA)_** A character representing a hive player color.
 
 
 </td></tr>
@@ -1133,7 +1155,7 @@ A character representing a hive player color.
 
 </td><td>
 
-A function invoked with a hex direction parameter.
+**_(BETA)_** A function invoked with a hex direction parameter.
 
 
 </td></tr>
@@ -1144,7 +1166,7 @@ A function invoked with a hex direction parameter.
 
 </td><td>
 
-An object that contains a game's settings, history, and state.
+**_(BETA)_** An object that contains a game's settings, history, and state.
 
 
 </td></tr>
@@ -1155,7 +1177,7 @@ An object that contains a game's settings, history, and state.
 
 </td><td>
 
-A map of hex coordinates to tile stacks.
+**_(BETA)_** A map of hex coordinates to tile stacks.
 
 
 </td></tr>
@@ -1166,7 +1188,7 @@ A map of hex coordinates to tile stacks.
 
 </td><td>
 
-An object describing a player's move, which can be a tile placement, tile movement, or pass.
+**_(BETA)_** An object describing a player's move, which can be a tile placement, tile movement, or pass.
 
 
 </td></tr>
@@ -1177,7 +1199,7 @@ An object describing a player's move, which can be a tile placement, tile moveme
 
 </td><td>
 
-A function typically invoked for a coordinates's neighbors, where neighbor and stack refer to some coordinate's neighboring coordinate and stack, and direction refers to the relative direction of the neighbor from the original coordinate.
+**_(BETA)_** A function typically invoked for a coordinates's neighbors, where neighbor and stack refer to some coordinate's neighboring coordinate and stack, and direction refers to the relative direction of the neighbor from the original coordinate.
 
 
 </td></tr>
@@ -1188,7 +1210,7 @@ A function typically invoked for a coordinates's neighbors, where neighbor and s
 
 </td><td>
 
-An object describing a passing move.
+**_(BETA)_** An object describing a passing move.
 
 
 </td></tr>
@@ -1199,7 +1221,7 @@ An object describing a passing move.
 
 </td><td>
 
-A function invoked with a hex coordinate and a tile stack.
+**_(BETA)_** A function invoked with a hex coordinate and a tile stack.
 
 
 </td></tr>
@@ -1210,7 +1232,7 @@ A function invoked with a hex coordinate and a tile stack.
 
 </td><td>
 
-A string that represents a specific colored bug tile.
+**_(BETA)_** A string that represents a specific colored bug tile.
 
 
 </td></tr>
@@ -1221,7 +1243,7 @@ A string that represents a specific colored bug tile.
 
 </td><td>
 
-An object describing a tile movement.
+**_(BETA)_** An object describing a tile movement.
 
 
 </td></tr>
@@ -1232,7 +1254,7 @@ An object describing a tile movement.
 
 </td><td>
 
-An object describing a tile placement.
+**_(BETA)_** An object describing a tile placement.
 
 
 </td></tr>

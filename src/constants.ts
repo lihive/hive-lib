@@ -13,7 +13,7 @@ export const _M_PI = Math.PI;
 /**
  * The base game configuration.
  *
- * @public
+ * @beta
  */
 export const BASE_GAME: GameConfig = {
   tileset: {
@@ -28,7 +28,7 @@ export const BASE_GAME: GameConfig = {
 /**
  * The base game configuration with the tournament opening rule.
  *
- * @public
+ * @beta
  */
 export const BASE_GAME_TOURNAMENT: GameConfig = {
   tournament: true,
@@ -44,7 +44,7 @@ export const BASE_GAME_TOURNAMENT: GameConfig = {
 /**
  * The pointy-top hex orientation.
  *
- * @public
+ * @beta
  */
 export const POINTY_TOP: HexOrientation = {
   id: 'pointy-top',
@@ -62,7 +62,7 @@ export const POINTY_TOP: HexOrientation = {
 /**
  * The flat-top hex orientation.
  *
- * @public
+ * @beta
  */
 export const FLAT_TOP: HexOrientation = {
   id: 'flat-top',

@@ -4,7 +4,7 @@ import { HexCoordinate } from './types';
  * An error indicating that two coordinates are not adjacent when they were
  * expected to be.
  *
- * @public
+ * @beta
  */
 export class CoordinatesNotAdjacentError extends Error {
   constructor(a: HexCoordinate, b: HexCoordinate) {
@@ -15,7 +15,7 @@ export class CoordinatesNotAdjacentError extends Error {
 /**
  * An error indicating that a direction value is invalid.
  *
- * @public
+ * @beta
  */
 export class InvalidDirectionError extends Error {
   constructor(direction: number) {
@@ -27,7 +27,7 @@ export class InvalidDirectionError extends Error {
  * An error indicating that there is no tile at a coordinate where there was
  * expected to be one.
  *
- * @public
+ * @beta
  */
 export class NoTileAtCoordinateError extends Error {
   constructor(coordinate: HexCoordinate) {

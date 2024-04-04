@@ -4,6 +4,9 @@
 
 ## hexCoordinateKey() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Generate a unique string for a hex coordinate. This function will always generate the same string for a given coordinate.
 
 **Signature:**

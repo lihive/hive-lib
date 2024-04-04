@@ -4,6 +4,9 @@
 
 ## NeighborFn type
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 A function typically invoked for a coordinates's neighbors, where neighbor and stack refer to some coordinate's neighboring coordinate and stack, and direction refers to the relative direction of the neighbor from the original coordinate.
 
 **Signature:**

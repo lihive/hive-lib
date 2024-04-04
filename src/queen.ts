@@ -12,7 +12,7 @@ import { moveBreaksHive } from './move';
  * @param coordinate - The location of the tile acting as a queen.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validQueenMoves(
   board: GameBoard,

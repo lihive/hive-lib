@@ -4,6 +4,9 @@
 
 ## isGated() function
 
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> 
+
 Determine if there is a gate blocking movement (sliding, climbing, or dropping) of the tile at the given coordinate in the given direction.
 
 **Signature:**

@@ -10,28 +10,28 @@
  * - S: Spider
  * - X: Blank
  *
- * @public
+ * @beta
  */
 export type BugId = 'A' | 'B' | 'G' | 'L' | 'M' | 'P' | 'Q' | 'S' | 'X';
 
 /**
  * A character representing a hive player color.
  *
- * @public
+ * @beta
  */
 export type Color = 'b' | 'w';
 
 /**
  * A string that represents a specific colored bug tile.
  *
- * @public
+ * @beta
  */
 export type TileId = `${Color}${BugId}`;
 
 /**
  * A coordinate in 2D space in a cartesian coordinate system.
  *
- * @public
+ * @beta
  */
 export interface CartesianCoordinate {
   x: number;
@@ -41,7 +41,7 @@ export interface CartesianCoordinate {
 /**
  * A coordinate in 2D space in a hexagonal coordinate system.
  *
- * @public
+ * @beta
  */
 export interface HexCoordinate {
   q: number;
@@ -55,7 +55,7 @@ export interface HexCoordinate {
  * Internally the objectstores values for performing a coordinate transformation
  * and its inverse, as well as a starting angle for drawing a hex.
  *
- * @public
+ * @beta
  */
 export interface HexOrientation {
   id: 'flat-top' | 'pointy-top';
@@ -73,7 +73,7 @@ export interface HexOrientation {
 /**
  * A stack of tile ids associated with a hex coordinate.
  *
- * @public
+ * @beta
  */
 export interface HexStack {
   coordinate: HexCoordinate;
@@ -83,7 +83,7 @@ export interface HexStack {
 /**
  * A map of hex coordinates to tile stacks.
  *
- * @public
+ * @beta
  */
 export type GameBoard = {
   [q: number]: {
@@ -94,7 +94,7 @@ export type GameBoard = {
 /**
  * An object describing which play variants are being used in a game.
  *
- * @public
+ * @beta
  */
 export interface GameConfig {
   // flag indicating use of tournament opening rules
@@ -108,7 +108,7 @@ export interface GameConfig {
 /**
  * An object that contains a game's settings, history, and state.
  *
- * @public
+ * @beta
  */
 export type Game = {
   config: GameConfig;
@@ -120,14 +120,14 @@ export type Game = {
  * An object describing a player's move, which can be a tile placement, tile
  * movement, or pass.
  *
- * @public
+ * @beta
  */
 export type Move = TilePlacement | TileMovement | Pass;
 
 /**
  * An object describing a passing move.
  *
- * @public
+ * @beta
  */
 export type Pass = {
   // flag indicating a passing move
@@ -137,7 +137,7 @@ export type Pass = {
 /**
  * An object describing a tile movement.
  *
- * @public
+ * @beta
  */
 export type TileMovement = {
   // the location of the tile being moved
@@ -149,7 +149,7 @@ export type TileMovement = {
 /**
  * An object describing a tile placement.
  *
- * @public
+ * @beta
  */
 export type TilePlacement = {
   // the tile being placed
@@ -161,7 +161,7 @@ export type TilePlacement = {
 /**
  * A function invoked with a hex direction parameter.
  *
- * @public
+ * @beta
  */
 export type DirectionFn = (direction: number) => any;
 
@@ -171,7 +171,7 @@ export type DirectionFn = (direction: number) => any;
  * direction refers to the relative direction of the neighbor from the original
  * coordinate.
  *
- * @public
+ * @beta
  */
 export type NeighborFn = (
   neighbor: HexCoordinate,
@@ -182,6 +182,6 @@ export type NeighborFn = (
 /**
  * A function invoked with a hex coordinate and a tile stack.
  *
- * @public
+ * @beta
  */
 export type StackFn = (coordinate: HexCoordinate, stack: TileId[]) => any;

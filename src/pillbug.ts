@@ -27,7 +27,7 @@ import { NoTileAtCoordinateError } from './error';
  * @param coordinate - The location of the tile acting as a pillbug.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validPillbugMoves(
   board: GameBoard,
@@ -65,7 +65,7 @@ export function validPillbugMoves(
  * @param pillbug - The location of the pillbug moving the tile.
  * @returns An array of hex coordinates.
  *
- * @public
+ * @beta
  */
 export function validPillbugPushes(
   board: GameBoard,
@@ -113,7 +113,7 @@ export function validPillbugPushes(
  * @throws {@link NoTileAtCoordinateError}
  * Throws if there is no tile at the destination of the move.
  *
- * @public
+ * @beta
  */
 export function wasPillbugPush(
   color: Color,
