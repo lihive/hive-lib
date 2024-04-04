@@ -7,13 +7,16 @@ import {
 import { moveBreaksHive } from './move';
 
 /**
- * Get all coordinates that are valid moves for the tile at the given coordinate
- * acting as a beetle. The beetle rules state that the beetle can move only
- * one space per turn but can also move on top of the hive.
+ * Get all valid moves for the tile at the given coordinate acting as a beetle.
  *
- * @param board nA game board.
- * @param coordinate The location of the tile acting as a beetle.
- * @return An array of hex coordinates.
+ * @remarks
+ * The beetle rules state that the beetle can move only one space per turn but
+ * can also move on top of the hive.
+ *
+ * @beta
+ * @param board - nA game board.
+ * @param coordinate - The location of the tile acting as a beetle.
+ * @returns An array of hex coordinates.
  */
 export function validBeetleMoves(
   board: GameBoard,

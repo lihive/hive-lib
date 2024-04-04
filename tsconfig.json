@@ -2,10 +2,12 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "dist/dts",
+    "declarationMap": true,
     "emitDeclarationOnly": true,
-    "target": "ESNext",
-    "moduleResolution": "Node"
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "dist"
   },
   "include": ["index.ts"]
 }

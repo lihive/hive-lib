@@ -16,8 +16,10 @@ const CLOSE_BRACKET = '~';
  * are made to simplify parsing. Note that board notation is not intended to be
  * human-readable; rather, it's optimized for size and potential use in a URL.
  *
- * @param board A game board.
- * @return A board notation string.
+ * @param board - A game board.
+ * @returns A board notation string.
+ *
+ * @beta
  */
 export function boardNotation(board: GameBoard): string {
   const str = JSON.stringify(board);
@@ -49,8 +51,10 @@ export function boardNotation(board: GameBoard): string {
 /**
  * Generate a game notation string from an array of {@link Move}s.
  *
- * @param moves An array of moves.
- * @return A game notation string.
+ * @param moves - An array of moves.
+ * @returns A game notation string.
+ *
+ * @beta
  */
 export function gameNotation(moves: Move[]): string {
   return moves
@@ -66,9 +70,11 @@ export function gameNotation(moves: Move[]): string {
 /**
  * Generate a tile movement notation string.
  *
- * @param from The location of the tile being moved.
- * @param to The movement destination.
- * @return A tile movement notation string.
+ * @param from - The location of the tile being moved.
+ * @param to - The movement destination.
+ * @returns A tile movement notation string.
+ *
+ * @beta
  */
 export function movementNotation(
   from: HexCoordinate,
@@ -80,8 +86,10 @@ export function movementNotation(
 /**
  * Generate a {@link GameBoard} from a board notation string.
  *
- * @param notation A board notation string.
- * @return A game board.
+ * @param notation - A board notation string.
+ * @returns A game board.
+ *
+ * @beta
  */
 export function parseBoardNotation(notation: string): GameBoard {
   const iter = notation[Symbol.iterator]();
@@ -137,8 +145,10 @@ export function parseBoardNotation(notation: string): GameBoard {
  * Generate an ordered array of {@link Move} objects from a game notation
  * string.
  *
- * @param notation A game notation string.
- * @return An array of moves.
+ * @param notation - A game notation string.
+ * @returns An array of moves.
+ *
+ * @beta
  */
 export function parseGameNotation(notation: string): Move[] {
   function parseToken(token: string): HexCoordinate | TileId {
@@ -201,7 +211,9 @@ export function parseGameNotation(notation: string): Move[] {
 /**
  * Generate a passing move notation string.
  *
- * @return A passing move notation string.
+ * @returns A passing move notation string.
+ *
+ * @beta
  */
 export function passNotation(): string {
   return 'x';
@@ -210,9 +222,11 @@ export function passNotation(): string {
 /**
  * Generate a tile placement notation string.
  *
- * @param tileId The tile being placed.
- * @param coordinate The placement location.
- * @return A tile placement notation string.
+ * @param tileId - The tile being placed.
+ * @param coordinate - The placement location.
+ * @returns A tile placement notation string.
+ *
+ * @beta
  */
 export function placementNotation(
   tileId: TileId,

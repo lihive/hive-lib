@@ -1,17 +1,21 @@
 import { GameBoard, HexCoordinate } from './types';
 import { hexCoordinateKey } from './hex';
-import { eachSlideDirection, getTileAt, moveTileProduce } from './board';
-import { ExpectedTileAtCoordinateError } from './error';
+import { _moveTileProduce, eachSlideDirection, getTileAt } from './board';
+import { NoTileAtCoordinateError } from './error';
 import { moveBreaksHive } from './move';
 
 /**
- * Get all coordinates that are valid moves for the tile at the given coordinate
- * acting as an ant. The ant rules state that an ant can move to any other
- * position around the hive as long as it can slide to that location.
+ * Get all valid moves for the tile at the given coordinate acting as an ant.
  *
- * @param board A game board.
- * @param coordinate The location of the tile acting as an ant.
- * @return An array of hex coordinates.
+ * @remarks
+ * The ant rules state that an ant can move to any other position around the
+ * hive as long as it can slide to that location.
+ *
+ * @param board - A game board.
+ * @param coordinate - The location of the tile acting as an ant.
+ * @returns An array of hex coordinates.
+ *
+ * @beta
  */
 export function validAntMoves(
   board: GameBoard,
@@ -27,10 +31,10 @@ export function validAntMoves(
       const key = hexCoordinateKey(neighbor);
       if (!visited.has(key)) {
         const tile = getTileAt(board, coordinate);
-        if (!tile) throw new ExpectedTileAtCoordinateError(coordinate);
+        if (!tile) throw new NoTileAtCoordinateError(coordinate);
         visited.add(key);
         valid.push(neighbor);
-        walk(moveTileProduce(board, coordinate, neighbor), neighbor);
+        walk(_moveTileProduce(board, coordinate, neighbor), neighbor);
       }
     });
   };

@@ -4,5 +4,11 @@
 # Node
 node_modules
 
+# Build directory
+dist
+
 # Unit testing code coverage
 coverage
+
+# Temporary files/directory
+temp
