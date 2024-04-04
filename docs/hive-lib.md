@@ -885,7 +885,7 @@ Get all valid moves for the tile at the given coordinate acting as a mosquito.
 </td></tr>
 <tr><td>
 
-[validMoves(board, color, coordinate, moves)](./hive-lib.validmoves.md)
+[validMoves(gameOrBoard, color, coordinate)](./hive-lib.validmoves.md)
 
 
 </td><td>

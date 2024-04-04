@@ -1,5 +1,6 @@
 import {
   Color,
+  Game,
   GameBoard,
   HexCoordinate,
   Move,
@@ -166,27 +167,28 @@ export function moveBreaksHive(
  * at the specified coordiante.
  *
  * @remarks
- * The `moves` paramater should always be included when possible. The pillbug's
- * special ability to move other tiles relies on knowledge of the previous move
- * to determine which tiles are eligible to be moved during the current turn.
- * When the `moves` parameter is not provided, it is assumed that no tiles are
- * restricted from movement based on pillbug rules.
+ * The `gameOrBoard` parameter should always be a {@link Game} when possible.
+ * The pillbug's special ability to move other tiles depends on knowledge of the
+ * previous move to determine which tiles are eligible to be moved during the
+ * current turn. When the `gameOrBoard` parameter is a board, it is assumed that
+ * no tiles are restricted from movement based on pillbug rules.
  *
- * @param board - A game board.
+ * @param gameOrBoard - A game or a game board.
  * @param color - The color of the player moving a tile.
  * @param coordinate - The coordinate of the tile being moved.
- * @param moves - The current sequence of game moves.
  * @returns An array of coordinates indicating valid destinations for the tile
  * being moved by the specified player.
  *
  * @public
  */
 export function validMoves(
-  board: GameBoard,
+  gameOrBoard: Game | GameBoard,
   color: Color,
-  coordinate: HexCoordinate,
-  moves?: Move[]
+  coordinate: HexCoordinate
 ): HexCoordinate[] {
+  const board = 'board' in gameOrBoard ? gameOrBoard.board : gameOrBoard;
+  const moves = 'moves' in gameOrBoard ? gameOrBoard.moves : [];
+
   const tile = getTileAt(board, coordinate);
   if (!tile) return [];
   const tileColor = getTileColor(tile);

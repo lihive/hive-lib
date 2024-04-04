@@ -9,7 +9,7 @@ Get an array of valid moves for the specified color player moving the top tile a
 **Signature:**
 
 ```typescript
-export declare function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate, moves?: Move[]): HexCoordinate[];
+export declare function validMoves(gameOrBoard: Game | GameBoard, color: Color, coordinate: HexCoordinate): HexCoordinate[];
 ```
 
 ## Parameters
@@ -32,17 +32,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-board
+gameOrBoard
 
 
 </td><td>
 
-[GameBoard](./hive-lib.gameboard.md)
+[Game](./hive-lib.game.md) \| [GameBoard](./hive-lib.gameboard.md)
 
 
 </td><td>
 
-A game board.
+A game or a game board.
 
 
 </td></tr>
@@ -78,22 +78,6 @@ The coordinate of the tile being moved.
 
 
 </td></tr>
-<tr><td>
-
-moves
-
-
-</td><td>
-
-[Move](./hive-lib.move.md)<!-- -->\[\]
-
-
-</td><td>
-
-_(Optional)_ The current sequence of game moves.
-
-
-</td></tr>
 </tbody></table>
 **Returns:**
 
@@ -103,5 +87,5 @@ An array of coordinates indicating valid destinations for the tile being moved b
 
 ## Remarks
 
-The `moves` paramater should always be included when possible. The pillbug's special ability to move other tiles relies on knowledge of the previous move to determine which tiles are eligible to be moved during the current turn. When the `moves` parameter is not provided, it is assumed that no tiles are restricted from movement based on pillbug rules.
+The `gameOrBoard` parameter should always be a [Game](./hive-lib.game.md) when possible. The pillbug's special ability to move other tiles depends on knowledge of the previous move to determine which tiles are eligible to be moved during the current turn. When the `gameOrBoard` parameter is a board, it is assumed that no tiles are restricted from movement based on pillbug rules.
 

@@ -391,7 +391,7 @@ export function validLadybugMoves(board: GameBoard, coordinate: HexCoordinate): 
 export function validMosquitoMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
 
 // @public
-export function validMoves(board: GameBoard, color: Color, coordinate: HexCoordinate, moves?: Move[]): HexCoordinate[];
+export function validMoves(gameOrBoard: Game | GameBoard, color: Color, coordinate: HexCoordinate): HexCoordinate[];
 
 // @public
 export function validPillbugMoves(board: GameBoard, coordinate: HexCoordinate): HexCoordinate[];
