@@ -34,7 +34,7 @@
     /**
      * (REQUIRED) Whether to generate a doc model file.
      */
-    "enabled": true
+    "enabled": true,
 
     /**
      * The base URL where the project's source code can be viewed on a website such as GitHub or
@@ -50,7 +50,7 @@
      * SUPPORTED TOKENS: none
      * DEFAULT VALUE: ""
      */
-    // "projectFolderUrl": "http://github.com/path/to/your/projectFolder"
+     "projectFolderUrl": "https://github.com/lihive/hive-lib/tree/main"
   },
 
   /**
