@@ -18,10 +18,11 @@ interface GridRowValidMoveSetProps {
 
 export const GridRowValidMoveSet = (props: GridRowValidMoveSetProps) => {
   const { table, setSelectedCoordinate } = useTable();
-  const { setPlayerColor } = useBoard();
+  const { playerColor, setPlayerColor } = useBoard();
   const { deleteTarget } = useGenerator();
 
   const isActiveCase = () =>
+    playerColor() === props.validMoveSet.color &&
     hexesEqual(table.selectedCoordinate, props.validMoveSet.target);
 
   const classList = () => ({

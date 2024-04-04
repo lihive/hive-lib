@@ -3,6 +3,7 @@ export * from './src/beetle';
 export * from './src/board';
 export * from './src/constants';
 export * from './src/error';
+export * from './src/game';
 export * from './src/grasshopper';
 export * from './src/hand';
 export * from './src/hex';

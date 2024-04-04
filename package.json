@@ -1,17 +1,21 @@
 {
   "name": "hive-lib",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/hive-lib.js",
+  "types": "dist/hive-lib.d.ts",
   "repository": "https://github.com/lihive/hive-lib.git",
   "author": "Tristan Dyer",
   "private": true,
   "scripts": {
-    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js",
-    "test": "vitest run",
+    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js && tsc -p tsconfig.json && api-extractor run --local",
+    "docs": "api-documenter markdown -i ./temp -o ./docs",
+    "test": "vitest run --reporter verbose",
     "tool:hex-editor": "vite serve hex-editor",
     "tool:test-generator": "vite serve test-generator"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.24.1",
+    "@microsoft/api-extractor": "^7.43.0",
     "@solid-primitives/keyboard": "^1.2.8",
     "@solid-primitives/storage": "^3.0.0",
     "esbuild": "^0.20.1",

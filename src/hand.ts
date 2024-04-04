@@ -5,10 +5,12 @@ import { tile } from './tile';
 /**
  * Get a list of tiles that a player has in their hand, grouped by bug type.
  *
- * @param board A game board.
- * @param color A player color.
- * @param config A game config object.
- * @return A list of tile ids in the given players hand, grouped by bug type.
+ * @param board - A game board.
+ * @param color - A player color.
+ * @param config - A game config object.
+ * @returns A list of tile ids in the given players hand, grouped by bug type.
+ *
+ * @beta
  */
 export function stacksInHand(
   board: GameBoard,
@@ -30,10 +32,12 @@ export function stacksInHand(
 /**
  * Get a list of tiles that a player has in their hand.
  *
- * @param board A game board.
- * @param color A player color.
- * @param config A game config object.
- * @return A list of tile ids in the given player's hand.
+ * @param board - A game board.
+ * @param color - A player color.
+ * @param config - A game config object.
+ * @returns A list of tile ids in the given player's hand.
+ *
+ * @beta
  */
 export function tilesInHand(
   board: GameBoard,

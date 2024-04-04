@@ -1,5 +1,6 @@
 import {
   Color,
+  Game,
   GameBoard,
   HexCoordinate,
   Move,
@@ -17,18 +18,26 @@ import {
   walkBoard
 } from './board';
 import { getTileBug, getTileColor } from './tile';
-import { hexCoordinateKey } from './hex';
+import { hexCoordinateKey, hexesEqual } from './hex';
 import { validAntMoves } from './ant';
 import { validBeetleMoves } from './beetle';
 import { validGrasshopperMoves } from './grasshopper';
 import { validLadybugMoves } from './ladybug';
 import { validMosquitoMoves } from './mosquito';
-import { validPillbugMoves, validPillbugPushes } from './pillbug';
+import {
+  validPillbugMoves,
+  validPillbugPushes,
+  wasPillbugPush
+} from './pillbug';
 import { validQueenMoves } from './queen';
 import { validSpiderMoves } from './spider';
 
 /**
  * Create a passing move.
+ *
+ * @returns A passing move.
+ *
+ * @beta
  */
 export function createMovePass(): Pass {
   return {
@@ -39,8 +48,12 @@ export function createMovePass(): Pass {
 /**
  * Create a tile placement move.
  *
- * @param tileId The tile being placed.
- * @param to The coordinate where the tile is being placed.
+ * @param tileId - The tile being placed.
+ * @param to - The coordinate where the tile is being placed.
+ * @returns A move indicating placement of the specified tile at the specified
+ * coordinate.
+ *
+ * @beta
  */
 export function createTilePlacement(
   tileId: TileId,
@@ -55,8 +68,12 @@ export function createTilePlacement(
 /**
  * Create a tile movement move.
  *
- * @param from The coordinate where the tile is moving from.
- * @param to The coordinate where the tile is move to.
+ * @param from - The coordinate where the tile is moving from.
+ * @param to - The coordinate where the tile is move to.
+ * @returns A move indicating movement of a tile from the specified coordinate
+ * to the specified destination.
+ *
+ * @beta
  */
 export function createTileMovement(
   from: HexCoordinate,
@@ -71,8 +88,10 @@ export function createTileMovement(
 /**
  * Get the player who plays next.
  *
- * @param moves The current sequence of game moves.
- * @return the color of the player who plays next.
+ * @param moves - The current sequence of game moves.
+ * @returns The color of the player who plays next.
+ *
+ * @beta
  */
 export function getNextMoveColor(moves: Move[]): Color {
   return moves.length % 2 ? 'b' : 'w';
@@ -81,8 +100,10 @@ export function getNextMoveColor(moves: Move[]): Color {
 /**
  * Determine if a move is a passing move.
  *
- * @param move A move.
- * @return true if the move is a passing move, false otherwise.
+ * @param move - A move.
+ * @returns true if the move is a passing move, false otherwise.
+ *
+ * @beta
  */
 export function isMovePass(move: Move): move is Pass {
   return 'pass' in move && move.pass;
@@ -91,8 +112,10 @@ export function isMovePass(move: Move): move is Pass {
 /**
  * Determine if a move is a tile placement.
  *
- * @param move A move.
- * @return true if the move is a tile placement, false otherwise.
+ * @param move - A move.
+ * @returns true if the move is a tile placement, false otherwise.
+ *
+ * @beta
  */
 export function isMovePlacement(move: Move): move is TilePlacement {
   return 'tileId' in move && 'to' in move;
@@ -101,8 +124,10 @@ export function isMovePlacement(move: Move): move is TilePlacement {
 /**
  * Determine if a move is a tile movement.
  *
- * @param move A move.
- * @return true if the move is a tile movement, false otherwise.
+ * @param move - A move.
+ * @returns true if the move is a tile movement, false otherwise.
+ *
+ * @beta
  */
 export function isMoveMovement(move: Move): move is TileMovement {
   return 'from' in move && 'to' in move;
@@ -112,10 +137,12 @@ export function isMoveMovement(move: Move): move is TileMovement {
  * Determine if moving the topmost tile from the given coordinate would break
  * the hive.
  *
- * @param board A game board.
- * @param coordinate The coordinate from which to move a tile.
- * @return true if moving the topmost tile from the given coordinate would break
+ * @param board - A game board.
+ * @param coordinate - The coordinate from which to move a tile.
+ * @returns true if moving the topmost tile from the given coordinate would break
  * the tile, false otherwise.
+ *
+ * @beta
  */
 export function moveBreaksHive(
   board: GameBoard,
@@ -135,11 +162,33 @@ export function moveBreaksHive(
   return walkedPath.length !== coordinates.length - 1;
 }
 
+/**
+ * Get an array of valid moves for the specified color player moving the top tile
+ * at the specified coordiante.
+ *
+ * @remarks
+ * The `gameOrBoard` parameter should always be a {@link Game} when possible.
+ * The pillbug's special ability to move other tiles depends on knowledge of the
+ * previous move to determine which tiles are eligible to be moved during the
+ * current turn. When the `gameOrBoard` parameter is a board, it is assumed that
+ * no tiles are restricted from movement based on pillbug rules.
+ *
+ * @param gameOrBoard - A game or a game board.
+ * @param color - The color of the player moving a tile.
+ * @param coordinate - The coordinate of the tile being moved.
+ * @returns An array of coordinates indicating valid destinations for the tile
+ * being moved by the specified player.
+ *
+ * @beta
+ */
 export function validMoves(
-  board: GameBoard,
+  gameOrBoard: Game | GameBoard,
   color: Color,
   coordinate: HexCoordinate
 ): HexCoordinate[] {
+  const board = 'board' in gameOrBoard ? gameOrBoard.board : gameOrBoard;
+  const moves = 'moves' in gameOrBoard ? gameOrBoard.moves : [];
+
   const tile = getTileAt(board, coordinate);
   if (!tile) return [];
   const tileColor = getTileColor(tile);
@@ -150,33 +199,25 @@ export function validMoves(
   // Ignore blank tiles
   if (tileBug === 'X') return valid;
 
+  // Prevent any movement at all if this tile was moved by a pillbug on the
+  // previous move
+  if (moves && moves.length > 0) {
+    const lastMove = moves[moves.length - 1];
+    if (wasPillbugPush(color, lastMove, board)) {
+      return valid;
+    }
+  }
+
   // Get tile's own movements
   if (tileColor === color) {
-    switch (tileBug) {
-      case 'A':
-        valid = validAntMoves(board, coordinate);
-        break;
-      case 'B':
-        valid = validBeetleMoves(board, coordinate);
-        break;
-      case 'G':
-        valid = validGrasshopperMoves(board, coordinate);
-        break;
-      case 'L':
-        valid = validLadybugMoves(board, coordinate);
-        break;
-      case 'M':
-        valid = validMosquitoMoves(board, coordinate);
-        break;
-      case 'P':
-        valid = validPillbugMoves(board, coordinate);
-        break;
-      case 'Q':
-        valid = validQueenMoves(board, coordinate);
-        break;
-      case 'S':
-        valid = validSpiderMoves(board, coordinate);
-        break;
+    valid = _ownValidMoves(board, coordinate);
+  }
+
+  // Prevent movement by pillbug if the previous move also moved this tile
+  if (moves && moves.length > 0) {
+    const lastMove = moves[moves.length - 1];
+    if (!isMovePass(lastMove) && hexesEqual(coordinate, lastMove.to)) {
+      return valid;
     }
   }
 
@@ -207,4 +248,42 @@ export function validMoves(
   }
 
   return valid;
+}
+
+/**
+ * Get an array of all valid moves for the tile at the specified coordinate
+ * moving according to the movement rules of its own bug type.
+ *
+ * @param board - A game board
+ * @param coordinate - The coordinate of the tile
+ * @returns An array of hex coordinates.
+ *
+ * @internal
+ */
+export function _ownValidMoves(
+  board: GameBoard,
+  coordinate: HexCoordinate
+): HexCoordinate[] {
+  const tile = getTileAt(board, coordinate);
+  if (!tile) return [];
+  const tileBug = getTileBug(tile);
+  switch (tileBug) {
+    case 'A':
+      return validAntMoves(board, coordinate);
+    case 'B':
+      return validBeetleMoves(board, coordinate);
+    case 'G':
+      return validGrasshopperMoves(board, coordinate);
+    case 'L':
+      return validLadybugMoves(board, coordinate);
+    case 'M':
+      return validMosquitoMoves(board, coordinate);
+    case 'P':
+      return validPillbugMoves(board, coordinate);
+    case 'Q':
+      return validQueenMoves(board, coordinate);
+    case 'S':
+      return validSpiderMoves(board, coordinate);
+  }
+  return [];
 }
