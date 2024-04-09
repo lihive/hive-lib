@@ -18,7 +18,7 @@ export const ShortcutsModal = (props: ShortcutsModalProps) => {
             <div>
               <kbd>Bug</kbd> keys
             </div>
-            <div>
+            <div class={styles.inlineTight}>
               <kbd title='Ant'>A</kbd>
               <kbd title='Beetle'>B</kbd>
               <kbd title='Grasshopper'>G</kbd>
@@ -55,8 +55,30 @@ export const ShortcutsModal = (props: ShortcutsModalProps) => {
             <kbd>-</kbd>
           </Shortcut>
           <Shortcut>
+            <div>Set tile as last move (placement)</div>
+            <div class={styles.inline}>
+              <kbd>Shift</kbd>
+              <div>+</div>
+              <Mouse />
+              <div>tile</div>
+            </div>
+          </Shortcut>
+          <Shortcut>
+            <div>Move selected and set as last move</div>
+            <div class={styles.inline}>
+              <kbd>Shift</kbd>
+              <div>+</div>
+              <Mouse />
+              <div>grid</div>
+            </div>
+          </Shortcut>
+          <Shortcut>
+            <div>Clear selected item, clear last move</div>
+            <kbd>Esc</kbd>
+          </Shortcut>
+          <Shortcut>
             <div>Select up/down/left/right</div>
-            <div>
+            <div class={styles.inlineTight}>
               <kbd>↑</kbd>
               <kbd>↓</kbd>
               <kbd>←</kbd>
@@ -65,7 +87,7 @@ export const ShortcutsModal = (props: ShortcutsModalProps) => {
           </Shortcut>
           <Shortcut>
             <div>Save current selection to test suite</div>
-            <div>
+            <div class={styles.inlineTight}>
               <kbd>⌘</kbd>
               <kbd>S</kbd>
             </div>
@@ -92,3 +114,14 @@ const Shortcut = (props: ParentProps<ShortcutProps>) => {
     </div>
   );
 };
+
+const Mouse = () => (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    viewBox='0 0 320 512'
+    width={14}
+    height={14}
+  >
+    <path d='M0 55.2V426c0 12.2 9.9 22 22 22c6.3 0 12.4-2.7 16.6-7.5L121.2 346l58.1 116.3c7.9 15.8 27.1 22.2 42.9 14.3s22.2-27.1 14.3-42.9L179.8 320H297.9c12.2 0 22.1-9.9 22.1-22.1c0-6.3-2.7-12.3-7.4-16.5L38.6 37.9C34.3 34.1 28.9 32 23.2 32C10.4 32 0 42.4 0 55.2z' />
+  </svg>
+);

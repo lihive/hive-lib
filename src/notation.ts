@@ -1,11 +1,24 @@
-import { GameBoard, HexCoordinate, Move, TileId } from './types';
+import {
+  BugId,
+  Game,
+  GameBoard,
+  GameConfig,
+  HexCoordinate,
+  Move,
+  TileId
+} from './types';
 import { isMoveMovement, isMovePass, isMovePlacement } from './move';
+import { NotationParsingError } from './error';
 
+// board notation consts
 const OPEN_BRACKET = '.';
 const CLOSE_BRACKET = '~';
 
+// game notation consts
+const SECTION_SEP = '_';
+
 /**
- * Generate a board notation string from a {@link GameBoard}.
+ * Generate a board notation string.
  *
  * @remarks
  * A game board notation string is a simple compressed string representation of
@@ -49,14 +62,44 @@ export function boardNotation(board: GameBoard): string {
 }
 
 /**
- * Generate a game notation string from an array of {@link Move}s.
+ * Generate a game config notation string.
  *
- * @param moves - An array of moves.
+ * @param config
+ */
+export function configNotation(config: GameConfig): string {
+  const tileset = config.tileset;
+  const tilesetString = Object.keys(tileset)
+    .map((bug) => `${bug}${tileset[bug as BugId]}`)
+    .join('');
+  return config.tournament ? 't' + tilesetString : tilesetString;
+}
+
+/**
+ * Generate a game notation string.
+ *
+ * @param game - A game object.
  * @returns A game notation string.
  *
  * @beta
  */
-export function gameNotation(moves: Move[]): string {
+export function gameNotation(game: Game): string {
+  const config = configNotation(game.config);
+  const board = boardNotation(game.board);
+  const moves = movesNotation(game.moves);
+  return config + SECTION_SEP + moves + SECTION_SEP + board;
+}
+
+/**
+ * Generate a moves notation string from an array of {@link Move}s.
+ *
+ * TODO: Refactor moves to have a lead character indicating type of move
+ *
+ * @param moves An array of moves.
+ * @returns A moves notation string.
+ *
+ * @beta
+ */
+export function movesNotation(moves: Move[]): string {
   return moves
     .map((move) => {
       if (isMovePass(move)) return passNotation();
@@ -142,15 +185,65 @@ export function parseBoardNotation(notation: string): GameBoard {
 }
 
 /**
- * Generate an ordered array of {@link Move} objects from a game notation
- * string.
+ * Generate a ${@link GameConfig} from a game config notation string.
+ *
+ * @param notation - A game config notation string.
+ * @returns A game config.
+ *
+ * @beta
+ */
+export function parseConfigNotation(notation: string): GameConfig {
+  const config: GameConfig = {
+    tournament: notation.charAt(0) === 't',
+    tileset: {}
+  };
+  const tilesetNotation = config.tournament ? notation.slice(1) : notation;
+  const tiles = tilesetNotation.match(/[A-Z]\d+/g);
+  if (!tiles) return config;
+
+  tiles.forEach((match) => {
+    const bugId = match[0] as BugId;
+    config.tileset[bugId] = +match.slice(1);
+  });
+  return config;
+}
+
+/**
+ * Generate a ${@link Game} from a game notation string.
  *
  * @param notation - A game notation string.
+ * @returns A game.
+ * @throws {@link NotationParsingError}
+ * Throws if the notation string could not be parsed.
+ *
+ * @beta
+ */
+export function parseGameNotation(notation: string): Game {
+  const sections = notation.split(SECTION_SEP);
+  if (sections.length !== 3) throw new NotationParsingError('game', notation);
+
+  const [configNotation, movesNotation, boardNotation] = sections;
+  const config = parseConfigNotation(configNotation);
+  const moves = parseMovesNotation(movesNotation);
+  const board = parseBoardNotation(boardNotation);
+
+  return {
+    config,
+    board,
+    moves
+  };
+}
+
+/**
+ * Generate an ordered array of {@link Move} objects from a moves notation
+ * string.
+ *
+ * @param notation - A moves notation string.
  * @returns An array of moves.
  *
  * @beta
  */
-export function parseGameNotation(notation: string): Move[] {
+export function parseMovesNotation(notation: string): Move[] {
   function parseToken(token: string): HexCoordinate | TileId {
     if (token[0] === '(') {
       const nums = token.slice(1, -1).split(',');

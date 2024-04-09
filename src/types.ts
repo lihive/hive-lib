@@ -98,7 +98,7 @@ export type GameBoard = {
  */
 export interface GameConfig {
   // flag indicating use of tournament opening rules
-  tournament?: true;
+  tournament?: boolean;
   // the number of each tile type (defaulting to 0 if omitted)
   tileset: Partial<{
     [key in BugId]: number;

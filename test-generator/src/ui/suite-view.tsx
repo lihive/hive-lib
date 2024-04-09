@@ -6,6 +6,7 @@ import { GridRowActivePlayer } from './grid-row-active-player';
 import { GridRowOrientation } from './grid-row-orientation';
 import { For } from 'solid-js';
 import { GridRowBoard } from './grid-row-board';
+import { GridRowLastMove } from './grid-row-last-move';
 
 interface SuiteViewProps {
   load: () => void;
@@ -25,6 +26,7 @@ export const SuiteView = (props: SuiteViewProps) => {
         <kbd>?</kbd>
         <GridRowActivePlayer />
         <GridRowOrientation />
+        <GridRowLastMove />
       </div>
       <div class={styles.buttons}>
         <TextButton onClick={clearSuite}>Clear suite</TextButton>

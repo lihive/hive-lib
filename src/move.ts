@@ -61,7 +61,7 @@ export function createTilePlacement(
 ): TilePlacement {
   return {
     tileId,
-    to
+    to: { ...to }
   };
 }
 
@@ -80,8 +80,8 @@ export function createTileMovement(
   to: HexCoordinate
 ): TileMovement {
   return {
-    from,
-    to
+    from: { ...from },
+    to: { ...to }
   };
 }
 

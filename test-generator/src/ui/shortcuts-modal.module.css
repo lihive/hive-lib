@@ -51,3 +51,9 @@
   align-items: center;
   gap: 0.5em;
 }
+
+.inlineTight {
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+}

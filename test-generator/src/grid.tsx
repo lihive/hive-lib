@@ -1,19 +1,26 @@
 import styles from './table.module.css';
-import { HexCoordinate, hexToTransform } from '@hive-lib';
+import { createTileMovement, HexCoordinate, hexToTransform } from '@hive-lib';
 import { For } from 'solid-js';
 import { useTable } from './table-provider';
 import { RoundedHex } from './rounded-hex';
 import { SVGGMouseEventHandler } from './types';
+import { useBoard } from './board-provider';
 
 const grid: HexCoordinate[] = hexgrid(10);
 
 export const Grid = () => {
   const { table, setSelectedCoordinate, setHoverCoordinate } = useTable();
+  const { moveTile, setLastMove } = useBoard();
   return (
     <g>
       <For each={grid}>
         {(coord) => {
-          const onClickHex: SVGGMouseEventHandler = () => {
+          const onClickHex: SVGGMouseEventHandler = (event) => {
+            if (event.shiftKey && table.selectedCoordinate) {
+              const move = createTileMovement(table.selectedCoordinate, coord);
+              moveTile(move);
+              setLastMove(move);
+            }
             setSelectedCoordinate({ ...coord });
           };
 

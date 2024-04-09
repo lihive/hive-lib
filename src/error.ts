@@ -34,3 +34,14 @@ export class NoTileAtCoordinateError extends Error {
     super(`No tile at (${coordinate.q}, ${coordinate.r})`);
   }
 }
+
+/**
+ * An error indicating that some type of notation string could not be parsed.
+ *
+ * @beta
+ */
+export class NotationParsingError extends Error {
+  constructor(type: string, notation: string) {
+    super(`Error parsing ${type} notation string (${notation})`);
+  }
+}

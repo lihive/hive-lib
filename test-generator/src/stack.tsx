@@ -1,6 +1,7 @@
 import styles from './table.module.css';
 import {
   Color,
+  createTilePlacement,
   getTileAt,
   getTileBug,
   getTileColor,
@@ -21,11 +22,19 @@ interface StackProps {
 
 export const Stack = (props: StackProps) => {
   const { table, setHoverCoordinate, setSelectedCoordinate } = useTable();
-  const { board, setPlayerColor } = useBoard();
+  const { board, setLastMove, setPlayerColor } = useBoard();
 
-  const onClickStack: SVGGMouseEventHandler = () => {
+  const onClickStack: SVGGMouseEventHandler = (event) => {
+    const tile = getTileAt(board(), props.stack.coordinate);
+
+    if (event.shiftKey) {
+      if (tile) {
+        setLastMove(createTilePlacement(tile, props.stack.coordinate));
+        return;
+      }
+    }
+
     if (hexesEqual(table.selectedCoordinate, props.stack.coordinate)) {
-      const tile = getTileAt(board(), props.stack.coordinate);
       if (tile) {
         setPlayerColor(getTileColor(tile));
       }

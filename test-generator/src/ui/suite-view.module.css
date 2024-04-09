@@ -1,10 +1,15 @@
 .info {
-  padding: 4px;
+  padding: 4px 6px;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 8px;
   align-items: center;
   border-bottom: 1px solid #ccc;
+  & * {
+    &:nth-child(even) {
+      justify-self: end;
+    }
+  }
 }
 
 .buttons {
@@ -55,6 +60,17 @@
   display: flex;
   align-items: center;
   gap: 0.5em;
+}
+
+.rowSpan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  grid-column: 1 / span 2;
+}
+
+.colRightAlign {
+  justify-self: end;
 }
 
 .boardLabel {
