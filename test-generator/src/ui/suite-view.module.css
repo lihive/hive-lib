@@ -96,3 +96,9 @@
 .bold {
   font-weight: bold;
 }
+
+.highlightedPurple {
+  border-radius: 4px;
+  background: mediumslateblue;
+  color: white;
+}

@@ -15,3 +15,8 @@
   display: flex;
   gap: 12px;
 }
+
+.greenText {
+  color: mediumseagreen;
+  font-weight: bold;
+}

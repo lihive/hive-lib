@@ -50,7 +50,7 @@ interface MovementMoveProps {
 
 const MovementMove = (props: MovementMoveProps) => {
   return (
-    <div>
+    <div class={styles.highlightedPurple}>
       {coordinateText(props.move.from)} → {coordinateText(props.move.to)}
     </div>
   );

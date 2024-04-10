@@ -10,8 +10,16 @@
 }
 
 .selectedHex {
-  fill: mediumseagreen;
-  opacity: 0.25;
+  stroke: mediumseagreen;
+  stroke-width: 3px;
+  fill: none;
+  pointer-events: none;
+}
+
+.lastMoveHex {
+  stroke: mediumslateblue;
+  stroke-width: 3px;
+  fill: none;
   pointer-events: none;
 }
 

@@ -9,6 +9,7 @@ import { Stacks } from './stacks';
 import { ValidMoves } from './valid-moves';
 import { BoardProvider } from './board-provider';
 import { GeneratorProvider } from './generator-provider';
+import { LastMoveHex } from './last-move-hex';
 
 export const App = () => {
   return (
@@ -21,6 +22,7 @@ export const App = () => {
               <Grid />
               <Stacks />
               <ValidMoves />
+              <LastMoveHex />
               <SelectedHex />
               <HoverHex />
             </Table>
