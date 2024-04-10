@@ -64,7 +64,10 @@ export function boardNotation(board: GameBoard): string {
 /**
  * Generate a game config notation string.
  *
- * @param config
+ * @param config - A game config.
+ * @returns A game config notation string.
+ *
+ * @beta
  */
 export function configNotation(config: GameConfig): string {
   const tileset = config.tileset;
@@ -94,7 +97,7 @@ export function gameNotation(game: Game): string {
  *
  * TODO: Refactor moves to have a lead character indicating type of move
  *
- * @param moves An array of moves.
+ * @param moves - An array of moves.
  * @returns A moves notation string.
  *
  * @beta

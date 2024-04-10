@@ -40,6 +40,9 @@ export function chainBoardChanges(...fns: ((board: GameBoard) => GameBoard)[]): 
 export type Color = 'b' | 'w';
 
 // @beta
+export function configNotation(config: GameConfig): string;
+
+// @beta
 export class CoordinatesNotAdjacentError extends Error {
     constructor(a: HexCoordinate, b: HexCoordinate);
 }
@@ -126,11 +129,11 @@ export interface GameConfig {
         [key in BugId]: number;
     }>;
     // (undocumented)
-    tournament?: true;
+    tournament?: boolean;
 }
 
 // @beta
-export function gameNotation(moves: Move[]): string;
+export function gameNotation(game: Game): string;
 
 // @beta
 export function getNextMoveColor(moves: Move[]): Color;
@@ -274,6 +277,9 @@ export function moveBreaksHive(board: GameBoard, coordinate: HexCoordinate): boo
 export function movementNotation(from: HexCoordinate, to: HexCoordinate): string;
 
 // @beta
+export function movesNotation(moves: Move[]): string;
+
+// @beta
 export function moveTile(board: GameBoard, from: HexCoordinate, to: HexCoordinate): GameBoard;
 
 // @internal
@@ -284,6 +290,11 @@ export function _moveTileProduce(board: GameBoard, from: HexCoordinate, to: HexC
 
 // @beta
 export type NeighborFn = (neighbor: HexCoordinate, stack: TileId[], direction: number) => any;
+
+// @beta
+export class NotationParsingError extends Error {
+    constructor(type: string, notation: string);
+}
 
 // @beta
 export class NoTileAtCoordinateError extends Error {
@@ -297,10 +308,16 @@ export function _ownValidMoves(board: GameBoard, coordinate: HexCoordinate): Hex
 export function parseBoardNotation(notation: string): GameBoard;
 
 // @beta
-export function parseGameNotation(notation: string): Move[];
+export function parseConfigNotation(notation: string): GameConfig;
+
+// @beta
+export function parseGameNotation(notation: string): Game;
 
 // @beta
 export function parseHexCoordinateKey(coordinateKey: string): HexCoordinate;
+
+// @beta
+export function parseMovesNotation(notation: string): Move[];
 
 // @beta
 export type Pass = {
