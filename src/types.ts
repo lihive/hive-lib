@@ -100,9 +100,7 @@ export interface GameConfig {
   // flag indicating use of tournament opening rules
   tournament?: boolean;
   // the number of each tile type (defaulting to 0 if omitted)
-  tileset: Partial<{
-    [key in BugId]: number;
-  }>;
+  tileset: TileSet;
 }
 
 /**
@@ -157,6 +155,15 @@ export type TilePlacement = {
   // the placement location
   to: HexCoordinate;
 };
+
+/**
+ * An object that contains the number of each tile type.
+ *
+ * @beta
+ */
+export type TileSet = Partial<{
+  [key in BugId]: number;
+}>;
 
 /**
  * A function invoked with a hex direction parameter.

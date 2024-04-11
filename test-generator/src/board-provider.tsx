@@ -1,10 +1,11 @@
 import {
-  BASE_GAME_TOURNAMENT,
-  boardNotation,
   BugId,
   chainBoardChanges,
   Color,
+  eachStack,
+  Game,
   GameBoard,
+  GameConfig,
   gameNotation,
   getStackHeight,
   getTileAt,
@@ -12,19 +13,20 @@ import {
   getTileColor,
   HexCoordinate,
   hexesEqual,
-  parseBoardNotation,
+  isMovePass,
   parseGameNotation,
   placeTile,
   popTile,
   tile,
   TileMovement,
   TilePlacement,
+  TileSet,
   validMoves
 } from '@hive-lib';
 import {
   Accessor,
+  batch,
   createContext,
-  createEffect,
   createMemo,
   createSignal,
   ParentProps,
@@ -36,14 +38,14 @@ import { createShortcut } from '@solid-primitives/keyboard';
 
 interface GameBoardAPI {
   board: Accessor<GameBoard>;
-  boardNotation: Accessor<string>;
+  gameNotation: Accessor<string>;
   lastMove: Accessor<TilePlacement | TileMovement | undefined>;
   playerColor: Accessor<Color>;
   validMoves: Accessor<HexCoordinate[]>;
 
   clearBoard: () => void;
   moveTile: (move: TileMovement) => void;
-  setBoardByNotation: (notation: string) => void;
+  setGameNotation: (notation: string) => void;
   setLastMove: Setter<TilePlacement | TileMovement | undefined>;
   setPlayerColor: Setter<Color>;
 }
@@ -58,25 +60,10 @@ export const BoardProvider = (props: ParentProps) => {
     TilePlacement | TileMovement | undefined
   >();
 
-  createEffect(() => {
-    const lm = lastMove();
-    const brd = board();
-    if (lm) {
-      const gn = gameNotation({
-        config: BASE_GAME_TOURNAMENT,
-        board: brd,
-        moves: [lm]
-      });
-      console.log(gn);
-      console.log(parseGameNotation(gn));
-    } else {
-      console.log(boardNotation(brd));
-    }
-  });
-
   const clearBoard = () => {
     setBoard({});
     setSelectedCoordinate(undefined);
+    setLastMove(undefined);
   };
 
   const clearLastMove = () => {
@@ -85,7 +72,27 @@ export const BoardProvider = (props: ParentProps) => {
     }
   };
 
-  const getBoardNotation = () => boardNotation(board());
+  const getGameNotation = () => {
+    // the tileset will be the tiles on the board
+    const tileset: TileSet = {};
+    eachStack(board(), (_, stack) => {
+      stack.forEach((tileId) => {
+        const bug = getTileBug(tileId);
+        if (!(bug in tileset)) {
+          tileset[bug] = 0;
+        }
+        tileset[bug] += 1;
+      });
+    });
+
+    return gameNotation({
+      board: board(),
+      moves: lastMove() ? [lastMove()!] : [],
+      config: {
+        tileset
+      }
+    });
+  };
 
   const moveTile = (move: TileMovement) => {
     const tile = getTileAt(board(), move.from);
@@ -118,8 +125,18 @@ export const BoardProvider = (props: ParentProps) => {
     }
   };
 
-  const setBoardByNotation = (notation: string) => {
-    setBoard(parseBoardNotation(notation));
+  const setGameNotation = (notation: string) => {
+    batch(() => {
+      const game = parseGameNotation(notation);
+      setBoard(game.board);
+      if (!game.moves.length) {
+        setLastMove(undefined);
+        return;
+      }
+
+      const last = game.moves[game.moves.length - 1];
+      setLastMove(isMovePass(last) ? undefined : last);
+    });
   };
 
   const togglePlayerColor = () => {
@@ -165,7 +182,13 @@ export const BoardProvider = (props: ParentProps) => {
     const tile = getTileAt(board(), table.selectedCoordinate);
     if (!tile) return [];
 
-    return validMoves(board(), playerColor(), table.selectedCoordinate);
+    const last = lastMove();
+    if (!last)
+      return validMoves(board(), playerColor(), table.selectedCoordinate);
+
+    const fakeConfig: GameConfig = { tileset: {} };
+    const game: Game = { config: fakeConfig, moves: [last], board: board() };
+    return validMoves(game, playerColor(), table.selectedCoordinate);
   });
 
   const placeableBugs: BugId[] = ['A', 'B', 'G', 'L', 'M', 'P', 'Q', 'S', 'X'];
@@ -181,14 +204,14 @@ export const BoardProvider = (props: ParentProps) => {
     <BoardContext.Provider
       value={{
         board,
-        boardNotation: getBoardNotation,
+        gameNotation: getGameNotation,
         playerColor,
         validMoves: validPlayerMoves,
         lastMove,
 
         clearBoard,
         moveTile,
-        setBoardByNotation,
+        setGameNotation,
         setLastMove,
         setPlayerColor
       }}

@@ -19,7 +19,12 @@ export const ValidMoves = () => {
               table.hexOrientation
             )}
           >
-            <circle r={table.hexSize / 4} fill='mediumseagreen' />
+            <circle
+              r={table.hexSize / 4}
+              fill='mediumseagreen'
+              stroke='seagreen'
+              stroke-width='2px'
+            />
           </g>
         );
       }}

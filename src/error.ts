@@ -42,6 +42,6 @@ export class NoTileAtCoordinateError extends Error {
  */
 export class NotationParsingError extends Error {
   constructor(type: string, notation: string) {
-    super(`Error parsing ${type} notation string (${notation})`);
+    super(`Error parsing ${type} notation string: ${notation}`);
   }
 }

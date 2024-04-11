@@ -192,12 +192,8 @@ export function validMoves(
   const tile = getTileAt(board, coordinate);
   if (!tile) return [];
   const tileColor = getTileColor(tile);
-  const tileBug = getTileBug(tile);
 
   let valid: HexCoordinate[] = [];
-
-  // Ignore blank tiles
-  if (tileBug === 'X') return valid;
 
   // Prevent any movement at all if this tile was moved by a pillbug on the
   // previous move

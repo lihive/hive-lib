@@ -37,8 +37,8 @@ export const SuiteView = (props: SuiteViewProps) => {
       <div class={styles.boardsScroller}>
         <div class={styles.boards}>
           <For each={boards()}>
-            {([boardNotation, suite]) => (
-              <GridRowBoard boardNotation={boardNotation} suite={suite} />
+            {([gameNotation, suite]) => (
+              <GridRowBoard gameNotation={gameNotation} suite={suite} />
             )}
           </For>
         </div>

@@ -3,21 +3,15 @@ import { useTable } from './table-provider';
 
 export const MouseCoordinates = () => {
   const { table } = useTable();
-  const classList = () => ({
-    [styles.greenText]: table.selectedCoordinate !== undefined
-  });
   return (
     <div class={styles.container}>
-      <div>{`x: ${table.mouseCoordinate?.x ?? '-'}`}</div>
-      <div>{`y: ${table.mouseCoordinate?.y ?? '-'}`}</div>
-      <div>{`q: ${table.hoverCoordinate?.q ?? '-'}`}</div>
-      <div>{`r: ${table.hoverCoordinate?.r ?? '-'}`}</div>
+      <div>{`(${table.mouseCoordinate?.x ?? '-'}, ${table.mouseCoordinate?.y ?? '-'})`}</div>
       <div
-        classList={classList()}
-      >{`q: ${table.selectedCoordinate?.q ?? '-'}`}</div>
+        class={table.hoverCoordinate ? styles.hightedLightGreen : undefined}
+      >{`(${table.hoverCoordinate?.q ?? '-'}, ${table.hoverCoordinate?.r ?? '-'})`}</div>
       <div
-        classList={classList()}
-      >{`r: ${table.selectedCoordinate?.r ?? '-'}`}</div>
+        class={styles.highlightedGreen}
+      >{`(${table.selectedCoordinate?.q ?? '-'}, ${table.selectedCoordinate?.r ?? '-'})`}</div>
     </div>
   );
 };

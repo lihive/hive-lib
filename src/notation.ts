@@ -7,7 +7,12 @@ import {
   Move,
   TileId
 } from './types';
-import { isMoveMovement, isMovePass, isMovePlacement } from './move';
+import {
+  createMovePass,
+  isMoveMovement,
+  isMovePass,
+  isMovePlacement
+} from './move';
 import { NotationParsingError } from './error';
 
 // board notation consts
@@ -78,6 +83,19 @@ export function configNotation(config: GameConfig): string {
 }
 
 /**
+ * Generate a hex coordinate notation string.
+ *
+ * @param coordinate - A hex coordinate.
+ * @returns A hex coordinate notation string.
+ *
+ * @beta
+ */
+export function coordinateNotation(coordinate: HexCoordinate): string {
+  const { q, r } = coordinate;
+  return `${q < 0 ? '-' : '+'}${Math.abs(q)}${r < 0 ? '-' : '+'}${Math.abs(r)}`;
+}
+
+/**
  * Generate a game notation string.
  *
  * @param game - A game object.
@@ -110,7 +128,7 @@ export function movesNotation(moves: Move[]): string {
       if (isMoveMovement(move)) return movementNotation(move.from, move.to);
       return '';
     })
-    .join();
+    .join('');
 }
 
 /**
@@ -126,7 +144,7 @@ export function movementNotation(
   from: HexCoordinate,
   to: HexCoordinate
 ): string {
-  return `(${from.q},${from.r})(${to.q},${to.r})`;
+  return coordinateNotation(from) + coordinateNotation(to);
 }
 
 /**
@@ -212,6 +230,23 @@ export function parseConfigNotation(notation: string): GameConfig {
 }
 
 /**
+ * Parse a hex coordinate notation string.
+ *
+ * @param notation - A hex coordinate notation string.
+ * @returns A hex coordinate.
+ *
+ * @beta
+ */
+export function parseCoordinateNotation(notation: string): HexCoordinate {
+  const res = notation.match(/[+-]\d+/g);
+  if (!res) throw new NotationParsingError('coordinate', notation);
+  return {
+    q: +res[0],
+    r: +res[1]
+  };
+}
+
+/**
  * Generate a ${@link Game} from a game notation string.
  *
  * @param notation - A game notation string.
@@ -247,60 +282,72 @@ export function parseGameNotation(notation: string): Game {
  * @beta
  */
 export function parseMovesNotation(notation: string): Move[] {
-  function parseToken(token: string): HexCoordinate | TileId {
-    if (token[0] === '(') {
-      const nums = token.slice(1, -1).split(',');
-      return {
-        q: parseInt(nums[0]),
-        r: parseInt(nums[1])
-      };
-    }
-    if (token[0] === '[') {
-      return token.slice(1, -1) as TileId;
-    }
-    throw new Error(`Invalid token: ${token}`);
-  }
-
+  const iter = notation[Symbol.iterator]();
   const moves: Move[] = [];
-  let tokens = [];
-  let move = '';
-  let token = '';
-  for (let i = 0, len = notation.length; i < len; ++i) {
-    const char = notation[i];
-    /// game end
-    if (char === '#') break;
+  let char = iter.next();
+  let pendingCoord: HexCoordinate | undefined;
 
-    /// passing move
-    if (char === 'x') {
-      moves.push({ pass: true });
-      continue;
-    }
-
-    /// placement or movement
-    move += char;
-    token += char;
-    if (char === ')' || char === ']') {
-      tokens.push(token);
-      token = '';
-    }
-    if (tokens.length === 2) {
-      const tokA = parseToken(tokens[0]);
-      const tokB = parseToken(tokens[1]);
-      if (typeof tokB === 'string') {
-        moves.push({
-          tileId: tokB,
-          to: tokA as HexCoordinate
-        });
-      } else {
-        moves.push({
-          from: tokA as HexCoordinate,
-          to: tokB as HexCoordinate
-        });
+  const readCoordinate = () => {
+    let acc = '';
+    let count = 0;
+    while (!char.done && isCoordChar(char.value)) {
+      if (isCoordSign(char.value)) {
+        if (count === 2) {
+          return parseCoordinateNotation(acc);
+        }
+        count += 1;
       }
-      tokens = [];
-      move = '';
+      acc += char.value;
+      char = iter.next();
+    }
+    return parseCoordinateNotation(acc);
+  };
+
+  const readTileId = () => {
+    let acc = '';
+    while (!char.done && !isCoordChar(char.value) && char.value !== 'x') {
+      acc += char.value;
+      char = iter.next();
+    }
+    return acc as TileId;
+  };
+
+  const isCoordSign = (char: string) => {
+    return char === '+' || char === '-';
+  };
+
+  const isCoordChar = (char: string) => {
+    return /[-+\d]/.test(char);
+  };
+
+  while (!char.done) {
+    if (char.value === 'x') {
+      moves.push(createMovePass());
+      char = iter.next();
+    } else if (isCoordChar(char.value)) {
+      const coord = readCoordinate();
+      if (!pendingCoord) {
+        pendingCoord = coord;
+        continue;
+      }
+      moves.push({
+        from: pendingCoord,
+        to: coord
+      });
+      pendingCoord = undefined;
+    } else {
+      const tileId = readTileId();
+      if (!pendingCoord) {
+        throw new NotationParsingError('moves', notation);
+      }
+      moves.push({
+        tileId,
+        to: pendingCoord
+      });
+      pendingCoord = undefined;
     }
   }
+
   return moves;
 }
 
@@ -328,5 +375,5 @@ export function placementNotation(
   tileId: TileId,
   coordinate: HexCoordinate
 ): string {
-  return `(${coordinate.q},${coordinate.r})[${tileId}]`;
+  return coordinateNotation(coordinate) + `${tileId}`;
 }

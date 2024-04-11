@@ -1,13 +1,13 @@
 import { createContext, ParentProps, useContext } from 'solid-js';
 import { createShortcut } from '@solid-primitives/keyboard';
-import { boardNotation, hexCoordinateKey } from '@hive-lib';
+import { hexCoordinateKey } from '@hive-lib';
 import { useTable } from './table-provider';
 import { useBoard } from './board-provider';
 import { createStore, reconcile } from 'solid-js/store';
 import { makePersisted } from '@solid-primitives/storage';
 
 type TestCaseSet = {
-  // board notation
+  // game notation
   [key: string]: {
     // player color
     [key: string]: {
@@ -31,7 +31,7 @@ export const GeneratorProvider = (props: ParentProps) => {
   const [cases, setCases] = makePersisted(createStore<TestCaseSet>({}));
 
   const { table } = useTable();
-  const { board, playerColor, validMoves } = useBoard();
+  const { gameNotation, playerColor, validMoves } = useBoard();
 
   const clearSuite = () => {
     setCases(reconcile({}));
@@ -56,7 +56,7 @@ export const GeneratorProvider = (props: ParentProps) => {
 
   const saveCurrent = () => {
     if (table.selectedCoordinate) {
-      const notation = boardNotation(board());
+      const notation = gameNotation();
       if (!cases[notation]) setCases(notation, {});
       if (!cases[notation][playerColor()])
         setCases(notation, playerColor(), {});

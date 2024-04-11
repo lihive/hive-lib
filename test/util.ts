@@ -1,11 +1,11 @@
 import { describe, it } from 'vitest';
-import { parseBoardNotation } from '../src/notation';
+import { parseGameNotation } from '../src/notation';
 import { hexCoordinateKey, parseHexCoordinateKey } from '../src/hex';
 import { validMoves } from '../src/move';
 import { Color } from '../src/types';
 
 export type ValidMoveTestSuite = {
-  // board notation
+  // game notation
   [key: string]: {
     // player color
     [key: string]: {
@@ -16,9 +16,9 @@ export type ValidMoveTestSuite = {
 };
 
 export function runValidMoveTestSuite(suite: ValidMoveTestSuite) {
-  Object.entries(suite).forEach(([boardNotation, data]) => {
-    describe(boardNotation, () => {
-      const board = parseBoardNotation(boardNotation);
+  Object.entries(suite).forEach(([gameNotation, data]) => {
+    describe(gameNotation, () => {
+      const game = parseGameNotation(gameNotation);
       ['w', 'b'].forEach((color) => {
         if (!data[color]) return;
         Object.entries(data[color]).forEach(([coordinateKey, solutionSet]) => {
@@ -26,11 +26,7 @@ export function runValidMoveTestSuite(suite: ValidMoveTestSuite) {
           const validMoveSet = new Set(
             solutionSet.length ? solutionSet.split(',') : []
           );
-          const validMovesResult = validMoves(
-            board,
-            color as Color,
-            coordinate
-          );
+          const validMovesResult = validMoves(game, color as Color, coordinate);
 
           it(`(${coordinate.q}, ${coordinate.r}): ${color === 'w' ? 'white' : 'black'} has ${validMovesResult.length} valid moves`, async ({
             expect

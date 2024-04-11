@@ -2,21 +2,27 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  display: grid;
-  grid-template-columns: minmax(4rem, auto) minmax(4rem, auto);
-  gap: 4px;
-  background: #fafafa;
-  box-shadow: 1px 1px 2px #bababa;
-  font-size: 12px;
-  padding: 2px 4px;
-}
-
-.coordinate {
   display: flex;
-  gap: 12px;
+  /*display: grid;*/
+  /*grid-template-columns: minmax(4rem, auto) minmax(4rem, auto);*/
+  gap: 8px;
+  background: #fafafa;
+  border: 1px solid #bababa;
+  box-shadow: 1px 1px 2px #bababa;
+  padding: 2px 4px;
+
+  & > * {
+    font-size: 11px;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
 }
 
-.greenText {
-  color: mediumseagreen;
-  font-weight: bold;
+.highlightedGreen {
+  background: mediumseagreen;
+  color: white;
+}
+
+.hightedLightGreen {
+  background: color-mix(in srgb, mediumseagreen 15%, transparent);
 }

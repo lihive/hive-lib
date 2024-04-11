@@ -33,13 +33,20 @@ export const Table = (props: ParentProps) => {
     svgElement = svg;
   };
 
+  const onMouseLeave = () => {
+    setMouseCoordinate(undefined);
+  };
+
   const onMouseMove: SVGSVGMouseEventHandler = (event) => {
     if (svgElement) {
       let pt = svgElement.createSVGPoint();
-      pt.x = Math.round(event.clientX) - 0.5;
-      pt.y = Math.round(event.clientY) - 0.5;
+      pt.x = event.clientX;
+      pt.y = event.clientY;
       pt = pt.matrixTransform(svgElement.getScreenCTM()?.inverse());
-      setMouseCoordinate(pt);
+      setMouseCoordinate({
+        x: Math.round(pt.x),
+        y: Math.round(pt.y)
+      });
     }
   };
 
@@ -49,6 +56,7 @@ export const Table = (props: ParentProps) => {
       class={styles.table}
       viewBox={viewbox()}
       onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
       <BugSymbols />
       {props.children}

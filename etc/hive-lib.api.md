@@ -43,6 +43,9 @@ export type Color = 'b' | 'w';
 export function configNotation(config: GameConfig): string;
 
 // @beta
+export function coordinateNotation(coordinate: HexCoordinate): string;
+
+// @beta
 export class CoordinatesNotAdjacentError extends Error {
     constructor(a: HexCoordinate, b: HexCoordinate);
 }
@@ -125,9 +128,7 @@ export function gameBoard(moves: Move[], upTo?: number): GameBoard;
 // @beta
 export interface GameConfig {
     // (undocumented)
-    tileset: Partial<{
-        [key in BugId]: number;
-    }>;
+    tileset: TileSet;
     // (undocumented)
     tournament?: boolean;
 }
@@ -311,6 +312,9 @@ export function parseBoardNotation(notation: string): GameBoard;
 export function parseConfigNotation(notation: string): GameConfig;
 
 // @beta
+export function parseCoordinateNotation(notation: string): HexCoordinate;
+
+// @beta
 export function parseGameNotation(notation: string): Game;
 
 // @beta
@@ -395,6 +399,11 @@ export type TilePlacement = {
     tileId: TileId;
     to: HexCoordinate;
 };
+
+// @beta
+export type TileSet = Partial<{
+    [key in BugId]: number;
+}>;
 
 // @beta
 export function tilesInHand(board: GameBoard, color: Color, config: GameConfig): TileId[];

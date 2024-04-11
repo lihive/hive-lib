@@ -38,7 +38,7 @@ interface PlacementMoveProps {
 
 const PlacementMove = (props: PlacementMoveProps) => {
   return (
-    <div>
+    <div class={styles.highlightedPurple}>
       {props.move.tileId} → {coordinateText(props.move.to)}
     </div>
   );

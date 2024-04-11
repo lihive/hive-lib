@@ -7,7 +7,7 @@ import { GridRowValidMoveSet, ValidMoveSet } from './grid-row-valid-move-set';
 import { Color, parseHexCoordinateKey } from '@hive-lib';
 
 interface GridRowBoardProps {
-  boardNotation: string;
+  gameNotation: string;
   suite: BoardSuite;
 }
 
@@ -21,10 +21,10 @@ interface BoardSuite {
 
 export const GridRowBoard = (props: GridRowBoardProps) => {
   const { deleteBoard } = useGenerator();
-  const { boardNotation, setBoardByNotation } = useBoard();
+  const { gameNotation, setGameNotation } = useBoard();
 
   const isActiveBoard = () => {
-    return props.boardNotation === boardNotation();
+    return props.gameNotation === gameNotation();
   };
 
   const classList = () => ({
@@ -33,24 +33,24 @@ export const GridRowBoard = (props: GridRowBoardProps) => {
   });
 
   const onClickBoard = () => {
-    setBoardByNotation(props.boardNotation);
+    setGameNotation(props.gameNotation);
   };
 
   const onClickDelete = () => {
-    deleteBoard(props.boardNotation);
+    deleteBoard(props.gameNotation);
   };
 
   return (
     <div class={styles.rowContents}>
       <div classList={classList()} onClick={onClickBoard}>
-        {props.boardNotation}
+        {props.gameNotation}
       </div>
       <TextButton onClick={onClickDelete}>x</TextButton>
       <Show when={isActiveBoard()}>
         <For each={validMoveSet(props.suite)}>
           {(validMoveSet) => (
             <GridRowValidMoveSet
-              board={props.boardNotation}
+              board={props.gameNotation}
               validMoveSet={validMoveSet}
             />
           )}
