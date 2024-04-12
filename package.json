@@ -1,13 +1,25 @@
 {
-  "name": "hive-lib",
-  "version": "1.0.0",
+  "name": "@lihive/hive-lib",
+  "version": "0.0.1",
+  "description": "Data structures for the game of Hive",
   "main": "dist/hive-lib.js",
+  "type": "module",
+  "exports": {
+    "import": "./dist/hive-lib.js",
+    "require": "./dist/hive-lib.cjs"
+  },
   "types": "dist/hive-lib.d.ts",
-  "repository": "https://github.com/lihive/hive-lib.git",
+  "files": ["dist"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url":"https://github.com/lihive/hive-lib.git"
+  },
   "author": "Tristan Dyer",
-  "private": true,
   "scripts": {
-    "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js && tsc -p tsconfig.json && api-extractor run --local",
+    "build": "npm run build:bundle:cjs && npm run build:bundle:esm && tsc -p tsconfig.json && api-extractor run --local",
+    "build:bundle:cjs": "esbuild index.ts --bundle --format=cjs --outfile=dist/hive-lib.cjs",
+    "build:bundle:esm": "esbuild index.ts --bundle --format=esm --outfile=dist/hive-lib.js",
     "test": "vitest run",
     "tool:hex-editor": "vite serve hex-editor",
     "tool:test-generator": "vite serve test-generator"
