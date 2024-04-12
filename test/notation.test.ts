@@ -16,7 +16,6 @@ describe('notation', () => {
         { from: { q: 0, r: -1 }, to: { q: 0, r: 1 } }
       ];
       const notation = movesNotation(moves);
-      console.log(notation);
       const parsed: Move[] = parseMovesNotation(notation);
       expect(moves).toEqual(parsed);
     });

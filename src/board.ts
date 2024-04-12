@@ -428,12 +428,10 @@ export function findTileCoordinates(
   board: GameBoard,
   tileId: TileId
 ): HexCoordinate[] {
-  const visited = new Set();
   const coordinates: HexCoordinate[] = [];
   eachStack(board, (coordinate, stack) => {
-    if (stack.includes(tileId) && !visited.has(tileId)) {
+    if (stack.includes(tileId)) {
       coordinates.push(coordinate);
-      visited.add(tileId);
     }
   });
   return coordinates;

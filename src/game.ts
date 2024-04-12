@@ -26,14 +26,14 @@ export function createGame(config: GameConfig): Game {
  *
  * @beta
  */
-export function createBaseGameConfig(options: {
-  ladybug: boolean;
-  mosquito: boolean;
-  pillbug: boolean;
+export function createBaseGameConfig(options?: {
+  ladybug?: boolean;
+  mosquito?: boolean;
+  pillbug?: boolean;
 }): GameConfig {
-  const config: GameConfig = { ...BASE_GAME };
-  if (options.ladybug) config.tileset.L = 1;
-  if (options.mosquito) config.tileset.M = 1;
-  if (options.pillbug) config.tileset.P = 1;
+  const config: GameConfig = structuredClone(BASE_GAME);
+  if (options?.ladybug) config.tileset.L = 1;
+  if (options?.mosquito) config.tileset.M = 1;
+  if (options?.pillbug) config.tileset.P = 1;
   return config;
 }

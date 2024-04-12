@@ -542,6 +542,13 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
+"@solid-primitives/clipboard@^1.5.10":
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/clipboard/-/clipboard-1.5.10.tgz#3a7ace21350bc362e28d611986e6265955a41f85"
+  integrity sha512-ohwlrBP4j+Qjksg01CFWaP/USpzX78dBNVA1DPRZkf/vJgytX0T6KMc2YxF6o8fs6ePIYSI8Nt3sKxF0sh1q+Q==
+  dependencies:
+    "@solid-primitives/utils" "^6.2.3"
+
 "@solid-primitives/event-listener@^2.3.3":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@solid-primitives/event-listener/-/event-listener-2.3.3.tgz#ab28c8627aa7d6234617867d8b02c80e1b8f0948"

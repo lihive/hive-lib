@@ -51,10 +51,10 @@ export class CoordinatesNotAdjacentError extends Error {
 }
 
 // @beta
-export function createBaseGameConfig(options: {
-    ladybug: boolean;
-    mosquito: boolean;
-    pillbug: boolean;
+export function createBaseGameConfig(options?: {
+    ladybug?: boolean;
+    mosquito?: boolean;
+    pillbug?: boolean;
 }): GameConfig;
 
 // @beta

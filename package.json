@@ -8,13 +8,14 @@
   "private": true,
   "scripts": {
     "build": "esbuild index.ts --bundle --outfile=dist/hive-lib.js && esbuild index.ts --bundle --minify --outfile=dist/hive-lib.min.js && tsc -p tsconfig.json && api-extractor run --local",
-    "test": "vitest run --reporter verbose",
+    "test": "vitest run",
     "tool:hex-editor": "vite serve hex-editor",
     "tool:test-generator": "vite serve test-generator"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "^7.24.1",
     "@microsoft/api-extractor": "^7.43.0",
+    "@solid-primitives/clipboard": "^1.5.10",
     "@solid-primitives/keyboard": "^1.2.8",
     "@solid-primitives/storage": "^3.0.0",
     "esbuild": "^0.20.1",

@@ -45,6 +45,7 @@ interface GameBoardAPI {
 
   clearBoard: () => void;
   moveTile: (move: TileMovement) => void;
+  setBoard: (board: GameBoard) => void;
   setGameNotation: (notation: string) => void;
   setLastMove: Setter<TilePlacement | TileMovement | undefined>;
   setPlayerColor: Setter<Color>;
@@ -123,6 +124,13 @@ export const BoardProvider = (props: ParentProps) => {
     ) {
       setLastMove(undefined);
     }
+  };
+
+  const setGameBoard = (board: GameBoard) => {
+    batch(() => {
+      setBoard(board);
+      setLastMove(undefined);
+    });
   };
 
   const setGameNotation = (notation: string) => {
@@ -211,6 +219,7 @@ export const BoardProvider = (props: ParentProps) => {
 
         clearBoard,
         moveTile,
+        setBoard: setGameBoard,
         setGameNotation,
         setLastMove,
         setPlayerColor

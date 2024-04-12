@@ -4,20 +4,42 @@ import { useGenerator } from '../generator-provider';
 import { TextButton } from './text-button';
 import { GridRowActivePlayer } from './grid-row-active-player';
 import { GridRowOrientation } from './grid-row-orientation';
-import { For } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import { GridRowBoard } from './grid-row-board';
 import { GridRowLastMove } from './grid-row-last-move';
+import { writeClipboard } from '@solid-primitives/clipboard';
+import { boardNotation } from '@hive-lib';
 
 interface SuiteViewProps {
-  load: () => void;
-  save: () => void;
+  loadBoard: () => void;
+  loadSuite: () => void;
 }
 
 export const SuiteView = (props: SuiteViewProps) => {
-  const { clearBoard } = useBoard();
+  const { board, clearBoard } = useBoard();
   const { cases, clearSuite } = useGenerator();
+  const [copyBoardText, setCopyBoardText] = createSignal('Copy board');
+  const [copySuiteText, setCopySuiteText] = createSignal('Copy suite');
 
   const boards = () => Object.entries(cases);
+
+  const copyBoard = () => {
+    writeClipboard(boardNotation(board()))
+      .then(() => {
+        setCopyBoardText('Copied!');
+        setTimeout(() => setCopyBoardText('Copy board'), 2000);
+      })
+      .catch(() => console.error('Unable to write to clipboard'));
+  };
+
+  const copySuite = () => {
+    writeClipboard(JSON.stringify(cases))
+      .then(() => {
+        setCopySuiteText('Copied!');
+        setTimeout(() => setCopySuiteText('Copy suite'), 2000);
+      })
+      .catch(() => console.error('Unable to write to clipboard'));
+  };
 
   return (
     <>
@@ -30,9 +52,11 @@ export const SuiteView = (props: SuiteViewProps) => {
       </div>
       <div class={styles.buttons}>
         <TextButton onClick={clearSuite}>Clear suite</TextButton>
-        <TextButton onClick={props.load}>Load suite</TextButton>
+        <TextButton onClick={props.loadSuite}>Load suite</TextButton>
+        <TextButton onClick={copySuite}>{copySuiteText()}</TextButton>
         <TextButton onClick={clearBoard}>Clear board</TextButton>
-        <TextButton onClick={props.save}>Save suite</TextButton>
+        <TextButton onClick={props.loadBoard}>Load board</TextButton>
+        <TextButton onClick={copyBoard}>{copyBoardText()}</TextButton>
       </div>
       <div class={styles.boardsScroller}>
         <div class={styles.boards}>

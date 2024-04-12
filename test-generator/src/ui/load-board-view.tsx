@@ -1,25 +1,26 @@
-import styles from './load-view.module.css';
 import { createSignal } from 'solid-js';
+import { useBoard } from '../board-provider';
+import { parseBoardNotation } from '@hive-lib';
+import styles from './load-view.module.css';
 import { TextButton } from './text-button';
 import { useTable } from '../table-provider';
-import { useGenerator } from '../generator-provider';
 
-interface LoadViewProps {
+interface LoadBoardViewProps {
   close: () => void;
 }
 
-export const LoadView = (props: LoadViewProps) => {
+export const LoadBoardView = (props: LoadBoardViewProps) => {
   const [input, setInput] = createSignal('');
 
+  const { setBoard } = useBoard();
   const { setSelectedCoordinate } = useTable();
-  const { loadSuite } = useGenerator();
 
   const onCancel = () => {
     props.close();
   };
 
   const onLoad = () => {
-    loadSuite(input());
+    setBoard(parseBoardNotation(input()));
     props.close();
   };
 
