@@ -1,0 +1,10 @@
+@value phone: max-device-width: 768px;
+@value tablet: min-device-width: 1024px;
+@value laptop: min-device-width: 1280px;
+@value desktop: min-device-width: 1280px;
+
+/* for dev */
+/*@value phone: max-width: 768px;*/
+/*@value tablet: min-width: 1024px;*/
+/*@value laptop: min-width: 1280px;*/
+/*@value desktop: min-width: 1280px;*/

@@ -1,9 +1,15 @@
+@value phone from './media.module.css';
+
 .tableSettings {
+  grid-area: settings;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #777;
   font-family: var(--monospace);
-  font-size: 13px;
+  font-size: 1rem;
+  @media (phone) {
+    flex-direction: column-reverse;
+  }
 }
 
 .settingsGrid {
@@ -32,7 +38,7 @@ h3 {
 
 button {
   font-family: var(--monospace);
-  font-size: 13px;
+  font-size: 1rem;
 }
 
 input[type='range'] {

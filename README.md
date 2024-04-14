@@ -9,5 +9,5 @@ functionality. They can also be quite useful for understanding how the library w
 (and does not provide).
 
 Scripts to run the tools are provided in the `package.json` file, and are prefixed with `tool:`. Tools can, of course,
-be built to run as a standalone page using `vite build [tool]`. Note that you may need to adjust the `base` value of
-`vite.config.js` for the tool depending on where you intend to serve the tool from.
+be built to run as a standalone page using `vite build [path/to/tool]`. Note that you may need to adjust the `base` 
+value of `vite.config.js` for the tool depending on where you intend to serve the tool from.
